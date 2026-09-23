@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,94 +24,55 @@ type Option = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
-const foods: Option[] = [
+const genders: Option[] = [
   {
-    id: "fruits",
-    title: "Frutas",
-    description: "Ex.: maçã, banana, laranja, frutos vermelhos.",
-    icon: "nutrition-outline",
+    id: "male",
+    title: "Masculino",
+    description: "",
+    icon: "person-outline",
   },
   {
-    id: "vegetables",
-    title: "Legumes",
-    description: "Ex.: brócolos, cenoura, espinafres, courgette.",
-    icon: "nutrition-outline",
-  },
-  {
-    id: "grains",
-    title: "Cereais",
-    description: "Ex.: arroz, aveia, quinoa, massa.",
-    icon: "nutrition-outline",
-  },
-  {
-    id: "meat",
-    title: "Carnes",
-    description: "Ex.: frango, vaca, porco, peru.",
-    icon: "nutrition-outline",
-  },
-  {
-    id: "fish",
-    title: "Peixe",
-    description: "Ex.: salmão, atum, dourada, bacalhau.",
-    icon: "fish-outline",
-  },
-  {
-    id: "seafood",
-    title: "Marisco",
-    description: "Ex.: camarão, amêijoa, mexilhão, polvo.",
-    icon: "fish-outline",
-  },
-  {
-    id: "eggs",
-    title: "Ovos",
-    description: "Versáteis e nutritivos.",
-    icon: "ellipse-outline",
-  },
-  {
-    id: "dairy",
-    title: "Laticínios",
-    description: "Ex.: leite, iogurte, queijo, skyr.",
-    icon: "water-outline",
-  },
-  {
-    id: "legumes",
-    title: "Leguminosas",
-    description: "Ex.: feijão, grão-de-bico, lentilhas.",
-    icon: "nutrition-outline",
-  },
-  {
-    id: "nuts",
-    title: "Frutos secos",
-    description: "Ex.: amêndoas, nozes, avelãs.",
-    icon: "nutrition-outline",
-  },
-  {
-    id: "healthy-fats",
-    title: "Gorduras saudáveis",
-    description: "Ex.: azeite, abacate, sementes.",
-    icon: "water-outline",
-  },
-  {
-    id: "herbs-spices",
-    title: "Ervas e especiarias",
-    description: "Ex.: alho, cebola, tomilho, manjericão.",
-    icon: "leaf-outline",
-  },
-  {
-    id: "desserts",
-    title: "Doces e sobremesas",
-    description: "Ex.: chocolate, fruta, sobremesas saudáveis.",
-    icon: "ice-cream-outline",
+    id: "female",
+    title: "Feminino",
+    description: "",
+    icon: "person-outline",
   },
   {
     id: "other",
     title: "Outro",
-    description: "Adiciona outro alimento que gostes.",
-    icon: "add-outline",
+    description: "",
+    icon: "male-female-outline",
   },
 ];
 
-export default function FavoritesScreen() {
+const activityLevels: Option[] = [
+  {
+    id: "sedentary",
+    title: "Sedentário",
+    description: "Pouco ou nenhum exercício",
+    icon: "walk-outline",
+  },
+  {
+    id: "light",
+    title: "Ligeiramente ativo",
+    description: "1–3 dias por semana",
+    icon: "walk-outline",
+  },
+  {
+    id: "moderate",
+    title: "Moderadamente ativo",
+    description: "3–5 dias por semana",
+    icon: "walk-outline",
+  },
+  {
+    id: "very-active",
+    title: "Muito ativo",
+    description: "6+ dias por semana",
+    icon: "barbell-outline",
+  },
+];
+
+export default function MeasuresScreen() {
   const router = useRouter();
 
   const [fontsLoaded] = useFonts({
@@ -118,23 +80,25 @@ export default function FavoritesScreen() {
     PlusJakartaSans_500Medium,
   });
 
-  const [selectedFoods, setSelectedFoods] = useState<string[]>([]);
+  const [selectedGender, setSelectedGender] = useState<string | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState<string | null>(
+    null,
+  );
+
+  const [birthDate, setBirthDate] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
 
   if (!fontsLoaded) {
     return null;
   }
 
-  const toggleFood = (id: string) => {
-    setSelectedFoods((current) => {
-      if (current.includes(id)) {
-        return current.filter((item) => item !== id);
-      }
-
-      return [...current, id];
-    });
-  };
-
-  const hasSelection = selectedFoods.length > 0;
+  const hasSelection =
+    !!selectedGender &&
+    //!!birthDate &&
+    !!height &&
+    !!weight &&
+    !!selectedActivity;
 
   return (
     <View style={styles.container}>
@@ -150,7 +114,7 @@ export default function FavoritesScreen() {
           {/* Header */}
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.replace("/restrictions")}
+              onPress={() => router.replace("/favorites")}
               style={styles.backButton}
               hitSlop={10}
             >
@@ -166,12 +130,12 @@ export default function FavoritesScreen() {
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
+              <View style={styles.progressActive} />
 
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
-              <View style={styles.progressInactive} />
             </View>
-        </View>
+          </View>
 
           {/* Scrollable content */}
           <ScrollView
@@ -180,61 +144,59 @@ export default function FavoritesScreen() {
             showsVerticalScrollIndicator={false}
             bounces={true}
             overScrollMode="never"
+            keyboardShouldPersistTaps="handled"
           >
             {/* Intro */}
             <View style={styles.intro}>
               <View style={styles.introText}>
                 <Text style={styles.title}>
-                  Quais são os teus{"\n"}
-                  alimentos preferidos?
+                  Conta-nos um pouco{"\n"}
+                  sobre ti
                 </Text>
 
                 <Text style={styles.subtitle}>
-                  Seleciona os alimentos que gostas de comer
-                  {"\n"}
-                  para receberes recomendações mais à tua
-                  {"\n"}
-                  medida.
+                  Estas informações ajudam-nos a calcular
+                  as tuas necessidades nutricionais e a criar
+                  recomendações mais personalizadas.
                 </Text>
               </View>
             </View>
 
-            {/* Favorite foods */}
+            {/* Gender */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Ionicons
-                  name="heart-outline"
+                  name="person-outline"
                   size={25}
                   color="#087C5B"
                 />
 
                 <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>
-                    Alimentos que gostas
-                  </Text>
+                  <Text style={styles.sectionTitle}>Género</Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Seleciona tudo o que costumas gostar de comer.
+                    Seleciona o teu género.
                   </Text>
                 </View>
               </View>
 
               <View style={styles.optionsGrid}>
-                {foods.map((food) => {
-                  const isSelected = selectedFoods.includes(food.id);
+                {genders.map((option) => {
+                  const isSelected = selectedGender === option.id;
 
                   return (
                     <Pressable
-                      key={food.id}
-                      onPress={() => toggleFood(food.id)}
+                      key={option.id}
+                      onPress={() => setSelectedGender(option.id)}
                       style={[
                         styles.optionCard,
+                        styles.genderCard,
                         isSelected && styles.optionCardSelected,
                       ]}
                     >
                       <View style={styles.optionHeader}>
                         <Ionicons
-                          name={food.icon}
+                          name={option.icon}
                           size={25}
                           color="#087C5B"
                         />
@@ -251,11 +213,7 @@ export default function FavoritesScreen() {
                       </View>
 
                       <Text style={styles.optionTitle}>
-                        {food.title}
-                      </Text>
-
-                      <Text style={styles.optionDescription}>
-                        {food.description}
+                        {option.title}
                       </Text>
                     </Pressable>
                   );
@@ -263,18 +221,184 @@ export default function FavoritesScreen() {
               </View>
             </View>
 
-            {/* Info */}
-            <View style={styles.info}>
-              <Ionicons
-                name="bulb-outline"
-                size={20}
-                color="#087C5B"
-              />
+            {/* Birth date */}
+            <View style={styles.inputSection}>
+              <View style={styles.sectionHeader}>
+                <Ionicons
+                  name="calendar-outline"
+                  size={25}
+                  color="#087C5B"
+                />
 
-              <Text style={styles.infoText}>
-                Estas preferências ajudam-nos a sugerir receitas que
-                gostas mesmo de comer.
-              </Text>
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>
+                    Data de nascimento
+                  </Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Ajuda-nos a calcular melhor as tuas necessidades.
+                  </Text>
+                </View>
+              </View>
+
+              <Pressable
+                style={styles.inputContainer}
+                onPress={() => {
+                  // Abrir date picker mais tarde
+                }}
+              >
+                <Ionicons
+                  name="calendar-outline"
+                  size={20}
+                  color="#6F7973"
+                />
+
+                <Text
+                  style={[
+                    styles.inputPlaceholder,
+                    birthDate && styles.inputValue,
+                  ]}
+                >
+                  {birthDate || "Seleciona a tua data de nascimento"}
+                </Text>
+
+                <Ionicons
+                  name="chevron-forward"
+                  size={17}
+                  color="#6F7973"
+                />
+              </Pressable>
+            </View>
+
+            {/* Height */}
+            <View style={styles.inputSection}>
+              <View style={styles.sectionHeader}>
+                <Ionicons
+                  name="resize-outline"
+                  size={25}
+                  color="#087C5B"
+                />
+
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>Altura</Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Indica a tua altura.
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <TextInput
+                  value={height}
+                  onChangeText={setHeight}
+                  placeholder="170"
+                  placeholderTextColor="#333333"
+                  keyboardType="numeric"
+                  style={styles.input}
+                  maxLength={3}
+                />
+
+                <Text style={styles.unit}>cm</Text>
+              </View>
+            </View>
+
+            {/* Weight */}
+            <View style={styles.inputSection}>
+              <View style={styles.sectionHeader}>
+                <Ionicons
+                  name="scale-outline"
+                  size={25}
+                  color="#087C5B"
+                />
+
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>Peso</Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Indica o teu peso atual.
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <TextInput
+                  value={weight}
+                  onChangeText={setWeight}
+                  placeholder="70"
+                  placeholderTextColor="#333333"
+                  keyboardType="decimal-pad"
+                  style={styles.input}
+                  maxLength={5}
+                />
+
+                <Text style={styles.unit}>kg</Text>
+              </View>
+            </View>
+
+            {/* Activity */}
+            <View style={[styles.section, styles.activity]}>
+              <View style={styles.sectionHeader}>
+                <Ionicons
+                  name="walk-outline"
+                  size={25}
+                  color="#087C5B"
+                />
+
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>
+                    Nível de atividade física
+                  </Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Seleciona o teu nível de atividade habitual.
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.optionsGrid}>
+                {activityLevels.map((option) => {
+                  const isSelected = selectedActivity === option.id;
+
+                  return (
+                    <Pressable
+                      key={option.id}
+                      onPress={() => setSelectedActivity(option.id)}
+                      style={[
+                        styles.optionCard,
+                        styles.activityCard,
+                        isSelected && styles.optionCardSelected,
+                      ]}
+                    >
+                      <View style={styles.optionHeader}>
+                        <Ionicons
+                          name={option.icon}
+                          size={25}
+                          color="#087C5B"
+                        />
+
+                        {isSelected && (
+                          <View style={styles.check}>
+                            <Ionicons
+                              name="checkmark"
+                              size={9}
+                              color="#FFFFFF"
+                            />
+                          </View>
+                        )}
+                      </View>
+
+                      <Text style={styles.optionTitle}>
+                        {option.title}
+                      </Text>
+
+                      <Text style={styles.optionDescription}>
+                        {option.description}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
             </View>
 
             {/* Actions */}
@@ -287,12 +411,15 @@ export default function FavoritesScreen() {
                 disabled={!hasSelection}
                 onPress={() => {
                   console.log({
-                    favoriteFoods: selectedFoods,
+                    gender: selectedGender,
+                    birthDate,
+                    height,
+                    weight,
+                    activity: selectedActivity,
                   });
 
-                  // Guardar alimentos preferidos
+                  // Guardar dados pessoais
                   // Avançar para o próximo passo
-                  router.replace("/measures")
                 }}
               >
                 <Text style={styles.primaryButtonText}>
@@ -308,7 +435,7 @@ export default function FavoritesScreen() {
 
               <Pressable
                 onPress={() => {
-                  router.replace("/measures")
+                  // Preencher mais tarde
                 }}
                 hitSlop={8}
               >
@@ -451,10 +578,15 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "-7deg" }],
   },
 
-  /* Section */
+  /* Sections */
 
   section: {
     width: "100%",
+  },
+
+  inputSection: {
+    width: "100%",
+    marginTop: 10,
   },
 
   sectionHeader: {
@@ -463,8 +595,13 @@ const styles = StyleSheet.create({
     marginBottom: 9,
   },
 
+  activity: {
+    marginTop: 10,
+  },
+
   sectionHeaderText: {
     marginLeft: 8,
+    flex: 1,
   },
 
   sectionTitle: {
@@ -515,6 +652,14 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
 
+  genderCard: {
+    minHeight: 65,
+  },
+
+  activityCard: {
+    minHeight: 100,
+  },
+
   optionCardSelected: {
     borderColor: "#7BCB9D",
     backgroundColor: "#E5F2E5",
@@ -553,28 +698,62 @@ const styles = StyleSheet.create({
     color: "#858B87",
   },
 
-  /* Info */
+  /* Inputs */
 
-  info: {
+  inputContainer: {
+    width: "100%",
+    minHeight: 46,
+
+    paddingHorizontal: 12,
+
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ECEDE9",
+
+    backgroundColor: "rgba(255, 255, 255, 0.72)",
+
     flexDirection: "row",
     alignItems: "center",
 
-    marginTop: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 9,
-
-    borderRadius: 9,
-    backgroundColor: "rgba(231, 241, 231, 0.85)",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.035,
+    shadowRadius: 5,
+    elevation: 1,
   },
 
-  infoText: {
+  input: {
+    flex: 1,
+    height: 44,
+
+    paddingHorizontal: 2,
+
+    fontFamily: "PlusJakartaSans_500Medium",
+    fontSize: 12,
+    color: "#333333",
+  },
+
+  inputPlaceholder: {
     flex: 1,
     marginLeft: 8,
 
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
-    lineHeight: 15,
-    color: "#6F7973",
+    fontSize: 11,
+    color: "#858B87",
+  },
+
+  inputValue: {
+    fontFamily: "PlusJakartaSans_500Medium",
+    color: "#333333",
+  },
+
+  unit: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 10,
+    color: "#858B87",
   },
 
   /* Actions */
