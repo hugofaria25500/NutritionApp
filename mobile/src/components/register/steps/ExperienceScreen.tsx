@@ -23,115 +23,118 @@ type Option = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
-const professionalSituations: Option[] = [
-  {
-    id: "office",
-    title: "Trabalho de escritório",
-    description: "Maioritariamente sedentário.",
-    icon: "desktop-outline",
-  },
-  {
-    id: "physical",
-    title: "Trabalho físico",
-    description: "Mais movimentação durante o dia.",
-    icon: "barbell-outline",
-  },
-  {
-    id: "student",
-    title: "Estudante",
-    description: "Rotina variável.",
-    icon: "school-outline",
-  },
-  {
-    id: "other",
-    title: "Outro",
-    description: "Descreve a tua situação.",
-    icon: "ellipsis-horizontal-circle-outline",
-  },
-];
+/* ------------------------------------------------ */
+/* What do you usually look for? */
+/* ------------------------------------------------ */
 
-const cookingTimes: Option[] = [
+const searchPreferences: Option[] = [
   {
-    id: "little",
-    title: "Pouco tempo",
-    description: "Até 15 minutos por refeição.",
-    icon: "timer-outline",
-  },
-  {
-    id: "moderate",
-    title: "Tempo moderado",
-    description: "15–30 minutos por refeição.",
-    icon: "time-outline",
-  },
-  {
-    id: "cooking",
-    title: "Gosto de cozinhar",
-    description: "Mais de 30 minutos por refeição.",
+    id: "meal-ideas",
+    title: "Ideias para refeições",
+    description: "Não sei o que cozinhar.",
     icon: "restaurant-outline",
   },
   {
-    id: "variable",
-    title: "É variável",
-    description: "Depende do dia.",
-    icon: "ellipsis-horizontal-circle-outline",
-  },
-];
-
-const eatingWith: Option[] = [
-  {
-    id: "alone",
-    title: "Sozinho/a",
-    description: "Na maioria das refeições.",
-    icon: "person-outline",
+    id: "use-what-i-have",
+    title: "Usar o que tenho em casa",
+    description: "Quero aproveitar os ingredientes disponíveis.",
+    icon: "nutrition-outline",
   },
   {
-    id: "family",
-    title: "Com a família",
-    description: "Cozinho para outras pessoas.",
-    icon: "people-outline",
+    id: "quick-meals",
+    title: "Refeições rápidas",
+    description: "Quero cozinhar sem perder muito tempo.",
+    icon: "flash-outline",
   },
   {
-    id: "friends",
-    title: "Com amigos",
-    description: "Com frequência.",
-    icon: "people-outline",
+    id: "save-money",
+    title: "Poupar nas refeições",
+    description: "Quero aproveitar melhor o que compro.",
+    icon: "cart-outline",
   },
   {
-    id: "variable",
-    title: "É variável",
-    description: "Depende do dia.",
-    icon: "ellipsis-horizontal-circle-outline",
-  },
-];
-
-const mainFocuses: Option[] = [
-  {
-    id: "health",
-    title: "Saúde geral",
-    description: "Sentir-me melhor no dia a dia.",
-    icon: "fitness-outline",
-  },
-  {
-    id: "performance",
-    title: "Desempenho físico",
-    description: "Mais energia e rendimento.",
-    icon: "barbell-outline",
-  },
-  {
-    id: "wellbeing",
-    title: "Bem-estar",
-    description: "Equilíbrio e qualidade de vida.",
-    icon: "leaf-outline",
+    id: "plan-meals",
+    title: "Planear as refeições",
+    description: "Quero organizar o que vou comer.",
+    icon: "calendar-outline",
   },
   {
     id: "other",
-    title: "Outro",
-    description: "Descreve o teu foco.",
+    title: "Outra opção",
+    description: "Descreve o que procuras.",
     icon: "ellipsis-horizontal-circle-outline",
   },
 ];
 
-export default function RoutineScreen() {
+/* ------------------------------------------------ */
+/* When do you usually need help? */
+/* ------------------------------------------------ */
+
+const mealMoments: Option[] = [
+  {
+    id: "breakfast",
+    title: "Pequeno almoço",
+    description: "Começar bem o dia.",
+    icon: "cafe-outline",
+  },
+  {
+    id: "lunch",
+    title: "Almoço",
+    description: "Uma refeição equilibrada.",
+    icon: "sunny-outline",
+  },
+  {
+    id: "dinner",
+    title: "Jantar",
+    description: "Preparar o final do dia.",
+    icon: "restaurant-outline",
+  },
+  {
+    id: "snacks",
+    title: "Snacks",
+    description: "Pequenas refeições.",
+    icon: "nutrition-outline",
+  },
+  {
+    id: "any-meal",
+    title: "Qualquer refeição",
+    description: "Depende do momento.",
+    icon: "ellipsis-horizontal-circle-outline",
+  },
+];
+
+/* ------------------------------------------------ */
+/* How much time do you normally have to cook? */
+/* ------------------------------------------------ */
+
+const cookingTimes: Option[] = [
+  {
+    id: "under-15",
+    title: "Até 15 minutos",
+    description: "Quero algo rápido.",
+    icon: "flash-outline",
+  },
+  {
+    id: "15-30",
+    title: "15–30 minutos",
+    description: "Tenho algum tempo.",
+    icon: "time-outline",
+  },
+  {
+    id: "30-60",
+    title: "30–60 minutos",
+    description: "Tenho mais tempo para cozinhar.",
+    icon: "restaurant-outline",
+  },
+  {
+    id: "depends",
+    title: "Depende do dia",
+    description: "O tempo varia.",
+    icon: "ellipsis-horizontal-circle-outline",
+  },
+];
+
+export default function ExperienceScreen() {
   const router = useRouter();
 
   const [fontsLoaded] = useFonts({
@@ -139,18 +142,14 @@ export default function RoutineScreen() {
     PlusJakartaSans_500Medium,
   });
 
-  const [selectedProfessionalSituation, setSelectedProfessionalSituation] =
+  const [selectedSearchPreference, setSelectedSearchPreference] =
     useState<string | null>(null);
 
+  const [selectedMealMoment, setSelectedMealMoment] = useState<string | null>(
+    null,
+  );
+
   const [selectedCookingTime, setSelectedCookingTime] = useState<string | null>(
-    null,
-  );
-
-  const [selectedEatingWith, setSelectedEatingWith] = useState<string | null>(
-    null,
-  );
-
-  const [selectedMainFocus, setSelectedMainFocus] = useState<string | null>(
     null,
   );
 
@@ -159,10 +158,9 @@ export default function RoutineScreen() {
   }
 
   const hasSelection =
-    !!selectedProfessionalSituation &&
-    !!selectedCookingTime &&
-    !!selectedEatingWith &&
-    !!selectedMainFocus;
+    !!selectedSearchPreference &&
+    !!selectedMealMoment &&
+    !!selectedCookingTime;
 
   return (
     <View style={styles.container}>
@@ -178,11 +176,15 @@ export default function RoutineScreen() {
           {/* Header */}
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.replace("/measures")}
+              onPress={() => router.replace("/routine")}
               style={styles.backButton}
               hitSlop={10}
             >
-              <Ionicons name="chevron-back" size={20} color="#087C5B" />
+              <Ionicons
+                name="chevron-back"
+                size={20}
+                color="#087C5B"
+              />
             </Pressable>
 
             <View style={styles.progressContainer}>
@@ -192,8 +194,7 @@ export default function RoutineScreen() {
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
-
-              <View style={styles.progressInactive} />
+              <View style={styles.progressActive} />
             </View>
           </View>
 
@@ -208,90 +209,51 @@ export default function RoutineScreen() {
             {/* Intro */}
             <View style={styles.intro}>
               <View style={styles.introText}>
-                <Text style={styles.title}>Como é o teu dia{"\n"}a dia?</Text>
+                <Text style={styles.title}>
+                  Como queres usar{"\n"}
+                  a NutritionApp?
+                </Text>
 
                 <Text style={styles.subtitle}>
-                  Conta-nos um pouco sobre a tua rotina para recebermos
-                  recomendações que se adaptem ao teu estilo de vida.
+                  Diz-nos como podemos ser mais úteis
+                  {"\n"}
+                  no teu dia a dia.
                 </Text>
               </View>
             </View>
 
-            {/* Professional situation */}
+            {/* Search preferences */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="briefcase-outline" size={25} color="#087C5B" />
+                <Ionicons
+                  name="locate-outline"
+                  size={25}
+                  color="#087C5B"
+                />
 
                 <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Situação profissional</Text>
-
-                  <Text style={styles.sectionSubtitle}>
-                    Qual descreve melhor a tua rotina?
+                  <Text style={styles.sectionTitle}>
+                    O que procuras normalmente?
                   </Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
-              {professionalSituations.map((option) => {
-                const isSelected = selectedProfessionalSituation === option.id;
-
-                return (
-                  <Pressable
-                    key={option.id}
-                    onPress={() =>
-                      setSelectedProfessionalSituation(
-                        isSelected ? null : option.id,
-                      )
-                    }
-                    style={[
-                      styles.optionCard,
-                      isSelected && styles.optionCardSelected,
-                    ]}
-                  >
-                    <View style={styles.optionHeader}>
-                      <Ionicons name={option.icon} size={25} color="#087C5B" />
-
-                      {isSelected && (
-                        <View style={styles.check}>
-                          <Ionicons name="checkmark" size={9} color="#FFFFFF" />
-                        </View>
-                      )}
-                    </View>
-
-                    <Text style={styles.optionTitle}>{option.title}</Text>
-
-                    <Text style={styles.optionDescription}>
-                      {option.description}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-
-            {/* Cooking time */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Ionicons name="time-outline" size={25} color="#087C5B" />
-
-                <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Tempo para cozinhar</Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Quanto tempo costumas ter disponível?
+                    Seleciona tudo o que se aplica.
                   </Text>
                 </View>
               </View>
 
-              <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
-                {cookingTimes.map((option) => {
-                  const isSelected = selectedCookingTime === option.id;
+              <View style={styles.optionsGrid}>
+                {searchPreferences.map((option) => {
+                  const isSelected =
+                    selectedSearchPreference === option.id;
 
                   return (
                     <Pressable
                       key={option.id}
                       onPress={() =>
-                        setSelectedCookingTime(isSelected ? null : option.id)
+                        setSelectedSearchPreference(
+                          isSelected ? null : option.id,
+                        )
                       }
                       style={[
                         styles.optionCard,
@@ -316,7 +278,9 @@ export default function RoutineScreen() {
                         )}
                       </View>
 
-                      <Text style={styles.optionTitle}>{option.title}</Text>
+                      <Text style={styles.optionTitle}>
+                        {option.title}
+                      </Text>
 
                       <Text style={styles.optionDescription}>
                         {option.description}
@@ -327,14 +291,87 @@ export default function RoutineScreen() {
               </View>
             </View>
 
-            {/* Eating with */}
+            {/* Meal moments */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="people-outline" size={25} color="#087C5B" />
+                <Ionicons
+                  name="time-outline"
+                  size={25}
+                  color="#087C5B"
+                />
 
                 <View style={styles.sectionHeaderText}>
                   <Text style={styles.sectionTitle}>
-                    Com quem costumas comer?
+                    Quando costumas precisar de ajuda?
+                  </Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Seleciona a opção principal.
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.optionsGrid}>
+                {mealMoments.map((option) => {
+                  const isSelected =
+                    selectedMealMoment === option.id;
+
+                  return (
+                    <Pressable
+                      key={option.id}
+                      onPress={() =>
+                        setSelectedMealMoment(
+                          isSelected ? null : option.id,
+                        )
+                      }
+                      style={[
+                        styles.optionCard,
+                        isSelected && styles.optionCardSelected,
+                      ]}
+                    >
+                      <View style={styles.optionHeader}>
+                        <Ionicons
+                          name={option.icon}
+                          size={25}
+                          color="#087C5B"
+                        />
+
+                        {isSelected && (
+                          <View style={styles.check}>
+                            <Ionicons
+                              name="checkmark"
+                              size={9}
+                              color="#FFFFFF"
+                            />
+                          </View>
+                        )}
+                      </View>
+
+                      <Text style={styles.optionTitle}>
+                        {option.title}
+                      </Text>
+
+                      <Text style={styles.optionDescription}>
+                        {option.description}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+
+            {/* Cooking time */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Ionicons
+                  name="timer-outline"
+                  size={25}
+                  color="#087C5B"
+                />
+
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>
+                    Quanto tempo tens normalmente para cozinhar?
                   </Text>
 
                   <Text style={styles.sectionSubtitle}>
@@ -343,15 +380,18 @@ export default function RoutineScreen() {
                 </View>
               </View>
 
-              <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
-                {eatingWith.map((option) => {
-                  const isSelected = selectedEatingWith === option.id;
+              <View style={styles.optionsGrid}>
+                {cookingTimes.map((option) => {
+                  const isSelected =
+                    selectedCookingTime === option.id;
 
                   return (
                     <Pressable
                       key={option.id}
                       onPress={() =>
-                        setSelectedEatingWith(isSelected ? null : option.id)
+                        setSelectedCookingTime(
+                          isSelected ? null : option.id,
+                        )
                       }
                       style={[
                         styles.optionCard,
@@ -376,7 +416,9 @@ export default function RoutineScreen() {
                         )}
                       </View>
 
-                      <Text style={styles.optionTitle}>{option.title}</Text>
+                      <Text style={styles.optionTitle}>
+                        {option.title}
+                      </Text>
 
                       <Text style={styles.optionDescription}>
                         {option.description}
@@ -387,64 +429,18 @@ export default function RoutineScreen() {
               </View>
             </View>
 
-            {/* Main focus */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Ionicons name="locate-outline" size={25} color="#087C5B" />
+            {/* Info */}
+            <View style={styles.info}>
+              <Ionicons
+                name="bulb-outline"
+                size={20}
+                color="#087C5B"
+              />
 
-                <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>
-                    Qual é o teu principal foco neste momento?
-                  </Text>
-
-                  <Text style={styles.sectionSubtitle}>
-                    Escolhe apenas uma opção.
-                  </Text>
-                </View>
-              </View>
-
-              <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
-                {mainFocuses.map((option) => {
-                  const isSelected = selectedMainFocus === option.id;
-
-                  return (
-                    <Pressable
-                      key={option.id}
-                      onPress={() =>
-                        setSelectedMainFocus(isSelected ? null : option.id)
-                      }
-                      style={[
-                        styles.optionCard,
-                        isSelected && styles.optionCardSelected,
-                      ]}
-                    >
-                      <View style={styles.optionHeader}>
-                        <Ionicons
-                          name={option.icon}
-                          size={25}
-                          color="#087C5B"
-                        />
-
-                        {isSelected && (
-                          <View style={styles.check}>
-                            <Ionicons
-                              name="checkmark"
-                              size={9}
-                              color="#FFFFFF"
-                            />
-                          </View>
-                        )}
-                      </View>
-
-                      <Text style={styles.optionTitle}>{option.title}</Text>
-
-                      <Text style={styles.optionDescription}>
-                        {option.description}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
+              <Text style={styles.infoText}>
+                Com estas informações, conseguimos mostrar-te
+                receitas e sugestões mais ajustadas à tua rotina.
+              </Text>
             </View>
 
             {/* Actions */}
@@ -457,29 +453,31 @@ export default function RoutineScreen() {
                 disabled={!hasSelection}
                 onPress={() => {
                   console.log({
-                    professionalSituation: selectedProfessionalSituation,
+                    searchPreference: selectedSearchPreference,
+                    mealMoment: selectedMealMoment,
                     cookingTime: selectedCookingTime,
-                    eatingWith: selectedEatingWith,
-                    mainFocus: selectedMainFocus,
                   });
 
-                  // Guardar dados
-                  // Avançar para o próximo passo
-                  router.replace("/experience")
+                  // Guardar preferências
+                  // Finalizar onboarding
+                  // Avançar para a app
+                  router.replace("/home")
                 }}
               >
-                <Text style={styles.primaryButtonText}>Continuar</Text>
-
-                <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
+                <Text style={styles.primaryButtonText}>
+                  Criar a minha experiência
+                </Text>
               </Pressable>
 
               <Pressable
                 onPress={() => {
-                  router.replace("/experience")
+                  router.replace("/home")
                 }}
                 hitSlop={8}
               >
-                <Text style={styles.laterButton}>Preencher mais tarde</Text>
+                <Text style={styles.laterButton}>
+                  Preencher mais tarde
+                </Text>
               </Pressable>
             </View>
           </ScrollView>
@@ -620,9 +618,10 @@ const styles = StyleSheet.create({
 
   section: {
     width: "100%",
+    marginBottom: 10,
   },
 
-  sectionBottomMargin: {
+   sectionBottomMargin: {
     marginBottom: 10,
   },
 
@@ -726,13 +725,38 @@ const styles = StyleSheet.create({
     color: "#858B87",
   },
 
+  /* Info */
+
+  info: {
+    flexDirection: "row",
+    alignItems: "center",
+
+    marginTop: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+
+    borderRadius: 9,
+    backgroundColor: "rgba(231, 241, 231, 0.85)",
+  },
+
+  infoText: {
+    flex: 1,
+    marginLeft: 8,
+
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 12,
+    lineHeight: 15,
+    color: "#6F7973",
+  },
+
   /* Actions */
 
   actions: {
     alignItems: "center",
     justifyContent: "center",
+
     gap: 8,
-    marginTop: 4,
+    marginTop: 10,
     paddingBottom: 8,
   },
 
