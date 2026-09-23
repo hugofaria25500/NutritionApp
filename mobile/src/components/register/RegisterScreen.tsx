@@ -1,5 +1,5 @@
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import {
   Image,
   KeyboardAvoidingView,
@@ -10,44 +10,36 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-
       {/* Background */}
       <Image
-        source={require('@/assets/images/backgrounds/background_food_variation_three_white.png')}
+        source={require("@/assets/images/backgrounds/background_food_variation_three_white.png")}
         resizeMode="stretch"
         style={styles.background}
       />
 
       <SafeAreaView style={styles.safeArea}>
-
         {/* Back button */}
         <Pressable
-            onPress={() => router.replace('/init')}
-            style={styles.backButton}
-            hitSlop={10}
+          onPress={() => router.replace("/init")}
+          style={styles.backButton}
+          hitSlop={10}
         >
-            <Ionicons
-                name="chevron-back"
-                size={14}
-                color="#FFFFFF"
-            />
+          <Ionicons name="chevron-back" size={14} color="#FFFFFF" />
 
-            <Text style={styles.backButtonText}>
-                Back
-            </Text>
+          <Text style={styles.backButtonText}>Back</Text>
         </Pressable>
 
         <KeyboardAvoidingView
           style={styles.keyboard}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView
             style={styles.scrollView}
@@ -57,11 +49,10 @@ export default function RegisterScreen() {
             keyboardDismissMode="on-drag"
           >
             <View style={styles.content}>
-
               {/* Branding */}
               <View style={styles.branding}>
                 <Image
-                  source={require('@/assets/images/branding/full_logo.png')}
+                  source={require("@/assets/images/branding/full_logo.png")}
                   resizeMode="contain"
                   style={styles.logo}
                 />
@@ -69,23 +60,16 @@ export default function RegisterScreen() {
 
               {/* Register */}
               <View style={styles.registerSection}>
-
-                <Text style={styles.title}>
-                  Criar a tua conta
-                </Text>
+                <Text style={styles.title}>Criar a tua conta</Text>
 
                 <Text style={styles.subtitle}>
-                  Começa a tua jornada para uma vida{'\n'}
+                  Começa a tua jornada para uma vida{"\n"}
                   mais saudável.
                 </Text>
 
                 {/* Name */}
                 <View style={styles.inputContainer}>
-                  <Ionicons
-                    name="person-outline"
-                    size={18}
-                    color="#8F9590"
-                  />
+                  <Ionicons name="person-outline" size={18} color="#8F9590" />
 
                   <TextInput
                     placeholder="Nome"
@@ -98,11 +82,7 @@ export default function RegisterScreen() {
 
                 {/* Email */}
                 <View style={styles.inputContainer}>
-                  <Ionicons
-                    name="mail-outline"
-                    size={18}
-                    color="#8F9590"
-                  />
+                  <Ionicons name="mail-outline" size={18} color="#8F9590" />
 
                   <TextInput
                     placeholder="Email"
@@ -133,11 +113,7 @@ export default function RegisterScreen() {
                   />
 
                   <Pressable hitSlop={10}>
-                    <Ionicons
-                      name="eye-outline"
-                      size={19}
-                      color="#8F9590"
-                    />
+                    <Ionicons name="eye-outline" size={19} color="#8F9590" />
                   </Pressable>
                 </View>
 
@@ -148,18 +124,14 @@ export default function RegisterScreen() {
                     // Clerk entra aqui mais tarde
                   }}
                 >
-                  <Text style={styles.primaryButtonText}>
-                    Criar conta
-                  </Text>
+                  <Text style={styles.primaryButtonText}>Criar conta</Text>
                 </Pressable>
 
                 {/* Divider */}
                 <View style={styles.dividerContainer}>
                   <View style={styles.divider} />
 
-                  <Text style={styles.dividerText}>
-                    ou
-                  </Text>
+                  <Text style={styles.dividerText}>ou</Text>
 
                   <View style={styles.divider} />
                 </View>
@@ -171,11 +143,7 @@ export default function RegisterScreen() {
                     // Google + Clerk entra aqui mais tarde
                   }}
                 >
-                  <FontAwesome
-                    name="google"
-                    size={18}
-                    color="#DB4437"
-                  />
+                  <FontAwesome name="google" size={18} color="#DB4437" />
 
                   <Text style={styles.googleButtonText}>
                     Continuar com o Google
@@ -184,20 +152,15 @@ export default function RegisterScreen() {
 
                 {/* Login */}
                 <View style={styles.loginRow}>
-                  <Text style={styles.loginText}>
-                    Já tens conta?
-                  </Text>
+                  <Text style={styles.loginText}>Já tens conta?</Text>
 
                   <Pressable
-                    onPress={() => router.replace('/login')}
+                    onPress={() => router.replace("/login")}
                     hitSlop={8}
                   >
-                    <Text style={styles.loginLink}>
-                      Iniciar sessão
-                    </Text>
+                    <Text style={styles.loginLink}>Iniciar sessão</Text>
                   </Pressable>
                 </View>
-
               </View>
 
               {/* Footer */}
@@ -212,7 +175,6 @@ export default function RegisterScreen() {
                   Política de Privacidade.
                 </Text>
               </View>
-
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -224,18 +186,18 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAF5',
-    overflow: 'hidden',
+    backgroundColor: "#F8FAF5",
+    overflow: "hidden",
   },
 
   background: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     bottom: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 
   safeArea: {
@@ -254,30 +216,31 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 
-   /* Back */
+  /* Back */
 
-   backButton: {
-  alignSelf: 'flex-start',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: 4,
+  backButton: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
 
-  backgroundColor: '#087C5B',
-  paddingLeft: 7,
-  paddingRight: 14,
-  paddingVertical: 7,
-  borderRadius: 18,
+    backgroundColor: "#168653",
 
-  marginTop: 10,
-  marginStart: 10,
-},
+    paddingHorizontal: 12,
+    paddingVertical: 7,
 
-    backButtonText: {
-    color: '#FFFFFF',
-    fontSize: 11,
-    fontWeight: '700',
-    },
+    borderRadius: 14,
+
+    marginTop: 10,
+    marginStart: 10,
+  },
+
+  backButtonText: {
+    marginLeft: 3,
+
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "600",
+  },
 
   /*
    * O botão está fora deste content.
@@ -285,7 +248,7 @@ const styles = StyleSheet.create({
    */
   content: {
     flexGrow: 1,
-    minHeight: '100%',
+    minHeight: "100%",
     paddingHorizontal: 48,
     paddingTop: 12,
     paddingBottom: 24,
@@ -295,8 +258,8 @@ const styles = StyleSheet.create({
 
   branding: {
     flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   logo: {
@@ -308,17 +271,17 @@ const styles = StyleSheet.create({
 
   registerSection: {
     flex: 4,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   title: {
     fontSize: 22,
     lineHeight: 27,
-    fontWeight: '700',
-    color: '#087C5B',
-    textAlign: 'center',
+    fontWeight: "700",
+    color: "#087C5B",
+    textAlign: "center",
   },
 
   subtitle: {
@@ -326,58 +289,58 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     fontSize: 12,
     lineHeight: 18,
-    color: '#999999',
-    textAlign: 'center',
+    color: "#999999",
+    textAlign: "center",
   },
 
   /* Inputs */
 
   inputContainer: {
-    width: '100%',
+    width: "100%",
     height: 42,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: '#E1E4DF',
-    backgroundColor: 'rgba(255, 255, 255, 0.72)',
-    flexDirection: 'row',
-    alignItems: 'center',
+    borderColor: "#E1E4DF",
+    backgroundColor: "rgba(255, 255, 255, 0.72)",
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 14,
     marginBottom: 9,
   },
 
   input: {
     flex: 1,
-    height: '100%',
+    height: "100%",
     marginLeft: 10,
     fontSize: 12,
-    color: '#333333',
+    color: "#333333",
   },
 
   /* Primary button */
 
   primaryButton: {
-    width: '100%',
+    width: "100%",
     height: 48,
     borderRadius: 25,
-    backgroundColor: '#168653',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#168653",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 10,
   },
 
   primaryButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   /* Divider */
 
   dividerContainer: {
-    width: '80%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: "80%",
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
     marginVertical: 12,
   },
@@ -385,77 +348,77 @@ const styles = StyleSheet.create({
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#E1E4DF',
+    backgroundColor: "#E1E4DF",
   },
 
   dividerText: {
     fontSize: 10,
-    color: '#999999',
+    color: "#999999",
   },
 
   /* Google */
 
   googleButton: {
-    width: '100%',
+    width: "100%",
     height: 44,
     borderRadius: 23,
     borderWidth: 1,
-    borderColor: '#E1E4DF',
-    backgroundColor: 'rgba(255, 255, 255, 0.72)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: "#E1E4DF",
+    backgroundColor: "rgba(255, 255, 255, 0.72)",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 12,
   },
 
   googleButtonText: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#333333',
+    fontWeight: "500",
+    color: "#333333",
   },
 
   /* Login */
 
   loginRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 5,
     marginTop: 16,
   },
 
   loginText: {
     fontSize: 11,
-    color: '#999999',
+    color: "#999999",
   },
 
   loginLink: {
     fontSize: 11,
-    color: '#087C5B',
-    fontWeight: '600',
+    color: "#087C5B",
+    fontWeight: "600",
   },
 
   /* Footer */
 
   footer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
 
   footerText: {
     fontSize: 9,
-    color: '#999999',
-    textAlign: 'center',
+    color: "#999999",
+    textAlign: "center",
   },
 
   footerLinks: {
     marginTop: 3,
     fontSize: 9,
-    color: '#087C5B',
-    textAlign: 'center',
+    color: "#087C5B",
+    textAlign: "center",
   },
 
   footerSeparator: {
-    color: '#999999',
+    color: "#999999",
   },
 });
