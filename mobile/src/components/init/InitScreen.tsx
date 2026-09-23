@@ -83,9 +83,7 @@ export default function InitScreen() {
           </Pressable>
 
           {/* Footer */}
-          <Text style={styles.footerText}>
-            Uma vida mais saudável, começa aqui.
-          </Text>
+          <Text style={styles.footerText}>Uma vida mais saudável, começa aqui.</Text>
         </View>
       </View>
     </View>
@@ -122,8 +120,7 @@ const styles = StyleSheet.create({
   branding: {
     alignItems: "center",
     justifyContent: "flex-end",
-    marginTop: 0,
-    marginBottom: 50,
+    marginBottom: 40,
   },
 
   logo: {

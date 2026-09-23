@@ -1,6 +1,5 @@
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import {
   Image,
   KeyboardAvoidingView,
@@ -12,9 +11,23 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  useFonts,
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+} from "@expo-google-fonts/plus-jakarta-sans";
 
 export default function LoginScreen() {
   const router = useRouter();
+
+  const [fontsLoaded] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -52,21 +65,15 @@ export default function LoginScreen() {
               {/* Branding */}
               <View style={styles.branding}>
                 <Image
-                  source={require("@/assets/images/branding/logo.png")}
+                  source={require("@/assets/images/branding/full_logo.png")}
                   resizeMode="contain"
                   style={styles.logo}
-                />
-
-                <Image
-                  source={require("@/assets/images/branding/logo_name.png")}
-                  resizeMode="contain"
-                  style={styles.logoName}
                 />
               </View>
 
               {/* Login */}
               <View style={styles.loginSection}>
-                <Text style={styles.title}>Entrar na tua conta</Text>
+                <Text style={styles.title}>Entra na tua conta</Text>
 
                 <Text style={styles.subtitle}>
                   Continua a tua jornada para uma vida mais saudável.
@@ -74,11 +81,7 @@ export default function LoginScreen() {
 
                 {/* Google */}
                 <Pressable style={styles.loginButton}>
-                  <FontAwesome
-                    name="google"
-                    size={18}
-                    color="#DB4437"
-                  />
+                  <FontAwesome name="google" size={18} color="#DB4437" />
 
                   <Text style={styles.loginButtonText}>
                     Continuar com o Google
@@ -87,11 +90,7 @@ export default function LoginScreen() {
 
                 {/* Email */}
                 <Pressable style={styles.loginButton}>
-                  <Ionicons
-                    name="mail-outline"
-                    size={21}
-                    color="#087C5B"
-                  />
+                  <Ionicons name="mail-outline" size={21} color="#087C5B" />
 
                   <Text style={styles.loginButtonText}>
                     Continuar com o email
@@ -117,9 +116,7 @@ export default function LoginScreen() {
                     onPress={() => router.replace("/register")}
                     hitSlop={8}
                   >
-                    <Text style={styles.createAccountLink}>
-                      Criar conta
-                    </Text>
+                    <Text style={styles.createAccountLink}>Criar conta</Text>
                   </Pressable>
                 </View>
               </View>
@@ -143,13 +140,16 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-
   /* Back */
 
   backButton: {
-    alignSelf: "flex-start",
+    position: "absolute",
+    top: 35,
+    left: 20,
+
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
 
     backgroundColor: "#168653",
 
@@ -158,8 +158,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 14,
 
-    marginTop: 10,
-    marginStart: 10,
+    zIndex: 10,
   },
 
   backButtonText: {
@@ -170,25 +169,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  /* Responsive */
+  /* Container */
 
-  keyboard: {
-    flex: 1,
-  },
-
-  scrollView: {
-    flex: 1,
-  },
-
-  scrollContent: {
-    flexGrow: 1,
-  },
-
-  /*
-   * Mantido o layout original.
-   * Apenas permite que o conteúdo cresça/role
-   * em ecrãs mais pequenos.
-   */
   container: {
     flex: 1,
     width: "100%",
@@ -207,44 +189,62 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
+  /* Safe Area */
+
   safeArea: {
     flex: 1,
   },
 
-  content: {
-    flexGrow: 1,
-    minHeight: "100%",
-    paddingVertical: 24,
-    paddingHorizontal: 48,
+  /* Keyboard */
+
+  keyboard: {
+    flex: 1,
   },
 
-  branding: {
-    flex: 4,
+  /* Scroll */
+
+  scrollView: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    flex: 1,
+  },
+
+  /* Content */
+
+  content: {
+    flex: 1,
+    paddingVertical: 24,
+    paddingHorizontal: 48,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+  },
+
+  /* Branding */
+
+  branding: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 40,
   },
 
   logo: {
-    width: 180,
-    height: 150,
+    width: 220,
+    height: 120,
   },
 
-  logoName: {
-    width: 250,
-    height: 80,
-  },
+  /* Login */
 
   loginSection: {
-    flex: 3.75,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
 
   title: {
+    fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 21,
-    fontWeight: "700",
     color: "#087C5B",
     textAlign: "center",
   },
@@ -253,11 +253,14 @@ const styles = StyleSheet.create({
     width: "70%",
     marginTop: 6,
     marginBottom: 20,
+    fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 12,
     color: "#999999",
     textAlign: "center",
     lineHeight: 18,
   },
+
+  /* Login Buttons */
 
   loginButton: {
     width: "100%",
@@ -273,23 +276,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  iconWrapper: {
-    width: 22,
-    height: 22,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  googleIcon: {
-    width: 20,
-    height: 20,
-  },
-
   loginButtonText: {
+    fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 13,
-    fontWeight: "500",
     color: "#333333",
   },
+
+  /* Divider */
 
   dividerContainer: {
     width: "80%",
@@ -306,34 +299,41 @@ const styles = StyleSheet.create({
   },
 
   dividerText: {
+    fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 11,
     color: "#999999",
   },
 
+  /* Create Account */
+
   createAccount: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 40,
     gap: 5,
   },
 
   createAccountText: {
+    fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 11,
     color: "#999999",
   },
 
   createAccountLink: {
+    fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 11,
     color: "#087C5B",
-    fontWeight: "600",
   },
 
+  /* Footer */
+
   footer: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
 
   footerText: {
+    fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 10,
     color: "#999999",
     textAlign: "center",
@@ -341,6 +341,7 @@ const styles = StyleSheet.create({
 
   footerLinks: {
     marginTop: 4,
+    fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 10,
     color: "#087C5B",
     textAlign: "center",
