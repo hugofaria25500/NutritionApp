@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 
   benefits: {
     flex: 2,
-    width: "80%",
+    width: "100%",
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "space-between",

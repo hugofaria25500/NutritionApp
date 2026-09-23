@@ -1,7 +1,16 @@
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
@@ -17,82 +26,169 @@ export default function LoginScreen() {
       />
 
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.content}>
-          {/* Branding */}
-          <View style={styles.branding}>
-            <Image
-              source={require("@/assets/images/branding/logo.png")}
-              resizeMode="contain"
-              style={styles.logo}
-            />
+        {/* Back button */}
+        <Pressable
+          onPress={() => router.replace("/init")}
+          style={styles.backButton}
+          hitSlop={10}
+        >
+          <Ionicons name="chevron-back" size={14} color="#FFFFFF" />
 
-            <Image
-              source={require("@/assets/images/branding/logo_name.png")}
-              resizeMode="contain"
-              style={styles.logoName}
-            />
-          </View>
+          <Text style={styles.backButtonText}>Back</Text>
+        </Pressable>
 
-          {/* Login */}
-          <View style={styles.loginSection}>
-            <Text style={styles.title}>Entrar na tua conta</Text>
+        <KeyboardAvoidingView
+          style={styles.keyboard}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+          >
+            <View style={styles.content}>
+              {/* Branding */}
+              <View style={styles.branding}>
+                <Image
+                  source={require("@/assets/images/branding/logo.png")}
+                  resizeMode="contain"
+                  style={styles.logo}
+                />
 
-            <Text style={styles.subtitle}>
-              Continua a tua jornada para uma vida mais saudável.
-            </Text>
+                <Image
+                  source={require("@/assets/images/branding/logo_name.png")}
+                  resizeMode="contain"
+                  style={styles.logoName}
+                />
+              </View>
 
-            {/* Google */}
-            <Pressable style={styles.loginButton}>
-              <FontAwesome name="google" size={18} color="#DB4437" />
+              {/* Login */}
+              <View style={styles.loginSection}>
+                <Text style={styles.title}>Entrar na tua conta</Text>
 
-              <Text style={styles.loginButtonText}>Continuar com o Google</Text>
-            </Pressable>
+                <Text style={styles.subtitle}>
+                  Continua a tua jornada para uma vida mais saudável.
+                </Text>
 
-            {/* Email */}
-            <Pressable style={styles.loginButton}>
-              <Ionicons name="mail-outline" size={21} color="#087C5B" />
+                {/* Google */}
+                <Pressable style={styles.loginButton}>
+                  <FontAwesome
+                    name="google"
+                    size={18}
+                    color="#DB4437"
+                  />
 
-              <Text style={styles.loginButtonText}>Continuar com o email</Text>
-            </Pressable>
+                  <Text style={styles.loginButtonText}>
+                    Continuar com o Google
+                  </Text>
+                </Pressable>
 
-            {/* Divider */}
-            <View style={styles.dividerContainer}>
-              <View style={styles.divider} />
+                {/* Email */}
+                <Pressable style={styles.loginButton}>
+                  <Ionicons
+                    name="mail-outline"
+                    size={21}
+                    color="#087C5B"
+                  />
 
-              <Text style={styles.dividerText}>ou</Text>
+                  <Text style={styles.loginButtonText}>
+                    Continuar com o email
+                  </Text>
+                </Pressable>
 
-              <View style={styles.divider} />
+                {/* Divider */}
+                <View style={styles.dividerContainer}>
+                  <View style={styles.divider} />
+
+                  <Text style={styles.dividerText}>ou</Text>
+
+                  <View style={styles.divider} />
+                </View>
+
+                {/* Create account */}
+                <View style={styles.createAccount}>
+                  <Text style={styles.createAccountText}>
+                    Ainda não tens conta?
+                  </Text>
+
+                  <Pressable
+                    onPress={() => router.replace("/register")}
+                    hitSlop={8}
+                  >
+                    <Text style={styles.createAccountLink}>
+                      Criar conta
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+
+              {/* Footer */}
+              <View style={styles.footer}>
+                <Text style={styles.footerText}>
+                  Ao continuar, aceitas os nossos
+                </Text>
+
+                <Text style={styles.footerLinks}>
+                  Termos de Utilização e Política de Privacidade.
+                </Text>
+              </View>
             </View>
-
-            {/* Create account */}
-            <View style={styles.createAccount}>
-              <Text style={styles.createAccountText}>
-                Ainda não tens conta?
-              </Text>
-
-              <Pressable onPress={() => router.replace("/register")}>
-                <Text style={styles.createAccountLink}>Criar conta</Text>
-              </Pressable>
-            </View>
-          </View>
-
-          {/* Footer */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>
-              Ao continuar, aceitas os nossos
-            </Text>
-
-            <Text style={styles.footerLinks}>
-              Termos de Utilização e Política de Privacidade.
-            </Text>
-          </View>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+
+  /* Back */
+
+  backButton: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+
+    backgroundColor: "#168653",
+
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+
+    borderRadius: 14,
+
+    marginTop: 10,
+    marginStart: 10,
+  },
+
+  backButtonText: {
+    marginLeft: 3,
+
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+
+  /* Responsive */
+
+  keyboard: {
+    flex: 1,
+  },
+
+  scrollView: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+  },
+
+  /*
+   * Mantido o layout original.
+   * Apenas permite que o conteúdo cresça/role
+   * em ecrãs mais pequenos.
+   */
   container: {
     flex: 1,
     width: "100%",
@@ -116,7 +212,8 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flex: 1,
+    flexGrow: 1,
+    minHeight: "100%",
     paddingVertical: 24,
     paddingHorizontal: 48,
   },
