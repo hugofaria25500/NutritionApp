@@ -23,133 +23,94 @@ type Option = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
-const restrictions: Option[] = [
+const foods: Option[] = [
   {
-    id: "lactose-free",
-    title: "Sem lactose",
-    description: "Evita laticínios e derivados.",
-    icon: "flask-outline",
-  },
-  {
-    id: "gluten-free",
-    title: "Sem glúten",
-    description: "Evita alimentos com glúten.",
+    id: "fruits",
+    title: "Frutas",
+    description: "Ex.: maçã, banana, laranja, frutos vermelhos.",
     icon: "nutrition-outline",
   },
   {
-    id: "vegetarian",
-    title: "Vegetariano",
-    description: "Não consome carne.",
-    icon: "leaf-outline",
-  },
-  {
-    id: "vegan",
-    title: "Vegan",
-    description: "Sem produtos de origem animal.",
-    icon: "leaf-outline",
-  },
-  {
-    id: "pescetarian",
-    title: "Pescetariano",
-    description: "Consome peixe e marisco.",
-    icon: "fish-outline",
-  },
-  {
-    id: "sugar-free",
-    title: "Sem açúcar adicionado",
-    description: "Evita açúcar refinado.",
+    id: "vegetables",
+    title: "Legumes",
+    description: "Ex.: brócolos, cenoura, espinafres, courgette.",
     icon: "nutrition-outline",
   },
   {
-    id: "low-sodium",
-    title: "Baixo teor de sódio",
-    description: "Evita alimentos muito salgados.",
-    icon: "water-outline",
-  },
-  {
-    id: "high-protein",
-    title: "Alta proteína",
-    description: "Prefere refeições ricas em proteína.",
-    icon: "barbell-outline",
-  },
-  {
-    id: "other",
-    title: "Outra restrição",
-    description: "Especifica a tua preferência.",
-    icon: "ellipsis-horizontal-circle-outline",
-  },
-  {
-    id: "no-restrictions",
-    title: "Não tenho restrições",
-    description: "Posso comer todos os alimentos.",
-    icon: "checkmark-circle-outline",
-  },
-];
-
-const allergies: Option[] = [
-  {
-    id: "peanuts",
-    title: "Amendoim",
-    description: "Pode causar reações graves.",
+    id: "grains",
+    title: "Cereais",
+    description: "Ex.: arroz, aveia, quinoa, massa.",
     icon: "nutrition-outline",
   },
   {
-    id: "tree-nuts",
-    title: "Frutos de casca rija",
-    description: "Inclui amêndoas, nozes, avelãs, etc.",
+    id: "meat",
+    title: "Carnes",
+    description: "Ex.: frango, vaca, porco, peru.",
     icon: "nutrition-outline",
-  },
-  {
-    id: "milk",
-    title: "Leite",
-    description: "Inclui leite, queijo, iogurte, etc.",
-    icon: "water-outline",
-  },
-  {
-    id: "eggs",
-    title: "Ovos",
-    description: "Inclui ovo e derivados.",
-    icon: "ellipse-outline",
   },
   {
     id: "fish",
     title: "Peixe",
-    description: "Inclui peixe e derivados.",
+    description: "Ex.: salmão, atum, dourada, bacalhau.",
     icon: "fish-outline",
   },
   {
-    id: "shellfish",
+    id: "seafood",
     title: "Marisco",
-    description: "Inclui crustáceos e derivados.",
+    description: "Ex.: camarão, amêijoa, mexilhão, polvo.",
     icon: "fish-outline",
   },
   {
-    id: "soy",
-    title: "Soja",
-    description: "Inclui produtos de soja.",
+    id: "eggs",
+    title: "Ovos",
+    description: "Versáteis e nutritivos.",
+    icon: "ellipse-outline",
+  },
+  {
+    id: "dairy",
+    title: "Laticínios",
+    description: "Ex.: leite, iogurte, queijo, skyr.",
+    icon: "water-outline",
+  },
+  {
+    id: "legumes",
+    title: "Leguminosas",
+    description: "Ex.: feijão, grão-de-bico, lentilhas.",
     icon: "nutrition-outline",
   },
   {
-    id: "mustard",
-    title: "Mostarda",
-    description: "Inclui mostarda e derivados.",
+    id: "nuts",
+    title: "Frutos secos",
+    description: "Ex.: amêndoas, nozes, avelãs.",
     icon: "nutrition-outline",
+  },
+  {
+    id: "healthy-fats",
+    title: "Gorduras saudáveis",
+    description: "Ex.: azeite, abacate, sementes.",
+    icon: "water-outline",
+  },
+  {
+    id: "herbs-spices",
+    title: "Ervas e especiarias",
+    description: "Ex.: alho, cebola, tomilho, manjericão.",
+    icon: "leaf-outline",
+  },
+  {
+    id: "desserts",
+    title: "Doces e sobremesas",
+    description: "Ex.: chocolate, fruta, sobremesas saudáveis.",
+    icon: "ice-cream-outline",
   },
   {
     id: "other",
-    title: "Outra alergia",
-    description: "Especifica o alimento.",
-    icon: "ellipsis-horizontal-circle-outline",
-  },
-  {
-    id: "no-allergies",
-    title: "Não tenho alergias",
-    description: "Não tenho alergias alimentares.",
-    icon: "checkmark-circle-outline",
+    title: "Outro",
+    description: "Adiciona outro alimento que gostes.",
+    icon: "add-outline",
   },
 ];
 
-export default function RestrictionsScreen() {
+export default function FavoritesScreen() {
   const router = useRouter();
 
   const [fontsLoaded] = useFonts({
@@ -157,20 +118,14 @@ export default function RestrictionsScreen() {
     PlusJakartaSans_500Medium,
   });
 
-  const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>(
-    [],
-  );
-
-  const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
-
-  const [noAllergies, setNoAllergies] = useState(false);
+  const [selectedFoods, setSelectedFoods] = useState<string[]>([]);
 
   if (!fontsLoaded) {
     return null;
   }
 
-  const toggleRestriction = (id: string) => {
-    setSelectedRestrictions((current) => {
+  const toggleFood = (id: string) => {
+    setSelectedFoods((current) => {
       if (current.includes(id)) {
         return current.filter((item) => item !== id);
       }
@@ -179,20 +134,7 @@ export default function RestrictionsScreen() {
     });
   };
 
-  const toggleAllergy = (id: string) => {
-    setNoAllergies(false);
-
-    setSelectedAllergies((current) => {
-      if (current.includes(id)) {
-        return current.filter((item) => item !== id);
-      }
-
-      return [...current, id];
-    });
-  };
-
-  const hasSelection =
-    selectedRestrictions.length > 0 && selectedAllergies.length > 0;
+  const hasSelection = selectedFoods.length > 0;
 
   return (
     <View style={styles.container}>
@@ -208,25 +150,28 @@ export default function RestrictionsScreen() {
           {/* Header */}
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.replace("/preferences")}
+              onPress={() => router.replace("/restrictions")}
               style={styles.backButton}
               hitSlop={10}
             >
-              <Ionicons name="chevron-back" size={20} color="#087C5B" />
+              <Ionicons
+                name="chevron-back"
+                size={20}
+                color="#087C5B"
+              />
             </Pressable>
 
             <View style={styles.progressContainer}>
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
+              <View style={styles.progressActive} />
 
-              <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
             </View>
-
-          </View>
+        </View>
 
           {/* Scrollable content */}
           <ScrollView
@@ -240,42 +185,48 @@ export default function RestrictionsScreen() {
             <View style={styles.intro}>
               <View style={styles.introText}>
                 <Text style={styles.title}>
-                  Há alguma coisa{"\n"}
-                  que devemos evitar?
+                  Quais são os teus{"\n"}
+                  alimentos preferidos?
                 </Text>
 
                 <Text style={styles.subtitle}>
-                  Seleciona as tuas restrições e alergias para receberes
-                  recomendações mais seguras e adequadas a ti.
+                  Seleciona os alimentos que gostas de comer
+                  {"\n"}
+                  para receberes recomendações mais à tua
+                  {"\n"}
+                  medida.
                 </Text>
               </View>
             </View>
 
-            {/* Restrictions */}
+            {/* Favorite foods */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="leaf-outline" size={25} color="#087C5B" />
+                <Ionicons
+                  name="heart-outline"
+                  size={25}
+                  color="#087C5B"
+                />
 
                 <View style={styles.sectionHeaderText}>
                   <Text style={styles.sectionTitle}>
-                    Restrições alimentares
+                    Alimentos que gostas
                   </Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Seleciona os ingredientes ou alimentos que preferes
-                    {"\n"}evitar.
+                    Seleciona tudo o que costumas gostar de comer.
                   </Text>
                 </View>
               </View>
 
               <View style={styles.optionsGrid}>
-                {restrictions.map((option) => {
-                  const isSelected = selectedRestrictions.includes(option.id);
+                {foods.map((food) => {
+                  const isSelected = selectedFoods.includes(food.id);
 
                   return (
                     <Pressable
-                      key={option.id}
-                      onPress={() => toggleRestriction(option.id)}
+                      key={food.id}
+                      onPress={() => toggleFood(food.id)}
                       style={[
                         styles.optionCard,
                         isSelected && styles.optionCardSelected,
@@ -283,7 +234,7 @@ export default function RestrictionsScreen() {
                     >
                       <View style={styles.optionHeader}>
                         <Ionicons
-                          name={option.icon}
+                          name={food.icon}
                           size={25}
                           color="#087C5B"
                         />
@@ -299,10 +250,12 @@ export default function RestrictionsScreen() {
                         )}
                       </View>
 
-                      <Text style={styles.optionTitle}>{option.title}</Text>
+                      <Text style={styles.optionTitle}>
+                        {food.title}
+                      </Text>
 
                       <Text style={styles.optionDescription}>
-                        {option.description}
+                        {food.description}
                       </Text>
                     </Pressable>
                   );
@@ -310,77 +263,17 @@ export default function RestrictionsScreen() {
               </View>
             </View>
 
-            {/* Divider */}
-            <View style={styles.sectionDivider} />
-
-            {/* Allergies */}
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Ionicons name="warning-outline" size={25} color="#087C5B" />
-
-                <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Alergias alimentares</Text>
-
-                  <Text style={styles.sectionSubtitle}>
-                    Seleciona os alimentos que podem causar reações
-                    {"\n"}adversas.
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.optionsGrid}>
-                {allergies.map((option) => {
-                  const isSelected = selectedAllergies.includes(option.id);
-
-                  return (
-                    <Pressable
-                      key={option.id}
-                      onPress={() => toggleAllergy(option.id)}
-                      style={[
-                        styles.optionCard,
-                        isSelected && styles.optionCardSelected,
-                      ]}
-                    >
-                      <View style={styles.optionHeader}>
-                        <Ionicons
-                          name={option.icon}
-                          size={25}
-                          color="#087C5B"
-                        />
-
-                        {isSelected && (
-                          <View style={styles.check}>
-                            <Ionicons
-                              name="checkmark"
-                              size={9}
-                              color="#FFFFFF"
-                            />
-                          </View>
-                        )}
-                      </View>
-
-                      <Text style={styles.optionTitle}>{option.title}</Text>
-
-                      <Text style={styles.optionDescription}>
-                        {option.description}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </View>
-
-            {/* Safety */}
+            {/* Info */}
             <View style={styles.info}>
               <Ionicons
-                name="shield-checkmark-outline"
+                name="bulb-outline"
                 size={20}
                 color="#087C5B"
               />
 
               <Text style={styles.infoText}>
-                Usamos estas informações para evitar recomendar receitas que
-                contenham estes ingredientes.
+                Estas preferências ajudam-nos a sugerir receitas que
+                gostas mesmo de comer.
               </Text>
             </View>
 
@@ -394,28 +287,33 @@ export default function RestrictionsScreen() {
                 disabled={!hasSelection}
                 onPress={() => {
                   console.log({
-                    restrictions: selectedRestrictions,
-                    allergies: selectedAllergies,
-                    noAllergies,
+                    favoriteFoods: selectedFoods,
                   });
 
-                  // Guardar restrições
+                  // Guardar alimentos preferidos
                   // Avançar para o próximo passo
-                  router.replace("/favorites")
                 }}
               >
-                <Text style={styles.primaryButtonText}>Continuar</Text>
+                <Text style={styles.primaryButtonText}>
+                  Continuar
+                </Text>
 
-                <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
+                <Ionicons
+                  name="arrow-forward"
+                  size={16}
+                  color="#FFFFFF"
+                />
               </Pressable>
 
               <Pressable
                 onPress={() => {
-                  router.replace("/favorites")
+                  // Preencher mais tarde
                 }}
                 hitSlop={8}
               >
-                <Text style={styles.laterButton}>Preencher mais tarde</Text>
+                <Text style={styles.laterButton}>
+                  Preencher mais tarde
+                </Text>
               </Pressable>
             </View>
           </ScrollView>
@@ -541,7 +439,18 @@ const styles = StyleSheet.create({
     color: "#888888",
   },
 
-  /* Sections */
+  decorativeText: {
+    width: 65,
+    marginRight: 4,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 9,
+    lineHeight: 11,
+    color: "#087C5B",
+    textAlign: "center",
+    transform: [{ rotate: "-7deg" }],
+  },
+
+  /* Section */
 
   section: {
     width: "100%",
@@ -641,41 +550,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 15,
     color: "#858B87",
-  },
-
-  /* Divider */
-
-  sectionDivider: {
-    height: 1,
-    backgroundColor: "#E8EAE6",
-    marginVertical: 10,
-  },
-
-  /* No allergies */
-
-  noAllergies: {
-    width: "100%",
-    minHeight: 100,
-
-    marginTop: 10,
-
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-
-    borderRadius: 11,
-    borderWidth: 1,
-    borderColor: "#ECEDE9",
-
-    backgroundColor: "#ECEDE9",
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
-    elevation: 1,
   },
 
   /* Info */
