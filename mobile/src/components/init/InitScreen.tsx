@@ -25,15 +25,9 @@ export default function InitScreen() {
         {/* Branding */}
         <View style={styles.branding}>
           <Image
-            source={require('@/assets/images/branding/logo.png')}
+            source={require('@/assets/images/branding/full_logo.png')}
             resizeMode="contain"
             style={styles.logo}
-          />
-
-          <Image
-            source={require('@/assets/images/branding/logo_name.png')}
-            resizeMode="contain"
-            style={styles.logoName}
           />
 
           <Text style={styles.tagline}>
@@ -105,8 +99,10 @@ export default function InitScreen() {
 
           <Pressable
             style={styles.primaryButton}
-            onPress={() => router.replace('/home')}
+            onPress={() => router.replace('/register')}
           >
+
+            
             <Text style={styles.primaryButtonText}>
               Começar
             </Text>
@@ -155,7 +151,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingVertical: 24,
-    paddingHorizontal: 24
+    paddingHorizontal: 48,
   },
 
   branding: {
@@ -166,13 +162,8 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 180,
-    height: 150,
-  },
-
-  logoName: {
-    width: 250,
-    height: 80,
+    width: 220,
+    height: 220
   },
 
   tagline: {
@@ -226,7 +217,7 @@ const styles = StyleSheet.create({
 
   primaryButton: {
     width: '100%',
-    height: 54,
+    height: 44,
     borderRadius: 28,
     backgroundColor: '#168653',
     flexDirection: 'row',
@@ -243,7 +234,7 @@ const styles = StyleSheet.create({
 
   secondaryButton: {
     width: '100%',
-    height: 54,
+    height: 44,
     borderRadius: 28,
     borderWidth: 1,
     borderColor: '#D9DDD7',

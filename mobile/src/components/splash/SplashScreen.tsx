@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 50,
+    paddingVertical: 24,
+    paddingHorizontal: 48
   },
 
   logo: {
