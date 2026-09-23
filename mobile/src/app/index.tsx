@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Animated, Easing, Image, StyleSheet, View } from 'react-native';
+import { Animated, Easing, Image } from 'react-native';
 import { router } from 'expo-router';
 
 export default function SplashScreen() {
@@ -31,33 +31,17 @@ export default function SplashScreen() {
   }, [opacity, scale]);
 
   return (
-    <View style={styles.container}>
-      <Animated.View style={[styles.logoContainer, { opacity, transform: [{ scale }] }]}>
+    <Animated.View className="flex-1 items-center justify-center bg-black">
+      <Animated.View
+        className="aspect-[1.5] w-[65%] max-w-[340px]"
+        style={{ opacity, transform: [{ scale }] }}>
         <Image
           source={require('@/assets/images/branding/logo.png')}
           accessibilityLabel="NutritionApp"
           resizeMode="contain"
-          style={styles.logo}
+          className="h-full w-full"
         />
       </Animated.View>
-    </View>
+    </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000000',
-  },
-  logoContainer: {
-    width: '65%',
-    aspectRatio: 1.5,
-    maxWidth: 340,
-  },
-  logo: {
-    width: '100%',
-    height: '100%',
-  },
-});
