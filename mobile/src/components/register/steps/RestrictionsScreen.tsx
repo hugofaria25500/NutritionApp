@@ -23,103 +23,133 @@ type Option = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
-const dietaryStyles: Option[] = [
+const restrictions: Option[] = [
   {
-    id: "everything",
-    title: "Tudo",
-    description: "Sem restrições",
-    icon: "globe-outline",
+    id: "lactose-free",
+    title: "Sem lactose",
+    description: "Evita laticínios e derivados.",
+    icon: "flask-outline",
+  },
+  {
+    id: "gluten-free",
+    title: "Sem glúten",
+    description: "Evita alimentos com glúten.",
+    icon: "nutrition-outline",
   },
   {
     id: "vegetarian",
-    title: "Vegetariana",
-    description: "Sem carne",
+    title: "Vegetariano",
+    description: "Não consome carne.",
     icon: "leaf-outline",
   },
   {
     id: "vegan",
     title: "Vegan",
-    description: "Sem produtos de origem animal",
+    description: "Sem produtos de origem animal.",
     icon: "leaf-outline",
   },
   {
     id: "pescetarian",
-    title: "Pescetariana",
-    description: "Peixe e marisco",
+    title: "Pescetariano",
+    description: "Consome peixe e marisco.",
     icon: "fish-outline",
+  },
+  {
+    id: "sugar-free",
+    title: "Sem açúcar adicionado",
+    description: "Evita açúcar refinado.",
+    icon: "nutrition-outline",
+  },
+  {
+    id: "low-sodium",
+    title: "Baixo teor de sódio",
+    description: "Evita alimentos muito salgados.",
+    icon: "water-outline",
   },
   {
     id: "high-protein",
     title: "Alta proteína",
-    description: "Foco em proteína",
-    icon: "fitness-outline",
+    description: "Prefere refeições ricas em proteína.",
+    icon: "barbell-outline",
   },
   {
     id: "other",
-    title: "Outro",
-    description: "Personalizado",
+    title: "Outra restrição",
+    description: "Especifica a tua preferência.",
     icon: "ellipsis-horizontal-circle-outline",
+  },
+  {
+    id: "no-restrictions",
+    title: "Não tenho restrições",
+    description: "Posso comer todos os alimentos.",
+    icon: "checkmark-circle-outline",
   },
 ];
 
-const preferences: Option[] = [
+const allergies: Option[] = [
   {
-    id: "quick-recipes",
-    title: "Refeições rápidas",
-    description: "Pouco tempo para cozinhar",
-    icon: "flash-outline",
-  },
-  {
-    id: "homemade",
-    title: "Caseira",
-    description: "Comida feita em casa",
-    icon: "home-outline",
-  },
-  {
-    id: "mediterranean",
-    title: "Mediterrânica",
-    description: "Estilo mediterrânico",
-    icon: "leaf-outline",
-  },
-  {
-    id: "traditional",
-    title: "Comida tradicional",
-    description: "Sabores de sempre",
-    icon: "restaurant-outline",
-  },
-  {
-    id: "budget",
-    title: "Económica",
-    description: "Poupar nas compras",
-    icon: "cash-outline",
-  },
-  {
-    id: "more-vegetables",
-    title: "Mais vegetais",
-    description: "Mais vegetais no dia a dia",
+    id: "peanuts",
+    title: "Amendoim",
+    description: "Pode causar reações graves.",
     icon: "nutrition-outline",
   },
   {
-    id: "low-carbs",
-    title: "Baixo em hidratos",
-    description: "Menos hidratos",
+    id: "tree-nuts",
+    title: "Frutos de casca rija",
+    description: "Inclui amêndoas, nozes, avelãs, etc.",
     icon: "nutrition-outline",
   },
   {
-    id: "low-fat",
-    title: "Baixo teor de gordura",
-    description: "Menos gordura",
+    id: "milk",
+    title: "Leite",
+    description: "Inclui leite, queijo, iogurte, etc.",
     icon: "water-outline",
   },
   {
+    id: "eggs",
+    title: "Ovos",
+    description: "Inclui ovo e derivados.",
+    icon: "ellipse-outline",
+  },
+  {
+    id: "fish",
+    title: "Peixe",
+    description: "Inclui peixe e derivados.",
+    icon: "fish-outline",
+  },
+  {
+    id: "shellfish",
+    title: "Marisco",
+    description: "Inclui crustáceos e derivados.",
+    icon: "fish-outline",
+  },
+  {
+    id: "soy",
+    title: "Soja",
+    description: "Inclui produtos de soja.",
+    icon: "nutrition-outline",
+  },
+  {
+    id: "mustard",
+    title: "Mostarda",
+    description: "Inclui mostarda e derivados.",
+    icon: "nutrition-outline",
+  },
+  {
     id: "other",
-    title: "Outro",
-    description: "Personalizado",
+    title: "Outra alergia",
+    description: "Especifica o alimento.",
     icon: "ellipsis-horizontal-circle-outline",
+  },
+  {
+    id: "no-allergies",
+    title: "Não tenho alergias",
+    description: "Não tenho alergias alimentares.",
+    icon: "checkmark-circle-outline",
   },
 ];
 
-export default function PreferencesScreen() {
+export default function RestrictionsScreen() {
   const router = useRouter();
 
   const [fontsLoaded] = useFonts({
@@ -127,21 +157,32 @@ export default function PreferencesScreen() {
     PlusJakartaSans_500Medium,
   });
 
-  const [selectedDietaryStyles, setSelectedDietaryStyles] = useState<string[]>(
+  const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>(
     [],
   );
 
-  const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
+  const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
+
+  const [noAllergies, setNoAllergies] = useState(false);
 
   if (!fontsLoaded) {
     return null;
   }
 
-  const toggleOption = (
-    id: string,
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-  ) => {
-    setter((current) => {
+  const toggleRestriction = (id: string) => {
+    setSelectedRestrictions((current) => {
+      if (current.includes(id)) {
+        return current.filter((item) => item !== id);
+      }
+
+      return [...current, id];
+    });
+  };
+
+  const toggleAllergy = (id: string) => {
+    setNoAllergies(false);
+
+    setSelectedAllergies((current) => {
       if (current.includes(id)) {
         return current.filter((item) => item !== id);
       }
@@ -151,7 +192,7 @@ export default function PreferencesScreen() {
   };
 
   const hasSelection =
-    selectedDietaryStyles.length > 0 && selectedPreferences.length > 0;
+    selectedRestrictions.length > 0 && selectedAllergies.length > 0;
 
   return (
     <View style={styles.container}>
@@ -167,7 +208,7 @@ export default function PreferencesScreen() {
           {/* Header */}
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.replace("/goals")}
+              onPress={() => router.replace("/preferences")}
               style={styles.backButton}
               hitSlop={10}
             >
@@ -177,13 +218,15 @@ export default function PreferencesScreen() {
             <View style={styles.progressContainer}>
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
+              <View style={styles.progressActive} />
 
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
-              <View style={styles.progressInactive} />
             </View>
+
+            <Text style={styles.progressText}>3 de 7</Text>
           </View>
 
           {/* Scrollable content */}
@@ -197,40 +240,43 @@ export default function PreferencesScreen() {
             {/* Intro */}
             <View style={styles.intro}>
               <View style={styles.introText}>
-                <Text style={styles.title}>Como gostas{"\n"}de comer?</Text>
+                <Text style={styles.title}>
+                  Há alguma coisa{"\n"}
+                  que devemos evitar?
+                </Text>
 
                 <Text style={styles.subtitle}>
-                  Seleciona as opções que melhor
-                  {"\n"}
-                  descrevem o teu estilo alimentar.
+                  Seleciona as tuas restrições e alergias para receberes
+                  recomendações mais seguras e adequadas a ti.
                 </Text>
               </View>
             </View>
 
-            {/* Dietary style */}
+            {/* Restrictions */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="restaurant-outline" size={25} color="#087C5B" />
+                <Ionicons name="leaf-outline" size={25} color="#087C5B" />
 
                 <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Estilo de alimentação</Text>
+                  <Text style={styles.sectionTitle}>
+                    Restrições alimentares
+                  </Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Qual o estilo que mais se adequa a ti?
+                    Seleciona os ingredientes ou alimentos que preferes
+                    {"\n"}evitar.
                   </Text>
                 </View>
               </View>
 
               <View style={styles.optionsGrid}>
-                {dietaryStyles.map((option) => {
-                  const isSelected = selectedDietaryStyles.includes(option.id);
+                {restrictions.map((option) => {
+                  const isSelected = selectedRestrictions.includes(option.id);
 
                   return (
                     <Pressable
                       key={option.id}
-                      onPress={() =>
-                        toggleOption(option.id, setSelectedDietaryStyles)
-                      }
+                      onPress={() => toggleRestriction(option.id)}
                       style={[
                         styles.optionCard,
                         isSelected && styles.optionCardSelected,
@@ -268,32 +314,29 @@ export default function PreferencesScreen() {
             {/* Divider */}
             <View style={styles.sectionDivider} />
 
-            {/* Preferences */}
+            {/* Allergies */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="heart-outline" size={25} color="#087C5B" />
+                <Ionicons name="warning-outline" size={25} color="#087C5B" />
 
                 <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>
-                    Preferências alimentares
-                  </Text>
+                  <Text style={styles.sectionTitle}>Alergias alimentares</Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Que tipo de refeições preferes?
+                    Seleciona os alimentos que podem causar reações
+                    {"\n"}adversas.
                   </Text>
                 </View>
               </View>
 
               <View style={styles.optionsGrid}>
-                {preferences.map((option) => {
-                  const isSelected = selectedPreferences.includes(option.id);
+                {allergies.map((option) => {
+                  const isSelected = selectedAllergies.includes(option.id);
 
                   return (
                     <Pressable
                       key={option.id}
-                      onPress={() =>
-                        toggleOption(option.id, setSelectedPreferences)
-                      }
+                      onPress={() => toggleAllergy(option.id)}
                       style={[
                         styles.optionCard,
                         isSelected && styles.optionCardSelected,
@@ -328,13 +371,17 @@ export default function PreferencesScreen() {
               </View>
             </View>
 
-            {/* Info */}
+            {/* Safety */}
             <View style={styles.info}>
-              <Ionicons name="bulb-outline" size={20} color="#087C5B" />
+              <Ionicons
+                name="shield-checkmark-outline"
+                size={20}
+                color="#087C5B"
+              />
 
               <Text style={styles.infoText}>
-                Podes ajustar estas preferências mais tarde nas definições da
-                tua conta.
+                Usamos estas informações para evitar recomendar receitas que
+                contenham estes ingredientes.
               </Text>
             </View>
 
@@ -348,13 +395,13 @@ export default function PreferencesScreen() {
                 disabled={!hasSelection}
                 onPress={() => {
                   console.log({
-                    dietaryStyles: selectedDietaryStyles,
-                    preferences: selectedPreferences,
+                    restrictions: selectedRestrictions,
+                    allergies: selectedAllergies,
+                    noAllergies,
                   });
 
-                  // Guardar preferências
+                  // Guardar restrições
                   // Avançar para o próximo passo
-                  router.replace("/restrictions")
                 }}
               >
                 <Text style={styles.primaryButtonText}>Continuar</Text>
@@ -364,7 +411,7 @@ export default function PreferencesScreen() {
 
               <Pressable
                 onPress={() => {
-                  router.replace("/restrictions")
+                  // Preencher mais tarde
                 }}
                 hitSlop={8}
               >
@@ -413,7 +460,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 34,
-    marginBottom: 5,
+    marginBottom: 15,
   },
 
   backButton: {
@@ -471,6 +518,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 5,
   },
 
   introText: {
@@ -486,22 +534,11 @@ const styles = StyleSheet.create({
 
   subtitle: {
     marginTop: 6,
-    maxWidth: 210,
+    maxWidth: 270,
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 12,
     lineHeight: 15,
     color: "#888888",
-  },
-
-  decorativeText: {
-    width: 70,
-    marginRight: 4,
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 9,
-    lineHeight: 11,
-    color: "#087C5B",
-    textAlign: "center",
-    transform: [{ rotate: "-7deg" }],
   },
 
   /* Sections */
@@ -612,6 +649,33 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#E8EAE6",
     marginVertical: 10,
+  },
+
+  /* No allergies */
+
+  noAllergies: {
+    width: "100%",
+    minHeight: 100,
+
+    marginTop: 10,
+
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+
+    borderRadius: 11,
+    borderWidth: 1,
+    borderColor: "#ECEDE9",
+
+    backgroundColor: "#ECEDE9",
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
   },
 
   /* Info */
