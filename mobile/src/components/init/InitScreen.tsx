@@ -114,9 +114,7 @@ export default function InitScreen() {
 
           <Pressable
             style={styles.secondaryButton}
-            onPress={() => {
-              // Futuramente: /login
-            }}
+            onPress={() =>  router.replace('/login')}
           >
             <Text style={styles.secondaryButtonText}>
               Já tenho conta
@@ -164,6 +162,7 @@ const styles = StyleSheet.create({
     flex: 4,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 20
   },
 
   logo: {
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 
   benefit: {
