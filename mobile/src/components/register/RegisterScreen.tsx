@@ -162,9 +162,7 @@ export default function RegisterScreen() {
                 {/* Create account */}
                 <Pressable
                   style={styles.primaryButton}
-                  onPress={() => {
-                    // Clerk entra aqui mais tarde
-                  }}
+                  onPress={() => {router.replace("/goals")}}
                 >
                   <Text style={styles.primaryButtonText}>Criar conta</Text>
                 </Pressable>
