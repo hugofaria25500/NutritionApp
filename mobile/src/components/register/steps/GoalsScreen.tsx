@@ -62,7 +62,7 @@ const goals: Goal[] = [
   },
 ];
 
-export default function GoalScreen() {
+export default function GoalsScreen() {
   const router = useRouter();
 
   const [fontsLoaded] = useFonts({
