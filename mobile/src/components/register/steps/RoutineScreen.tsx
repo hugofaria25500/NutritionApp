@@ -6,7 +6,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,55 +23,115 @@ type Option = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
-const genders: Option[] = [
+const professionalSituations: Option[] = [
   {
-    id: "male",
-    title: "Masculino",
-    description: "",
-    icon: "person-outline",
+    id: "office",
+    title: "Trabalho de escritório",
+    description: "Maioritariamente sedentário.",
+    icon: "desktop-outline",
   },
   {
-    id: "female",
-    title: "Feminino",
-    description: "",
-    icon: "person-outline",
+    id: "physical",
+    title: "Trabalho físico",
+    description: "Mais movimentação durante o dia.",
+    icon: "barbell-outline",
+  },
+  {
+    id: "student",
+    title: "Estudante",
+    description: "Rotina variável.",
+    icon: "school-outline",
   },
   {
     id: "other",
     title: "Outro",
-    description: "",
-    icon: "male-female-outline",
+    description: "Descreve a tua situação.",
+    icon: "ellipsis-horizontal-circle-outline",
   },
 ];
 
-const activityLevels: Option[] = [
+const cookingTimes: Option[] = [
   {
-    id: "sedentary",
-    title: "Sedentário",
-    description: "Pouco ou nenhum exercício",
-    icon: "walk-outline",
-  },
-  {
-    id: "light",
-    title: "Ligeiramente ativo",
-    description: "1–3 dias por semana",
-    icon: "walk-outline",
+    id: "little",
+    title: "Pouco tempo",
+    description: "Até 15 minutos por refeição.",
+    icon: "timer-outline",
   },
   {
     id: "moderate",
-    title: "Moderadamente ativo",
-    description: "3–5 dias por semana",
-    icon: "walk-outline",
+    title: "Tempo moderado",
+    description: "15–30 minutos por refeição.",
+    icon: "time-outline",
   },
   {
-    id: "very-active",
-    title: "Muito ativo",
-    description: "6+ dias por semana",
-    icon: "barbell-outline",
+    id: "cooking",
+    title: "Gosto de cozinhar",
+    description: "Mais de 30 minutos por refeição.",
+    icon: "restaurant-outline",
+  },
+  {
+    id: "variable",
+    title: "É variável",
+    description: "Depende do dia.",
+    icon: "ellipsis-horizontal-circle-outline",
   },
 ];
 
-export default function MeasuresScreen() {
+const eatingWith: Option[] = [
+  {
+    id: "alone",
+    title: "Sozinho/a",
+    description: "Na maioria das refeições.",
+    icon: "person-outline",
+  },
+  {
+    id: "family",
+    title: "Com a família",
+    description: "Cozinho para outras pessoas.",
+    icon: "people-outline",
+  },
+  {
+    id: "friends",
+    title: "Com amigos",
+    description: "Com frequência.",
+    icon: "people-outline",
+  },
+  {
+    id: "variable",
+    title: "É variável",
+    description: "Depende do dia.",
+    icon: "ellipsis-horizontal-circle-outline",
+  },
+];
+
+const mainFocuses: Option[] = [
+  {
+    id: "health",
+    title: "Saúde geral",
+    description: "Sentir-me melhor no dia a dia.",
+    icon: "fitness-outline",
+  },
+  {
+    id: "performance",
+    title: "Desempenho físico",
+    description: "Mais energia e rendimento.",
+    icon: "barbell-outline",
+  },
+  {
+    id: "wellbeing",
+    title: "Bem-estar",
+    description: "Equilíbrio e qualidade de vida.",
+    icon: "leaf-outline",
+  },
+  {
+    id: "other",
+    title: "Outro",
+    description: "Descreve o teu foco.",
+    icon: "ellipsis-horizontal-circle-outline",
+  },
+];
+
+export default function RoutineScreen() {
   const router = useRouter();
 
   const [fontsLoaded] = useFonts({
@@ -80,25 +139,30 @@ export default function MeasuresScreen() {
     PlusJakartaSans_500Medium,
   });
 
-  const [selectedGender, setSelectedGender] = useState<string | null>(null);
-  const [selectedActivity, setSelectedActivity] = useState<string | null>(
+  const [selectedProfessionalSituation, setSelectedProfessionalSituation] =
+    useState<string | null>(null);
+
+  const [selectedCookingTime, setSelectedCookingTime] = useState<string | null>(
     null,
   );
 
-  const [birthDate, setBirthDate] = useState("");
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
+  const [selectedEatingWith, setSelectedEatingWith] = useState<string | null>(
+    null,
+  );
+
+  const [selectedMainFocus, setSelectedMainFocus] = useState<string | null>(
+    null,
+  );
 
   if (!fontsLoaded) {
     return null;
   }
 
   const hasSelection =
-    !!selectedGender &&
-    //!!birthDate &&
-    !!height &&
-    !!weight &&
-    !!selectedActivity;
+    !!selectedProfessionalSituation &&
+    !!selectedCookingTime &&
+    !!selectedEatingWith &&
+    !!selectedMainFocus;
 
   return (
     <View style={styles.container}>
@@ -114,15 +178,11 @@ export default function MeasuresScreen() {
           {/* Header */}
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.replace("/favorites")}
+              onPress={() => router.replace("/measures")}
               style={styles.backButton}
               hitSlop={10}
             >
-              <Ionicons
-                name="chevron-back"
-                size={20}
-                color="#087C5B"
-              />
+              <Ionicons name="chevron-back" size={20} color="#087C5B" />
             </Pressable>
 
             <View style={styles.progressContainer}>
@@ -131,8 +191,8 @@ export default function MeasuresScreen() {
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
               <View style={styles.progressActive} />
+              <View style={styles.progressActive} />
 
-              <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
             </View>
           </View>
@@ -144,53 +204,97 @@ export default function MeasuresScreen() {
             showsVerticalScrollIndicator={false}
             bounces={true}
             overScrollMode="never"
-            keyboardShouldPersistTaps="handled"
           >
             {/* Intro */}
             <View style={styles.intro}>
               <View style={styles.introText}>
-                <Text style={styles.title}>
-                  Conta-nos um pouco{"\n"}
-                  sobre ti
-                </Text>
+                <Text style={styles.title}>Como é o teu dia{"\n"}a dia?</Text>
 
                 <Text style={styles.subtitle}>
-                  Estas informações ajudam-nos a calcular
-                  as tuas necessidades nutricionais e a criar
-                  recomendações mais personalizadas.
+                  Conta-nos um pouco sobre a tua rotina para recebermos
+                  recomendações que se adaptem ao teu estilo de vida.
                 </Text>
               </View>
             </View>
 
-            {/* Gender */}
+            {/* Professional situation */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons
-                  name="person-outline"
-                  size={25}
-                  color="#087C5B"
-                />
+                <Ionicons name="briefcase-outline" size={25} color="#087C5B" />
 
                 <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Género</Text>
+                  <Text style={styles.sectionTitle}>Situação profissional</Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Seleciona o teu género.
+                    Qual descreve melhor a tua rotina?
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
+              {professionalSituations.map((option) => {
+                const isSelected = selectedProfessionalSituation === option.id;
+
+                return (
+                  <Pressable
+                    key={option.id}
+                    onPress={() =>
+                      setSelectedProfessionalSituation(
+                        isSelected ? null : option.id,
+                      )
+                    }
+                    style={[
+                      styles.optionCard,
+                      isSelected && styles.optionCardSelected,
+                    ]}
+                  >
+                    <View style={styles.optionHeader}>
+                      <Ionicons name={option.icon} size={25} color="#087C5B" />
+
+                      {isSelected && (
+                        <View style={styles.check}>
+                          <Ionicons name="checkmark" size={9} color="#FFFFFF" />
+                        </View>
+                      )}
+                    </View>
+
+                    <Text style={styles.optionTitle}>{option.title}</Text>
+
+                    <Text style={styles.optionDescription}>
+                      {option.description}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            {/* Cooking time */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Ionicons name="time-outline" size={25} color="#087C5B" />
+
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>Tempo para cozinhar</Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Quanto tempo costumas ter disponível?
                   </Text>
                 </View>
               </View>
 
-              <View style={styles.optionsGrid}>
-                {genders.map((option) => {
-                  const isSelected = selectedGender === option.id;
+              <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
+                {cookingTimes.map((option) => {
+                  const isSelected = selectedCookingTime === option.id;
 
                   return (
                     <Pressable
                       key={option.id}
-                      onPress={() => setSelectedGender(option.id)}
+                      onPress={() =>
+                        setSelectedCookingTime(isSelected ? null : option.id)
+                      }
                       style={[
                         styles.optionCard,
-                        styles.genderCard,
                         isSelected && styles.optionCardSelected,
                       ]}
                     >
@@ -212,8 +316,10 @@ export default function MeasuresScreen() {
                         )}
                       </View>
 
-                      <Text style={styles.optionTitle}>
-                        {option.title}
+                      <Text style={styles.optionTitle}>{option.title}</Text>
+
+                      <Text style={styles.optionDescription}>
+                        {option.description}
                       </Text>
                     </Pressable>
                   );
@@ -221,152 +327,34 @@ export default function MeasuresScreen() {
               </View>
             </View>
 
-            {/* Birth date */}
-            <View style={styles.inputSection}>
+            {/* Eating with */}
+            <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons
-                  name="calendar-outline"
-                  size={25}
-                  color="#087C5B"
-                />
+                <Ionicons name="people-outline" size={25} color="#087C5B" />
 
                 <View style={styles.sectionHeaderText}>
                   <Text style={styles.sectionTitle}>
-                    Data de nascimento
+                    Com quem costumas comer?
                   </Text>
 
                   <Text style={styles.sectionSubtitle}>
-                    Ajuda-nos a calcular melhor as tuas necessidades.
+                    Seleciona a opção que melhor se aplica.
                   </Text>
                 </View>
               </View>
 
-              <Pressable
-                style={styles.inputContainer}
-                onPress={() => {
-                  // Abrir date picker mais tarde
-                }}
-              >
-                <Ionicons
-                  name="calendar-outline"
-                  size={20}
-                  color="#6F7973"
-                />
-
-                <Text
-                  style={[
-                    styles.inputPlaceholder,
-                    birthDate && styles.inputValue,
-                  ]}
-                >
-                  {birthDate || "Seleciona a tua data de nascimento"}
-                </Text>
-
-                <Ionicons
-                  name="chevron-forward"
-                  size={17}
-                  color="#6F7973"
-                />
-              </Pressable>
-            </View>
-
-            {/* Height */}
-            <View style={styles.inputSection}>
-              <View style={styles.sectionHeader}>
-                <Ionicons
-                  name="resize-outline"
-                  size={25}
-                  color="#087C5B"
-                />
-
-                <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Altura</Text>
-
-                  <Text style={styles.sectionSubtitle}>
-                    Indica a tua altura.
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.inputContainer}>
-                <TextInput
-                  value={height}
-                  onChangeText={setHeight}
-                  placeholder="170"
-                  placeholderTextColor="#333333"
-                  keyboardType="numeric"
-                  style={styles.input}
-                  maxLength={3}
-                />
-
-                <Text style={styles.unit}>cm</Text>
-              </View>
-            </View>
-
-            {/* Weight */}
-            <View style={styles.inputSection}>
-              <View style={styles.sectionHeader}>
-                <Ionicons
-                  name="scale-outline"
-                  size={25}
-                  color="#087C5B"
-                />
-
-                <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>Peso</Text>
-
-                  <Text style={styles.sectionSubtitle}>
-                    Indica o teu peso atual.
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.inputContainer}>
-                <TextInput
-                  value={weight}
-                  onChangeText={setWeight}
-                  placeholder="70"
-                  placeholderTextColor="#333333"
-                  keyboardType="decimal-pad"
-                  style={styles.input}
-                  maxLength={5}
-                />
-
-                <Text style={styles.unit}>kg</Text>
-              </View>
-            </View>
-
-            {/* Activity */}
-            <View style={[styles.section, styles.activity]}>
-              <View style={styles.sectionHeader}>
-                <Ionicons
-                  name="walk-outline"
-                  size={25}
-                  color="#087C5B"
-                />
-
-                <View style={styles.sectionHeaderText}>
-                  <Text style={styles.sectionTitle}>
-                    Nível de atividade física
-                  </Text>
-
-                  <Text style={styles.sectionSubtitle}>
-                    Seleciona o teu nível de atividade habitual.
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.optionsGrid}>
-                {activityLevels.map((option) => {
-                  const isSelected = selectedActivity === option.id;
+              <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
+                {eatingWith.map((option) => {
+                  const isSelected = selectedEatingWith === option.id;
 
                   return (
                     <Pressable
                       key={option.id}
-                      onPress={() => setSelectedActivity(option.id)}
+                      onPress={() =>
+                        setSelectedEatingWith(isSelected ? null : option.id)
+                      }
                       style={[
                         styles.optionCard,
-                        styles.activityCard,
                         isSelected && styles.optionCardSelected,
                       ]}
                     >
@@ -388,9 +376,67 @@ export default function MeasuresScreen() {
                         )}
                       </View>
 
-                      <Text style={styles.optionTitle}>
-                        {option.title}
+                      <Text style={styles.optionTitle}>{option.title}</Text>
+
+                      <Text style={styles.optionDescription}>
+                        {option.description}
                       </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+
+            {/* Main focus */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Ionicons name="locate-outline" size={25} color="#087C5B" />
+
+                <View style={styles.sectionHeaderText}>
+                  <Text style={styles.sectionTitle}>
+                    Qual é o teu principal foco neste momento?
+                  </Text>
+
+                  <Text style={styles.sectionSubtitle}>
+                    Escolhe apenas uma opção.
+                  </Text>
+                </View>
+              </View>
+
+              <View style={[styles.optionsGrid, styles.sectionBottomMargin]}>
+                {mainFocuses.map((option) => {
+                  const isSelected = selectedMainFocus === option.id;
+
+                  return (
+                    <Pressable
+                      key={option.id}
+                      onPress={() =>
+                        setSelectedMainFocus(isSelected ? null : option.id)
+                      }
+                      style={[
+                        styles.optionCard,
+                        isSelected && styles.optionCardSelected,
+                      ]}
+                    >
+                      <View style={styles.optionHeader}>
+                        <Ionicons
+                          name={option.icon}
+                          size={25}
+                          color="#087C5B"
+                        />
+
+                        {isSelected && (
+                          <View style={styles.check}>
+                            <Ionicons
+                              name="checkmark"
+                              size={9}
+                              color="#FFFFFF"
+                            />
+                          </View>
+                        )}
+                      </View>
+
+                      <Text style={styles.optionTitle}>{option.title}</Text>
 
                       <Text style={styles.optionDescription}>
                         {option.description}
@@ -411,38 +457,28 @@ export default function MeasuresScreen() {
                 disabled={!hasSelection}
                 onPress={() => {
                   console.log({
-                    gender: selectedGender,
-                    birthDate,
-                    height,
-                    weight,
-                    activity: selectedActivity,
+                    professionalSituation: selectedProfessionalSituation,
+                    cookingTime: selectedCookingTime,
+                    eatingWith: selectedEatingWith,
+                    mainFocus: selectedMainFocus,
                   });
 
-                  // Guardar dados pessoais
+                  // Guardar dados
                   // Avançar para o próximo passo
-                  router.replace("/routine")
                 }}
               >
-                <Text style={styles.primaryButtonText}>
-                  Continuar
-                </Text>
+                <Text style={styles.primaryButtonText}>Continuar</Text>
 
-                <Ionicons
-                  name="arrow-forward"
-                  size={16}
-                  color="#FFFFFF"
-                />
+                <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
               </Pressable>
 
               <Pressable
                 onPress={() => {
-                  router.replace("/routine")
+                  // Preencher mais tarde
                 }}
                 hitSlop={8}
               >
-                <Text style={styles.laterButton}>
-                  Preencher mais tarde
-                </Text>
+                <Text style={styles.laterButton}>Preencher mais tarde</Text>
               </Pressable>
             </View>
           </ScrollView>
@@ -487,7 +523,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 34,
-    marginBottom: 15,
+    marginBottom: 5,
   },
 
   backButton: {
@@ -561,7 +597,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     marginTop: 6,
-    maxWidth: 270,
+    maxWidth: 250,
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 12,
     lineHeight: 15,
@@ -569,7 +605,7 @@ const styles = StyleSheet.create({
   },
 
   decorativeText: {
-    width: 65,
+    width: 70,
     marginRight: 4,
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 9,
@@ -585,24 +621,22 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
-  inputSection: {
-    width: "100%",
-    marginTop: 10,
-  },
+  sectionBottomMargin: {
+    marginBottom: 10,
+   },
 
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 9,
-  },
-
-  activity: {
-    marginTop: 10,
+    marginBottom: 7,
+    paddingHorizontal: 4,
+    paddingVertical: 3,
+    borderRadius: 9,
   },
 
   sectionHeaderText: {
-    marginLeft: 8,
     flex: 1,
+    marginLeft: 8,
   },
 
   sectionTitle: {
@@ -613,7 +647,7 @@ const styles = StyleSheet.create({
   },
 
   sectionSubtitle: {
-    marginTop: 1,
+    marginTop: 0,
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 12,
     lineHeight: 15,
@@ -627,17 +661,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    rowGap: 10,
+    rowGap: 7,
   },
 
   optionCard: {
     width: "48%",
-    minHeight: 100,
+    minHeight: 82,
 
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
 
-    borderRadius: 11,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ECEDE9",
 
@@ -651,14 +685,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 6,
     elevation: 1,
-  },
-
-  genderCard: {
-    minHeight: 65,
-  },
-
-  activityCard: {
-    minHeight: 100,
   },
 
   optionCardSelected: {
@@ -684,7 +710,7 @@ const styles = StyleSheet.create({
   },
 
   optionTitle: {
-    marginTop: 4,
+    marginTop: 3,
     fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 14,
     lineHeight: 14,
@@ -699,72 +725,13 @@ const styles = StyleSheet.create({
     color: "#858B87",
   },
 
-  /* Inputs */
-
-  inputContainer: {
-    width: "100%",
-    minHeight: 46,
-
-    paddingHorizontal: 12,
-
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ECEDE9",
-
-    backgroundColor: "rgba(255, 255, 255, 0.72)",
-
-    flexDirection: "row",
-    alignItems: "center",
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.035,
-    shadowRadius: 5,
-    elevation: 1,
-  },
-
-  input: {
-    flex: 1,
-    height: 44,
-
-    paddingHorizontal: 2,
-
-    fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 12,
-    color: "#333333",
-  },
-
-  inputPlaceholder: {
-    flex: 1,
-    marginLeft: 8,
-
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 11,
-    color: "#858B87",
-  },
-
-  inputValue: {
-    fontFamily: "PlusJakartaSans_500Medium",
-    color: "#333333",
-  },
-
-  unit: {
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 10,
-    color: "#858B87",
-  },
-
   /* Actions */
 
   actions: {
     alignItems: "center",
     justifyContent: "center",
-
     gap: 8,
-    marginTop: 14,
+    marginTop: 4,
     paddingBottom: 8,
   },
 
