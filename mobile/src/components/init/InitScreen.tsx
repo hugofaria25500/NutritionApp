@@ -1,9 +1,22 @@
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  useFonts,
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+} from "@expo-google-fonts/plus-jakarta-sans";
 
 export default function InitScreen() {
   const router = useRouter();
+  const [fontsLoaded] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -33,9 +46,7 @@ export default function InitScreen() {
               <Ionicons name="restaurant-outline" size={24} color="#087C5B" />
             </View>
 
-            <Text style={styles.benefitTitle}>Receitas</Text>
-
-            <Text style={styles.benefitText}>personalizadas</Text>
+            <Text style={styles.benefitText}>Receitas personalizadas</Text>
           </View>
 
           <View style={styles.benefit}>
@@ -43,9 +54,7 @@ export default function InitScreen() {
               <Ionicons name="leaf-outline" size={24} color="#087C5B" />
             </View>
 
-            <Text style={styles.benefitTitle}>Com os teus</Text>
-
-            <Text style={styles.benefitText}>ingredientes</Text>
+            <Text style={styles.benefitText}>Com os teus ingredientes</Text>
           </View>
 
           <View style={styles.benefit}>
@@ -53,9 +62,7 @@ export default function InitScreen() {
               <Ionicons name="heart-outline" size={24} color="#087C5B" />
             </View>
 
-            <Text style={styles.benefitTitle}>Mais saúde</Text>
-
-            <Text style={styles.benefitText}>todos os dias</Text>
+            <Text style={styles.benefitText}>Mais saúde todos os dias</Text>
           </View>
         </View>
 
@@ -74,10 +81,12 @@ export default function InitScreen() {
           >
             <Text style={styles.secondaryButtonText}>Já tenho conta</Text>
           </Pressable>
-        </View>
 
-        {/* Footer */}
-        <Text style={styles.footer}>Uma vida mais saudável, começa aqui.</Text>
+          {/* Footer */}
+          <Text style={styles.footerText}>
+            Uma vida mais saudável, começa aqui.
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -106,33 +115,36 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 24,
     paddingHorizontal: 48,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   branding: {
-    flex: 4,
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
+    justifyContent: "flex-end",
+    marginTop: 0,
+    marginBottom: 50,
   },
 
   logo: {
     width: 220,
-    height: 220,
+    height: 120,
   },
 
   tagline: {
+    fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 13,
     color: "#888888",
     fontWeight: "500",
   },
 
   benefits: {
-    flex: 2,
     width: "100%",
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
+    marginBottom: 50,
   },
 
   benefit: {
@@ -150,22 +162,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 
-  benefitTitle: {
-    fontSize: 11,
-    color: "#777777",
-    textAlign: "center",
-  },
-
   benefitText: {
+    fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 11,
     color: "#777777",
     textAlign: "center",
   },
 
   actions: {
-    flex: 2,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     gap: 12,
   },
 
@@ -181,9 +187,9 @@ const styles = StyleSheet.create({
   },
 
   primaryButtonText: {
+    fontFamily: "PlusJakartaSans_500Medium",
     color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: "600",
   },
 
   secondaryButton: {
@@ -198,13 +204,13 @@ const styles = StyleSheet.create({
   },
 
   secondaryButtonText: {
+    fontFamily: "PlusJakartaSans_500Medium",
     color: "#087C5B",
     fontSize: 15,
-    fontWeight: "500",
   },
 
-  footer: {
-    flex: 1,
+  footerText: {
+    fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 12,
     color: "#999999",
     textAlign: "center",
