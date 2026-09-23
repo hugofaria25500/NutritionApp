@@ -140,6 +140,27 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+
+  /* Container */
+
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+    backgroundColor: "#F8FAF5",
+  },
+
+  background: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+
   /* Back */
 
   backButton: {
@@ -167,26 +188,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 12,
     fontWeight: "600",
-  },
-
-  /* Container */
-
-  container: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-    backgroundColor: "#F8FAF5",
-  },
-
-  background: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
   },
 
   /* Safe Area */
