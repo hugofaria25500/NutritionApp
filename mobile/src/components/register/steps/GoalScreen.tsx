@@ -70,11 +70,21 @@ export default function GoalScreen() {
     PlusJakartaSans_500Medium,
   });
 
-  const [selectedGoal, setSelectedGoal] = useState<string | null>(null);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
   if (!fontsLoaded) {
     return null;
   }
+
+  const toggleGoal = (goalId: string) => {
+    setSelectedGoals((currentGoals) => {
+    if (currentGoals.includes(goalId)) {
+      return currentGoals.filter((id) => id !== goalId);
+    }
+
+    return [...currentGoals, goalId];
+  });
+};
 
   return (
     <View style={styles.container}>
@@ -112,8 +122,6 @@ export default function GoalScreen() {
               <View style={styles.progressInactive} />
               <View style={styles.progressInactive} />
             </View>
-
-            <Text style={styles.progressText}>1 de 7</Text>
           </View>
 
           {/* Scrollable content */}
@@ -141,12 +149,12 @@ export default function GoalScreen() {
             {/* Goals */}
             <View style={styles.goals}>
               {goals.map((goal) => {
-                const isSelected = selectedGoal === goal.id;
+                const isSelected = selectedGoals.includes(goal.id);
 
                 return (
                   <Pressable
                     key={goal.id}
-                    onPress={() => setSelectedGoal(goal.id)}
+                    onPress={() => toggleGoal(goal.id)}
                     style={[
                       styles.goalCard,
                       isSelected && styles.goalCardSelected,
@@ -155,7 +163,7 @@ export default function GoalScreen() {
                     <View style={styles.goalHeader}>
                       <Ionicons
                         name={goal.icon}
-                        size={23}
+                        size={25}
                         color="#087C5B"
                       />
 
@@ -186,7 +194,7 @@ export default function GoalScreen() {
             <View style={styles.info}>
               <Ionicons
                 name="bulb-outline"
-                size={17}
+                size={20}
                 color="#087C5B"
               />
 
@@ -201,12 +209,13 @@ export default function GoalScreen() {
               <Pressable
                 style={[
                   styles.primaryButton,
-                  !selectedGoal && styles.primaryButtonDisabled,
+                  selectedGoals.length === 0 && styles.primaryButtonDisabled
                 ]}
-                disabled={!selectedGoal}
+                disabled={selectedGoals.length === 0}
                 onPress={() => {
                   // Guardar objetivo
                   // Avançar para o próximo passo
+                  router.replace("/preferences");
                 }}
               >
                 <Text style={styles.primaryButtonText}>
@@ -222,7 +231,7 @@ export default function GoalScreen() {
 
               <Pressable
                 onPress={() => {
-                  // Preencher mais tarde
+                  router.replace("/preferences");
                 }}
                 hitSlop={8}
               >
@@ -364,7 +373,7 @@ const styles = StyleSheet.create({
 
   goalCard: {
     width: "48%",
-    minHeight: 145,
+    minHeight: 125,
 
     paddingHorizontal: 14,
     paddingVertical: 10,
@@ -440,8 +449,8 @@ const styles = StyleSheet.create({
     marginLeft: 8,
 
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 11,
-    lineHeight: 11,
+    fontSize: 12,
+    lineHeight: 15,
     color: "#6F7973",
   },
 
