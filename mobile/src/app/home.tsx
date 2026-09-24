@@ -76,9 +76,6 @@ export default function HomeScreen() {
                 <View style={styles.notificationDot} />
               </Pressable>
 
-              <Pressable style={styles.avatar} hitSlop={8}>
-                <Text style={styles.avatarText}>H</Text>
-              </Pressable>
             </View>
           </View>
 
@@ -242,8 +239,8 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   logo: {
-    width: 128,
-    height: 38,
+    width: 140,
+    height: 42,
   },
   headerActions: {
     flexDirection: "row",
