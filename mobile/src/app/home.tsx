@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   },
   backgroundWash: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(247,250,244,0.36)",
+    backgroundColor: "rgba(247,250,244,0.58)",
   },
   scrollContent: {
     width: "100%",
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 36,
+    marginBottom: 26,
   },
   logo: {
     width: 140,
