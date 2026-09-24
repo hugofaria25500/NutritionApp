@@ -1,0 +1,82 @@
+import type { ComponentProps } from "react";
+import type { Ionicons } from "@expo/vector-icons";
+
+export type IconName = ComponentProps<typeof Ionicons>["name"];
+
+export type HomeAction = {
+  title: string;
+  subtitle: string;
+  icon: IconName;
+  accent: "green" | "neutral";
+};
+
+export type PopularSuggestion = {
+  title: string;
+  subtitle: string;
+  image: string;
+};
+
+export type NavigationItem = {
+  label: string;
+  icon: IconName;
+  route: "/home" | "/explore" | "/plan" | "/progress" | "/profile";
+};
+
+export const homeCopy = {
+  greeting: "Como te podemos",
+  greetingAccent: "ajudar hoje?",
+  helper: "Escolhe uma opção ou descreve\no que te apetece. Nós tratamos do resto.",
+  searchPlaceholder: "Ex.: Carne, rápido e poucos\ningredientes...",
+  popularTitle: "Sugestões populares",
+  popularAction: "Ver todas",
+};
+
+export const homeActions: HomeAction[] = [
+  {
+    title: "Dar-me sugestões",
+    subtitle: "Com base no que me apetece",
+    icon: "sparkles-outline",
+    accent: "green",
+  },
+  {
+    title: "Usar ingredientes",
+    subtitle: "que tenho em casa",
+    icon: "restaurant-outline",
+    accent: "neutral",
+  },
+  {
+    title: "Receitas rápidas",
+    subtitle: "(< 30 minutos)",
+    icon: "time-outline",
+    accent: "neutral",
+  },
+];
+
+export const popularSuggestions: PopularSuggestion[] = [
+  {
+    title: "Carne",
+    subtitle: "Receitas saborosas",
+    image:
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80",
+  },
+  {
+    title: "Rápidas",
+    subtitle: "≤ 30 minutos",
+    image:
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=500&q=80",
+  },
+  {
+    title: "Poucos\ningredientes",
+    subtitle: "Simples e práticas",
+    image:
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80",
+  },
+];
+
+export const navigationItems: NavigationItem[] = [
+  { label: "Início", icon: "home", route: "/home" },
+  { label: "Explorar", icon: "search-outline", route: "/explore" },
+  { label: "Plano", icon: "calendar-outline", route: "/plan" },
+  { label: "Progresso", icon: "stats-chart-outline", route: "/progress" },
+  { label: "Perfil", icon: "person-outline", route: "/profile" },
+];
