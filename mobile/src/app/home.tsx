@@ -412,6 +412,7 @@ const styles = StyleSheet.create({
     minHeight: 38,
     paddingVertical: 0,
     paddingHorizontal: 5,
+    textAlignVertical: "center",
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 9.5,
     lineHeight: 13,
