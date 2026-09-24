@@ -71,6 +71,18 @@ export const popularSuggestions: PopularSuggestion[] = [
     image:
       "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80",
   },
+  {
+    title: "Saudáveis",
+    subtitle: "Leves e equilibradas",
+    image:
+      "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=500&q=80",
+  },
+  {
+    title: "Vegetarianas",
+    subtitle: "Cheias de sabor",
+    image:
+      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=500&q=80",
+  },
 ];
 
 export const navigationItems: NavigationItem[] = [
