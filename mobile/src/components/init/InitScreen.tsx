@@ -1,0 +1,216 @@
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  useFonts,
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+} from "@expo-google-fonts/plus-jakarta-sans";
+
+export default function InitScreen() {
+  const router = useRouter();
+  const [fontsLoaded] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <View style={styles.container}>
+      {/* Background */}
+      <Image
+        source={require("@/assets/images/backgrounds/background_food_variation_three_white.png")}
+        resizeMode="stretch"
+        style={styles.background}
+      />
+
+      <View style={styles.content}>
+        {/* Branding */}
+        <View style={styles.branding}>
+          <Image
+            source={require("@/assets/images/branding/full_logo.png")}
+            resizeMode="contain"
+            style={styles.logo}
+          />
+
+          <Text style={styles.tagline}>Eat better, with what you have.</Text>
+        </View>
+
+        {/* Benefits */}
+        <View style={styles.benefits}>
+          <View style={styles.benefit}>
+            <View style={styles.iconContainer}>
+              <Ionicons name="restaurant-outline" size={24} color="#087C5B" />
+            </View>
+
+            <Text style={styles.benefitText}>Receitas personalizadas</Text>
+          </View>
+
+          <View style={styles.benefit}>
+            <View style={styles.iconContainer}>
+              <Ionicons name="leaf-outline" size={24} color="#087C5B" />
+            </View>
+
+            <Text style={styles.benefitText}>Com os teus ingredientes</Text>
+          </View>
+
+          <View style={styles.benefit}>
+            <View style={styles.iconContainer}>
+              <Ionicons name="heart-outline" size={24} color="#087C5B" />
+            </View>
+
+            <Text style={styles.benefitText}>Mais saúde todos os dias</Text>
+          </View>
+        </View>
+
+        {/* Actions */}
+        <View style={styles.actions}>
+          <Pressable
+            style={styles.primaryButton}
+            onPress={() => router.replace("/register")}
+          >
+            <Text style={styles.primaryButtonText}>Começar</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.secondaryButton}
+            onPress={() => router.replace("/login")}
+          >
+            <Text style={styles.secondaryButtonText}>Já tenho conta</Text>
+          </Pressable>
+
+          {/* Footer */}
+          <Text style={styles.footerText}>Uma vida mais saudável, começa aqui.</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+    backgroundColor: "#F8FAF5",
+  },
+
+  background: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+
+  content: {
+    flex: 1,
+    paddingVertical: 24,
+    paddingHorizontal: 48,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  branding: {
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginBottom: 40,
+  },
+
+  logo: {
+    width: 220,
+    height: 120,
+  },
+
+  tagline: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 13,
+    color: "#888888",
+    fontWeight: "500",
+  },
+
+  benefits: {
+    width: "100%",
+    alignSelf: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 50,
+  },
+
+  benefit: {
+    width: "31%",
+    alignItems: "center",
+  },
+
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#EAF3E8",
+    marginBottom: 8,
+  },
+
+  benefitText: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 11,
+    color: "#777777",
+    textAlign: "center",
+  },
+
+  actions: {
+    width: "100%",
+    justifyContent: "flex-start",
+    gap: 12,
+  },
+
+  primaryButton: {
+    width: "100%",
+    height: 44,
+    borderRadius: 28,
+    backgroundColor: "#168653",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+  },
+
+  primaryButtonText: {
+    fontFamily: "PlusJakartaSans_500Medium",
+    color: "#FFFFFF",
+    fontSize: 15,
+  },
+
+  secondaryButton: {
+    width: "100%",
+    height: 44,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: "#D9DDD7",
+    backgroundColor: "rgba(255,255,255,0.55)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  secondaryButtonText: {
+    fontFamily: "PlusJakartaSans_500Medium",
+    color: "#087C5B",
+    fontSize: 15,
+  },
+
+  footerText: {
+    fontFamily: "PlusJakartaSans_500Medium",
+    fontSize: 12,
+    color: "#999999",
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+});
