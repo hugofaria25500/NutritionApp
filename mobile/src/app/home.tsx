@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   PlusJakartaSans_400Regular,
@@ -115,30 +115,6 @@ export default function HomeScreen() {
                 <Ionicons name="chevron-forward" size={20} color={COLORS.ink} />
               </Pressable>
             ))}
-          </View>
-
-          <View style={styles.dividerLabel}>
-            <View style={styles.divider} />
-            <Text style={styles.dividerText}>OU DIZ-NOS COM AS TUAS PALAVRAS</Text>
-            <View style={styles.divider} />
-          </View>
-
-          <View style={styles.searchBox}>
-            <View style={styles.searchIconWrap}>
-              <Ionicons name="restaurant-outline" size={21} color={COLORS.ink} />
-            </View>
-
-            <TextInput
-              multiline
-              editable={false}
-              placeholder={homeCopy.searchPlaceholder}
-              placeholderTextColor="#B4BCB9"
-              style={styles.searchInput}
-            />
-
-            <Pressable style={styles.searchButton} onPress={() => router.push("/explore")}>
-              <Ionicons name="arrow-forward" size={21} color="#FFFFFF" />
-            </Pressable>
           </View>
 
           <View style={styles.popularHeader}>
@@ -364,67 +340,6 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.78,
     transform: [{ scale: 0.99 }],
-  },
-  dividerLabel: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 7,
-    marginTop: 11,
-    marginBottom: 9,
-  },
-  divider: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "rgba(78, 103, 97, 0.14)",
-  },
-  dividerText: {
-    fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 7.4,
-    letterSpacing: 0.1,
-    color: "#929B98",
-  },
-  searchBox: {
-    width: "100%",
-    minHeight: 50,
-    borderRadius: 16,
-    paddingLeft: 9,
-    paddingRight: 7,
-    paddingVertical: 6,
-    backgroundColor: "rgba(255,255,255,0.86)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.72)",
-    flexDirection: "row",
-    alignItems: "center",
-    shadowColor: "#163F37",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
-  },
-  searchIconWrap: {
-    width: 31,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  searchInput: {
-    flex: 1,
-    minHeight: 38,
-    paddingVertical: 0,
-    paddingHorizontal: 5,
-    textAlignVertical: "center",
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 9.5,
-    lineHeight: 13,
-    color: COLORS.ink,
-  },
-  searchButton: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: COLORS.green,
   },
   popularHeader: {
     width: "100%",
