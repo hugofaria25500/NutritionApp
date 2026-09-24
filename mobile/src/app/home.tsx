@@ -128,6 +128,10 @@ export default function HomeScreen() {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            snapToInterval={97}
+            decelerationRate="fast"
+            snapToAlignment="start"
             contentContainerStyle={styles.cardsRow}
           >
             {popularSuggestions.map((suggestion) => (
