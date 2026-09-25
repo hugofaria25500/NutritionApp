@@ -208,7 +208,8 @@ export default function ExploreScreen() {
                 ))}
               </HomeCarousel>
 
-            </>          ) : (
+            </>
+          ) : (
             <>
               <HomeSectionHeader
                 title="Os teus favoritos"
@@ -238,30 +239,6 @@ export default function ExploreScreen() {
               )}
 
               <HomeSectionHeader
-                title="Receitas para ti"
-                actionLabel="Ver todas"
-                onActionPress={() => setQuery("")}
-                marginTop={20}
-              />
-
-              {visibleForYouRecipes.length > 0 ? (
-                <HomeCarousel snapInterval={188} large>
-                  {visibleForYouRecipes.map((recipe) => (
-                    <ExploreRecipeCard
-                      key={recipe.id}
-                      recipe={recipe}
-                      isFavorite={favoriteRecipeIds.has(recipe.id)}
-                      onFavoritePress={() => toggleFavorite(recipe.id)}
-                    />
-                  ))}
-                </HomeCarousel>
-              ) : (
-                <Text style={styles.noResults}>
-                  Não encontrámos receitas para estes filtros.
-                </Text>
-              )}
-
-              <HomeSectionHeader
                 title="Receitas populares"
                 actionLabel="Ver todas"
                 onActionPress={() => setQuery("")}
@@ -282,6 +259,30 @@ export default function ExploreScreen() {
               ) : (
                 <Text style={styles.noResults}>
                   Não encontrámos receitas com estes filtros.
+                </Text>
+              )}
+
+              <HomeSectionHeader
+                title="Receitas para ti"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              {visibleForYouRecipes.length > 0 ? (
+                <HomeCarousel snapInterval={188} large>
+                  {visibleForYouRecipes.map((recipe) => (
+                    <ExploreRecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      isFavorite={favoriteRecipeIds.has(recipe.id)}
+                      onFavoritePress={() => toggleFavorite(recipe.id)}
+                    />
+                  ))}
+                </HomeCarousel>
+              ) : (
+                <Text style={styles.noResults}>
+                  Não encontrámos receitas para estes filtros.
                 </Text>
               )}
 
