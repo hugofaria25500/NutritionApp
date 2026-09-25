@@ -125,35 +125,37 @@ export default function HomeScreen() {
             </Pressable>
           </View>
 
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            snapToInterval={97}
-            decelerationRate="fast"
-            snapToAlignment="start"
-            contentContainerStyle={styles.cardsRow}
-          >
-            {popularSuggestions.map((suggestion) => (
-              <Pressable
-                key={suggestion.title}
-                style={({ pressed }) => [styles.recipeCard, pressed && styles.pressed]}
-                onPress={() => router.push("/explore")}
-              >
-                <Image source={{ uri: suggestion.image }} style={styles.recipeImage} />
-                <View style={styles.recipeOverlay} />
+          <View style={styles.carouselViewport}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              snapToInterval={97}
+              decelerationRate="fast"
+              snapToAlignment="start"
+              contentContainerStyle={styles.cardsRow}
+            >
+              {popularSuggestions.map((suggestion) => (
+                <Pressable
+                  key={suggestion.title}
+                  style={({ pressed }) => [styles.recipeCard, pressed && styles.pressed]}
+                  onPress={() => router.push("/explore")}
+                >
+                  <Image source={{ uri: suggestion.image }} style={styles.recipeImage} />
+                  <View style={styles.recipeOverlay} />
 
-                <View style={styles.favoriteBadge}>
-                  <Ionicons name="heart-outline" size={16} color="#FFFFFF" />
-                </View>
+                  <View style={styles.favoriteBadge}>
+                    <Ionicons name="heart-outline" size={16} color="#FFFFFF" />
+                  </View>
 
-                <View style={styles.recipeCopy}>
-                  <Text style={styles.recipeTitle}>{suggestion.title}</Text>
-                  <Text style={styles.recipeSubtitle}>{suggestion.subtitle}</Text>
-                </View>
-              </Pressable>
-            ))}
-          </ScrollView>
+                  <View style={styles.recipeCopy}>
+                    <Text style={styles.recipeTitle}>{suggestion.title}</Text>
+                    <Text style={styles.recipeSubtitle}>{suggestion.subtitle}</Text>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
         </View>
       </ScrollView>
 
@@ -370,10 +372,14 @@ const styles = StyleSheet.create({
     color: COLORS.greenDark,
     fontSize: 9.5,
   },
-  cardsRow: {
+  carouselViewport: {
     width: "100%",
+    overflow: "hidden",
+  },
+  cardsRow: {
     gap: 7,
     paddingBottom: 5,
+    paddingRight: 7,
   },
   recipeCard: {
     width: 90,
