@@ -25,7 +25,7 @@ export const exploreCopy = {
   searchPlaceholder: "Pesquisar receitas, ingredientes...",
 };
 
-export const exploreFilters = ["Receitas", "Ingredientes", "Guardados"] as const;
+export const exploreFilters = ["Receitas", "Ingredientes"] as const;
 
 export const popularCategories: ExploreCategory[] = [
   {
