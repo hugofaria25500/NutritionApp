@@ -4,7 +4,7 @@ import type { ExploreCategory } from "@/features/explore/data/exploreData";
 
 type ExploreCategoryCardProps = {
   category: ExploreCategory;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 export default function ExploreCategoryCard({
@@ -12,7 +12,7 @@ export default function ExploreCategoryCard({
   onPress,
 }: ExploreCategoryCardProps) {
   return (
-    <Pressable style={styles.card} onPress={onPress}>
+    <Pressable style={styles.card} onPress={onPress} disabled={!onPress}>
       <Image source={{ uri: category.image }} style={styles.image} />
       <View style={styles.copy}>
         <Text style={styles.title} numberOfLines={1}>{category.title}</Text>
@@ -31,15 +31,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(16,56,49,0.05)",
   },
-  image: {
-    width: "100%",
-    height: 70,
-  },
-  copy: {
-    minHeight: 37,
-    paddingHorizontal: 7,
-    paddingVertical: 5,
-  },
+  image: { width: "100%", height: 70 },
+  copy: { minHeight: 37, paddingHorizontal: 7, paddingVertical: 5 },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
     fontSize: 9,
