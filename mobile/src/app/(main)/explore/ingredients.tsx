@@ -104,8 +104,7 @@ export default function ExploreIngredientsListScreen() {
               style={styles.loadMoreButton}
               onPress={() => setVisibleCount((count) => Math.min(count + PAGE_SIZE, allIngredients.length))}
             >
-              <Ionicons name="add" size={16} color="#FFFFFF" />
-              <Text style={styles.loadMoreText}>Carregar mais</Text>
+              <Ionicons name="add" size={22} color="#FFFFFF" />
             </Pressable>
           )}
         </View>
@@ -200,20 +199,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 22,
     marginBottom: 20,
-    minWidth: 145,
-    height: 42,
-    paddingHorizontal: 18,
-    borderRadius: 21,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
     backgroundColor: "#075A50",
-  },
-  loadMoreText: {
-    fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 9,
-    color: "#FFFFFF",
   },
   emptyState: {
     marginTop: 24,
