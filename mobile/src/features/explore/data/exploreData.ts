@@ -1,8 +1,3 @@
-export type ExploreRecentSearch = {
-  id: string;
-  label: string;
-};
-
 export type ExploreCategory = {
   id: string;
   title: string;
@@ -30,14 +25,7 @@ export const exploreCopy = {
   searchPlaceholder: "Pesquisar receitas, ingredientes...",
 };
 
-export const exploreFilters = ["Tudo", "Receitas", "Ingredientes", "Favoritos"] as const;
-
-export const recentSearches: ExploreRecentSearch[] = [
-  { id: "carne", label: "carne" },
-  { id: "tomate", label: "tomate" },
-  { id: "massa", label: "massa" },
-  { id: "salmao", label: "salmão" },
-];
+export const exploreFilters = ["Receitas", "Ingredientes", "Guardados"] as const;
 
 export const popularCategories: ExploreCategory[] = [
   {
