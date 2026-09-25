@@ -23,7 +23,7 @@ export default function HomeBottomNavigation({
   return (
     <View style={[styles.container, { bottom }]}>
       {items.map((item) => {
-        const active = pathname === item.route;
+        const active = pathname === item.route || (item.route === "/explore" && pathname.startsWith("/explore/"));
 
         return (
           <Pressable

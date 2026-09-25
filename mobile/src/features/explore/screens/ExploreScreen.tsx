@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -58,6 +59,7 @@ function filterRecipes(
 }
 
 export default function ExploreScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
   const [query, setQuery] = useState("");
@@ -177,7 +179,7 @@ export default function ExploreScreen() {
               <HomeSectionHeader
                 title="Ingredientes populares"
                 actionLabel="Ver todos"
-                onActionPress={() => setQuery("")}
+                onActionPress={() => router.push({ pathname: "/explore/ingredients", params: { collection: "popular" } })}
                 marginTop={20}
               />
 
@@ -209,7 +211,7 @@ export default function ExploreScreen() {
               <HomeSectionHeader
                 title="Descobre novos ingredientes"
                 actionLabel="Ver todos"
-                onActionPress={() => setQuery("")}
+                onActionPress={() => router.push({ pathname: "/explore/ingredients", params: { collection: "discovery" } })}
                 marginTop={20}
               />
 
