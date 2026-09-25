@@ -5,6 +5,9 @@ import type { PlanMeal } from "@/features/plan/data/planData";
 
 type PlanMealCardProps = {
   meal: PlanMeal;
+  isFavorite?: boolean;
+  onFavoritePress?: () => void;
+  onMorePress?: () => void;
 };
 
 export default function PlanMealCard({ meal }: PlanMealCardProps) {
@@ -22,7 +25,7 @@ export default function PlanMealCard({ meal }: PlanMealCardProps) {
 
         <View style={styles.metaRow}>
           <View style={styles.metaItem}>
-            <Ionicons name="time-outline" size={10} color="#71817D" />
+            <Ionicons name="time-outline" size={11} color="#71817D" />
             <Text style={styles.meta}>{meal.meta.split(" · ")[0]}</Text>
           </View>
           <View style={styles.metaItem}>
@@ -36,12 +39,16 @@ export default function PlanMealCard({ meal }: PlanMealCardProps) {
         </View>
       </View>
 
-      <Pressable style={styles.moreButton} hitSlop={6}>
-        <Ionicons name="ellipsis-vertical" size={14} color="#6F7E7B" />
+      <Pressable style={styles.moreButton} hitSlop={6} onPress={onMorePress}>
+        <Ionicons name="ellipsis-vertical" size={15} color="#6F7E7B" />
       </Pressable>
 
-      <Pressable style={styles.favoriteButton} hitSlop={6}>
-        <Ionicons name="heart-outline" size={15} color="#55706A" />
+      <Pressable style={styles.favoriteButton} hitSlop={6} onPress={onFavoritePress}>
+        <Ionicons
+          name={isFavorite ? "heart" : "heart-outline"}
+          size={17}
+          color={isFavorite ? "#087C5B" : "#55706A"}
+        />
       </Pressable>
     </Pressable>
   );
@@ -71,14 +78,14 @@ const styles = StyleSheet.create({
   },
   type: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 7,
+    fontSize: 8.5,
     color: "#82908D",
   },
   title: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 8.4,
-    lineHeight: 11,
+    fontSize: 10,
+    lineHeight: 13,
     color: "#163C3A",
   },
   metaRow: {
@@ -94,7 +101,7 @@ const styles = StyleSheet.create({
   },
   meta: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 6.4,
+    fontSize: 7.5,
     color: "#75827F",
   },
   moreButton: {

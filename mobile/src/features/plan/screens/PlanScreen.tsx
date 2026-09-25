@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
+import { useState } from "react";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -19,11 +20,68 @@ const COLORS = {
 
 export default function PlanScreen() {
   const insets = useSafeAreaInsets();
+  const [selectedDayIndex, setSelectedDayIndex] = useState(3);
+  const [meals, setMeals] = useState(planMeals);
+  const [favoriteMealIds, setFavoriteMealIds] = useState<string[]>([]);
+  const [calorieGoal, setCalorieGoal] = useState(planCopy.calorieGoal);
   const [fontsLoaded] = useAppFonts();
 
   if (!fontsLoaded) return null;
 
   const bottomBarBottom = Math.max(insets.bottom, 8) + 8;
+  const selectedDay = planWeek[selectedDayIndex];
+
+  const showNotifications = () =>
+    Alert.alert("Notificações", "Não tens novas notificações por agora.");
+
+  const adjustGoal = () =>
+    Alert.alert("Ajustar objetivo", "Escolhe o teu objetivo diário.", [
+      { text: "1 600 kcal", onPress: () => setCalorieGoal("1 600") },
+      { text: "1 800 kcal", onPress: () => setCalorieGoal("1 800") },
+      { text: "2 000 kcal", onPress: () => setCalorieGoal("2 000") },
+      { text: "Cancelar", style: "cancel" },
+    ]);
+
+  const generatePlan = () => {
+    setMeals((current) => [...current].sort(() => Math.random() - 0.5));
+    Alert.alert("Plano atualizado", "Reorganizámos as tuas refeições para este dia.");
+  };
+
+  const addMeal = () => {
+    const newMeal = {
+      id: `extra-${Date.now()}`,
+      type: "Nova refeição",
+      time: "21:30",
+      title: "Bowl de Iogurte, Fruta e Aveia",
+      meta: "5 min · Simples",
+      calories: "240 kcal",
+      image:
+        "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80",
+    };
+    setMeals((current) => [...current, newMeal]);
+  };
+
+  const toggleFavorite = (mealId: string) => {
+    setFavoriteMealIds((current) =>
+      current.includes(mealId)
+        ? current.filter((id) => id !== mealId)
+        : [...current, mealId],
+    );
+  };
+
+  const handleMealMenu = (mealId: string) => {
+    const meal = meals.find((item) => item.id === mealId);
+    if (!meal) return;
+
+    Alert.alert(meal.title, "O que queres fazer?", [
+      {
+        text: "Remover refeição",
+        style: "destructive",
+        onPress: () => setMeals((current) => current.filter((item) => item.id !== mealId)),
+      },
+      { text: "Cancelar", style: "cancel" },
+    ]);
+  };
 
   return (
     <AppBackground
@@ -47,7 +105,7 @@ export default function PlanScreen() {
             <AppLogo width={118} height={36} />
 
             <View style={styles.headerActions}>
-              <Pressable style={styles.iconButton} hitSlop={6}>
+              <Pressable style={styles.iconButton} hitSlop={6} onPress={showNotifications}>
                 <Ionicons name="notifications-outline" size={19} color={COLORS.ink} />
                 <View style={styles.notificationDot} />
               </Pressable>
@@ -64,17 +122,26 @@ export default function PlanScreen() {
           </View>
 
           <View style={styles.weekRow}>
-            <Pressable style={styles.weekArrow}>
-              <Ionicons name="chevron-back" size={13} color="#6E7D79" />
+            <Pressable
+              style={styles.weekArrow}
+              onPress={() => setSelectedDayIndex((index) => Math.max(0, index - 1))}
+              disabled={selectedDayIndex === 0}
+            >
+              <Ionicons
+                name="chevron-back"
+                size={15}
+                color={selectedDayIndex === 0 ? "#B8C1BE" : "#6E7D79"}
+              />
             </Pressable>
 
             {planWeek.map((item, index) => {
-              const selected = index === 3;
+              const selected = index === selectedDayIndex;
 
               return (
                 <Pressable
                   key={item.date}
                   style={[styles.dayItem, selected && styles.selectedDay]}
+                  onPress={() => setSelectedDayIndex(index)}
                 >
                   <Text style={[styles.dayName, selected && styles.selectedDayText]}>
                     {item.day}
@@ -86,8 +153,16 @@ export default function PlanScreen() {
               );
             })}
 
-            <Pressable style={styles.weekArrow}>
-              <Ionicons name="chevron-forward" size={13} color="#6E7D79" />
+            <Pressable
+              style={styles.weekArrow}
+              onPress={() => setSelectedDayIndex((index) => Math.min(planWeek.length - 1, index + 1))}
+              disabled={selectedDayIndex === planWeek.length - 1}
+            >
+              <Ionicons
+                name="chevron-forward"
+                size={15}
+                color={selectedDayIndex === planWeek.length - 1 ? "#B8C1BE" : "#6E7D79"}
+              />
             </Pressable>
           </View>
 
@@ -100,10 +175,12 @@ export default function PlanScreen() {
             </View>
 
             <View style={styles.goalInfo}>
-              <Text style={styles.todayLabel}>Hoje</Text>
+              <Text style={styles.todayLabel}>
+                {selectedDayIndex === 3 ? "Hoje" : `${selectedDay.day} ${selectedDay.date}`}
+              </Text>
               <View style={styles.calorieRow}>
                 <Text style={styles.calorieValue}>{planCopy.calorieConsumed}</Text>
-                <Text style={styles.calorieGoal}> / {planCopy.calorieGoal} kcal</Text>
+                <Text style={styles.calorieGoal}> / {calorieGoal} kcal</Text>
               </View>
 
               <View style={styles.macroRow}>
@@ -113,27 +190,37 @@ export default function PlanScreen() {
               </View>
             </View>
 
-            <Pressable style={styles.adjustButton}>
+            <Pressable style={styles.adjustButton} onPress={adjustGoal}>
               <Ionicons name="options-outline" size={11} color={COLORS.ink} />
               <Text style={styles.adjustText}>Ajustar objetivo</Text>
             </Pressable>
           </View>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>As tuas refeições de hoje</Text>
-            <Pressable style={styles.planButton}>
+            <Text style={styles.sectionTitle}>
+              {selectedDayIndex === 3
+                ? "As tuas refeições de hoje"
+                : `Refeições de ${selectedDay.day} ${selectedDay.date}`}
+            </Text>
+            <Pressable style={styles.planButton} onPress={generatePlan}>
               <Ionicons name="sparkles-outline" size={12} color={COLORS.darkGreen} />
               <Text style={styles.planButtonText}>Gerar plano</Text>
             </Pressable>
           </View>
 
           <View style={styles.mealsList}>
-            {planMeals.map((meal) => (
-              <PlanMealCard key={meal.id} meal={meal} />
+            {meals.map((meal) => (
+              <PlanMealCard
+                key={meal.id}
+                meal={meal}
+                isFavorite={favoriteMealIds.includes(meal.id)}
+                onFavoritePress={() => toggleFavorite(meal.id)}
+                onMorePress={() => handleMealMenu(meal.id)}
+              />
             ))}
           </View>
 
-          <Pressable style={styles.addMealCard}>
+          <Pressable style={styles.addMealCard} onPress={addMeal}>
             <View style={styles.addIcon}>
               <Ionicons name="add" size={19} color="#FFFFFF" />
             </View>
@@ -229,7 +316,7 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 8,
+    fontSize: 9,
     color: "#286A4B",
   },
   hero: {
@@ -239,8 +326,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 25,
-    lineHeight: 30,
+    fontSize: 29,
+    lineHeight: 35,
     letterSpacing: -0.7,
     color: COLORS.ink,
   },
@@ -248,7 +335,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     maxWidth: 320,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 9.2,
+    fontSize: 12.5,
     lineHeight: 13,
     color: COLORS.muted,
   },
@@ -281,13 +368,13 @@ const styles = StyleSheet.create({
   },
   dayName: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 6.5,
+    fontSize: 8,
     color: "#7A8582",
   },
   dayDate: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 9,
+    fontSize: 10.5,
     color: "#314C48",
   },
   selectedDayText: {
@@ -328,7 +415,7 @@ const styles = StyleSheet.create({
   ringUnit: {
     marginTop: 1,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 5.5,
+    fontSize: 6.5,
     color: COLORS.muted,
   },
   goalInfo: {
@@ -338,7 +425,7 @@ const styles = StyleSheet.create({
   },
   todayLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 7,
+    fontSize: 8,
     color: COLORS.muted,
   },
   calorieRow: {
@@ -348,7 +435,7 @@ const styles = StyleSheet.create({
   },
   calorieValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.ink,
   },
   calorieGoal: {
@@ -404,7 +491,7 @@ const styles = StyleSheet.create({
   },
   adjustText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 5.8,
+    fontSize: 7,
     color: COLORS.ink,
   },
   sectionHeader: {
@@ -461,7 +548,7 @@ const styles = StyleSheet.create({
   },
   addTitle: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 7.5,
+    fontSize: 9,
     color: COLORS.ink,
   },
   addSubtitle: {
