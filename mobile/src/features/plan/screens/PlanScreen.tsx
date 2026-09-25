@@ -479,12 +479,12 @@ const styles = StyleSheet.create({
   },
   macroLabel: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 7.5,
+    fontSize: 9,
     color: COLORS.muted,
   },
   macroValue: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 8,
+    fontSize: 9,
     color: "#4E6761",
   },
   macroTrack: {
