@@ -127,11 +127,17 @@ export default function ExploreScreen() {
             onFilterPress={() => setFilterVisible(true)}
           />
 
-          <ExploreFilterChips
-            filters={exploreFilters}
-            activeFilter={activeContentType}
-            onFilterChange={setActiveContentType}
-          />
+          <View style={styles.contentTypeSection}>
+            <View style={styles.sectionDivider}>
+              <View style={styles.dividerLine} />
+            </View>
+
+            <ExploreFilterChips
+              filters={exploreFilters}
+              activeFilter={activeContentType}
+              onFilterChange={setActiveContentType}
+            />
+          </View>
 
           {activeContentType === "Guardados" ? (
             <View style={styles.emptyState}>
@@ -323,6 +329,23 @@ const styles = StyleSheet.create({
   hero: {
     width: "100%",
     marginBottom: 11,
+  },
+  contentTypeSection: {
+    width: "100%",
+    marginTop: 7,
+    paddingTop: 2,
+    paddingBottom: 4,
+    alignItems: "center",
+  },
+  sectionDivider: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 9,
+  },
+  dividerLine: {
+    width: "92%",
+    height: 1,
+    backgroundColor: "rgba(82,117,108,0.16)",
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
