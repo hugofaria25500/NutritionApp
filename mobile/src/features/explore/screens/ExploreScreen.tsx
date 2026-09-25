@@ -16,9 +16,11 @@ import ExploreSearchBar from "@/features/explore/components/ExploreSearchBar";
 import {
   exploreCopy,
   exploreFilters,
+  discoveryIngredients,
   featuredIngredients,
-  featuredRecipes,
+  forYouRecipes,
   popularCategories,
+  popularRecipes,
   quickRecipes,
 } from "@/features/explore/data/exploreData";
 import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
@@ -71,8 +73,13 @@ export default function ExploreScreen() {
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<DifficultyFilter>("all");
 
-  const visibleFeaturedRecipes = useMemo(
-    () => filterRecipes(featuredRecipes, query, selectedTime, selectedDifficulty),
+  const visiblePopularRecipes = useMemo(
+    () => filterRecipes(popularRecipes, query, selectedTime, selectedDifficulty),
+    [query, selectedTime, selectedDifficulty],
+  );
+
+  const visibleForYouRecipes = useMemo(
+    () => filterRecipes(forYouRecipes, query, selectedTime, selectedDifficulty),
     [query, selectedTime, selectedDifficulty],
   );
 
@@ -83,7 +90,7 @@ export default function ExploreScreen() {
 
   const favoriteRecipes = useMemo(
     () =>
-      [...featuredRecipes, ...quickRecipes].filter((recipe) =>
+      [...popularRecipes, ...forYouRecipes, ...quickRecipes].filter((recipe) =>
         favoriteRecipeIds.has(recipe.id),
       ),
     [favoriteRecipeIds],
@@ -239,7 +246,7 @@ export default function ExploreScreen() {
               </HomeCarousel>
 
               <HomeSectionHeader
-                title="Receitas em destaque"
+                title="Receitas populares"
                 actionLabel="Ver todas"
                 onActionPress={() => setQuery("")}
                 marginTop={20}
@@ -292,6 +299,30 @@ export default function ExploreScreen() {
               )}
 
               <HomeSectionHeader
+                title="Receitas para ti"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              {visibleForYouRecipes.length > 0 ? (
+                <HomeCarousel snapInterval={188} large>
+                  {visibleForYouRecipes.map((recipe) => (
+                    <ExploreRecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      isFavorite={favoriteRecipeIds.has(recipe.id)}
+                      onFavoritePress={() => toggleFavorite(recipe.id)}
+                    />
+                  ))}
+                </HomeCarousel>
+              ) : (
+                <Text style={styles.noResults}>
+                  Não encontrámos receitas para estes filtros.
+                </Text>
+              )}
+
+              <HomeSectionHeader
                 title="Receitas rápidas"
                 actionLabel="Ver todas"
                 onActionPress={() => setQuery("")}
@@ -328,10 +359,6 @@ export default function ExploreScreen() {
                   <ExploreIngredientCard
                     key={ingredient.id}
                     ingredient={ingredient}
-                    onPress={() => {
-                      setQuery(ingredient.title);
-                      setActiveContentType("Ingredientes");
-                    }}
                   />
                 ))}
               </HomeCarousel>
