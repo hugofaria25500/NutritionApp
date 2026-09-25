@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -78,6 +79,14 @@ export default function ExploreScreen() {
   const visibleQuickRecipes = useMemo(
     () => filterRecipes(quickRecipes, query, selectedTime, selectedDifficulty),
     [query, selectedTime, selectedDifficulty],
+  );
+
+  const favoriteRecipes = useMemo(
+    () =>
+      [...featuredRecipes, ...quickRecipes].filter((recipe) =>
+        favoriteRecipeIds.has(recipe.id),
+      ),
+    [favoriteRecipeIds],
   );
 
   const visibleIngredients = useMemo(() => {
@@ -267,6 +276,8 @@ export default function ExploreScreen() {
                     <ExploreRecipeCard
                       key={recipe.id}
                       recipe={recipe}
+                      isFavorite={favoriteRecipeIds.has(recipe.id)}
+                      onFavoritePress={() => toggleFavorite(recipe.id)}
                       onPress={() => router.push("/explore")}
                     />
                   ))}
