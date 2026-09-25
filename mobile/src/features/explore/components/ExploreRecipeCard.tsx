@@ -5,7 +5,7 @@ import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 
 type ExploreRecipeCardProps = {
   recipe: ExploreRecipe;
-  onPress: () => void;
+  onPress?: () => void;
   isFavorite?: boolean;
   onFavoritePress?: () => void;
 };
