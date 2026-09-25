@@ -1,14 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+
+type TimeFilter = "all" | "15" | "30";
+type DifficultyFilter = "all" | "easy" | "medium";
 
 type ExploreFilterSheetProps = {
   visible: boolean;
   onClose: () => void;
-  selectedTime: "all" | "15" | "30";
-  selectedDifficulty: "all" | "easy" | "medium";
-  onTimeChange: (value: "all" | "15" | "30") => void;
-  onDifficultyChange: (value: "all" | "easy" | "medium") => void;
-  onReset: () => void;
+  selectedTime: TimeFilter;
+  selectedDifficulty: DifficultyFilter;
+  onApply: (time: TimeFilter, difficulty: DifficultyFilter) => void;
 };
 
 type OptionProps = {
@@ -35,10 +37,29 @@ export default function ExploreFilterSheet({
   onClose,
   selectedTime,
   selectedDifficulty,
-  onTimeChange,
-  onDifficultyChange,
-  onReset,
+  onApply,
 }: ExploreFilterSheetProps) {
+  const [draftTime, setDraftTime] = useState<TimeFilter>(selectedTime);
+  const [draftDifficulty, setDraftDifficulty] =
+    useState<DifficultyFilter>(selectedDifficulty);
+
+  useEffect(() => {
+    if (visible) {
+      setDraftTime(selectedTime);
+      setDraftDifficulty(selectedDifficulty);
+    }
+  }, [visible, selectedTime, selectedDifficulty]);
+
+  const handleReset = () => {
+    setDraftTime("all");
+    setDraftDifficulty("all");
+  };
+
+  const handleApply = () => {
+    onApply(draftTime, draftDifficulty);
+    onClose();
+  };
+
   return (
     <Modal
       visible={visible}
@@ -73,18 +94,18 @@ export default function ExploreFilterSheet({
           <View style={styles.optionsRow}>
             <Option
               label="Qualquer"
-              active={selectedTime === "all"}
-              onPress={() => onTimeChange("all")}
+              active={draftTime === "all"}
+              onPress={() => setDraftTime("all")}
             />
             <Option
               label="Até 15 min"
-              active={selectedTime === "15"}
-              onPress={() => onTimeChange("15")}
+              active={draftTime === "15"}
+              onPress={() => setDraftTime("15")}
             />
             <Option
               label="Até 30 min"
-              active={selectedTime === "30"}
-              onPress={() => onTimeChange("30")}
+              active={draftTime === "30"}
+              onPress={() => setDraftTime("30")}
             />
           </View>
 
@@ -92,26 +113,26 @@ export default function ExploreFilterSheet({
           <View style={styles.optionsRow}>
             <Option
               label="Qualquer"
-              active={selectedDifficulty === "all"}
-              onPress={() => onDifficultyChange("all")}
+              active={draftDifficulty === "all"}
+              onPress={() => setDraftDifficulty("all")}
             />
             <Option
               label="Fácil"
-              active={selectedDifficulty === "easy"}
-              onPress={() => onDifficultyChange("easy")}
+              active={draftDifficulty === "easy"}
+              onPress={() => setDraftDifficulty("easy")}
             />
             <Option
               label="Médio"
-              active={selectedDifficulty === "medium"}
-              onPress={() => onDifficultyChange("medium")}
+              active={draftDifficulty === "medium"}
+              onPress={() => setDraftDifficulty("medium")}
             />
           </View>
 
           <View style={styles.actions}>
-            <Pressable style={styles.resetButton} onPress={onReset}>
+            <Pressable style={styles.resetButton} onPress={handleReset}>
               <Text style={styles.resetText}>Limpar</Text>
             </Pressable>
-            <Pressable style={styles.applyButton} onPress={onClose}>
+            <Pressable style={styles.applyButton} onPress={handleApply}>
               <Text style={styles.applyText}>Aplicar filtros</Text>
             </Pressable>
           </View>
