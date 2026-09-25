@@ -211,46 +211,6 @@ export default function ExploreScreen() {
             </>          ) : (
             <>
               <HomeSectionHeader
-                title="Categorias populares"
-                actionLabel="Ver todas"
-                onActionPress={() => setQuery("")}
-                marginTop={20}
-              />
-
-              <HomeCarousel snapInterval={90}>
-                {popularCategories.map((category) => (
-                  <ExploreCategoryCard
-                    key={category.id}
-                    category={category}
-                  />
-                ))}
-              </HomeCarousel>
-
-              <HomeSectionHeader
-                title="Receitas populares"
-                actionLabel="Ver todas"
-                onActionPress={() => setQuery("")}
-                marginTop={20}
-              />
-
-              {visiblePopularRecipes.length > 0 ? (
-                <HomeCarousel snapInterval={188} large>
-                  {visiblePopularRecipes.map((recipe) => (
-                    <ExploreRecipeCard
-                      key={recipe.id}
-                      recipe={recipe}
-                      isFavorite={favoriteRecipeIds.has(recipe.id)}
-                      onFavoritePress={() => toggleFavorite(recipe.id)}
-                    />
-                  ))}
-                </HomeCarousel>
-              ) : (
-                <Text style={styles.noResults}>
-                  Não encontrámos receitas com estes filtros.
-                </Text>
-              )}
-
-              <HomeSectionHeader
                 title="Os teus favoritos"
                 actionLabel="Ver todos"
                 onActionPress={() => setQuery("")}
@@ -298,6 +258,30 @@ export default function ExploreScreen() {
               ) : (
                 <Text style={styles.noResults}>
                   Não encontrámos receitas para estes filtros.
+                </Text>
+              )}
+
+              <HomeSectionHeader
+                title="Receitas populares"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              {visiblePopularRecipes.length > 0 ? (
+                <HomeCarousel snapInterval={188} large>
+                  {visiblePopularRecipes.map((recipe) => (
+                    <ExploreRecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      isFavorite={favoriteRecipeIds.has(recipe.id)}
+                      onFavoritePress={() => toggleFavorite(recipe.id)}
+                    />
+                  ))}
+                </HomeCarousel>
+              ) : (
+                <Text style={styles.noResults}>
+                  Não encontrámos receitas com estes filtros.
                 </Text>
               )}
 
