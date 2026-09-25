@@ -219,7 +219,6 @@ export default function ExploreScreen() {
                   <ExploreCategoryCard
                     key={category.id}
                     category={category}
-                    onPress={() => setQuery(category.title)}
                   />
                 ))}
               </HomeCarousel>
@@ -239,7 +238,6 @@ export default function ExploreScreen() {
                       recipe={recipe}
                       isFavorite={favoriteRecipeIds.has(recipe.id)}
                       onFavoritePress={() => toggleFavorite(recipe.id)}
-                      onPress={() => router.push("/explore")}
                     />
                   ))}
                 </HomeCarousel>
@@ -264,7 +262,6 @@ export default function ExploreScreen() {
                       recipe={recipe}
                       isFavorite
                       onFavoritePress={() => toggleFavorite(recipe.id)}
-                      onPress={() => router.push("/explore")}
                     />
                   ))}
                 </HomeCarousel>
@@ -316,7 +313,6 @@ export default function ExploreScreen() {
                       recipe={recipe}
                       isFavorite={favoriteRecipeIds.has(recipe.id)}
                       onFavoritePress={() => toggleFavorite(recipe.id)}
-                      onPress={() => router.push("/explore")}
                     />
                   ))}
                 </HomeCarousel>
