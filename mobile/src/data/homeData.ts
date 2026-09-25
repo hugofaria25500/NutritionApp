@@ -16,6 +16,12 @@ export type PopularSuggestion = {
   image: string;
 };
 
+export type RecipeSuggestion = {
+  title: string;
+  meta: string;
+  image: string;
+};
+
 export type NavigationItem = {
   label: string;
   icon: IconName;
@@ -29,6 +35,8 @@ export const homeCopy = {
   searchPlaceholder: "Ex.: Carne, rápido e poucos\ningredientes...",
   popularTitle: "Sugestões populares",
   popularAction: "Ver todas",
+  recipesTitle: "Receitas para ti",
+  recipesAction: "Ver todas",
 };
 
 export const homeActions: HomeAction[] = [
@@ -82,6 +90,39 @@ export const popularSuggestions: PopularSuggestion[] = [
     subtitle: "Cheias de sabor",
     image:
       "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=500&q=80",
+  },
+];
+
+export const recipeSuggestions: RecipeSuggestion[] = [
+  {
+    title: "Frango cremoso com legumes",
+    meta: "25 min · Fácil",
+    image:
+      "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    title: "Massa com pesto e tomate",
+    meta: "20 min · Fácil",
+    image:
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    title: "Bowl de salmão e abacate",
+    meta: "30 min · Médio",
+    image:
+      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    title: "Salada crocante",
+    meta: "15 min · Fácil",
+    image:
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    title: "Legumes assados",
+    meta: "35 min · Fácil",
+    image:
+      "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
   },
 ];
 
