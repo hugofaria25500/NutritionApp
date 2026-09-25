@@ -37,12 +37,13 @@ export default function ExploreFilterChips({
 const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
-    marginTop: 10,
     padding: 3,
     borderRadius: 20,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(231,239,233,0.78)",
+    backgroundColor: "rgba(232,240,234,0.92)",
+    borderWidth: 1,
+    borderColor: "rgba(55,99,88,0.06)",
   },
   item: {
     minWidth: 88,
