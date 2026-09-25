@@ -167,33 +167,35 @@ export default function PlanScreen() {
           </View>
 
           <View style={styles.goalCard}>
-            <View style={styles.progressRing}>
-              <View style={styles.progressRingInner}>
-                <Text style={styles.ringValue}>{planCopy.calorieConsumed}</Text>
-                <Text style={styles.ringUnit}>kcal</Text>
+            <View style={styles.goalTopRow}>
+              <View style={styles.progressRing}>
+                <View style={styles.progressRingInner}>
+                  <Text style={styles.ringValue}>{planCopy.calorieConsumed}</Text>
+                  <Text style={styles.ringUnit}>kcal</Text>
+                </View>
               </View>
+
+              <View style={styles.goalMain}>
+                <Text style={styles.todayLabel}>
+                  {selectedDayIndex === 3 ? "Hoje" : `${selectedDay.day} ${selectedDay.date}`}
+                </Text>
+                <View style={styles.calorieRow}>
+                  <Text style={styles.calorieValue}>{planCopy.calorieConsumed}</Text>
+                  <Text style={styles.calorieGoal}> / {calorieGoal} kcal</Text>
+                </View>
+              </View>
+
+              <Pressable style={styles.adjustButton} onPress={adjustGoal}>
+                <Ionicons name="options-outline" size={12} color={COLORS.ink} />
+                <Text style={styles.adjustText}>Ajustar objetivo</Text>
+              </Pressable>
             </View>
 
-            <View style={styles.goalInfo}>
-              <Text style={styles.todayLabel}>
-                {selectedDayIndex === 3 ? "Hoje" : `${selectedDay.day} ${selectedDay.date}`}
-              </Text>
-              <View style={styles.calorieRow}>
-                <Text style={styles.calorieValue}>{planCopy.calorieConsumed}</Text>
-                <Text style={styles.calorieGoal}> / {calorieGoal} kcal</Text>
-              </View>
-
-              <View style={styles.macroRow}>
-                <Macro label="Proteínas" value={planCopy.protein} progress={45} />
-                <Macro label="Hidratos" value={planCopy.carbs} progress={30} />
-                <Macro label="Gorduras" value={planCopy.fats} progress={25} />
-              </View>
+            <View style={styles.macroRow}>
+              <Macro label="Proteínas" value={planCopy.protein} progress={45} />
+              <Macro label="Hidratos" value={planCopy.carbs} progress={30} />
+              <Macro label="Gorduras" value={planCopy.fats} progress={25} />
             </View>
-
-            <Pressable style={styles.adjustButton} onPress={adjustGoal}>
-              <Ionicons name="options-outline" size={11} color={COLORS.ink} />
-              <Text style={styles.adjustText}>Ajustar objetivo</Text>
-            </Pressable>
           </View>
 
           <View style={styles.sectionHeader}>
@@ -382,20 +384,22 @@ const styles = StyleSheet.create({
   },
   goalCard: {
     width: "100%",
-    minHeight: 88,
-    padding: 10,
-    borderRadius: 14,
+    minHeight: 116,
+    padding: 12,
+    borderRadius: 16,
     backgroundColor: "rgba(237,245,236,0.92)",
     borderWidth: 1,
     borderColor: "rgba(45,140,69,0.05)",
+  },
+  goalTopRow: {
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    position: "relative",
   },
   progressRing: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 62,
+    height: 62,
+    borderRadius: 31,
     borderWidth: 8,
     borderColor: "#D4E8D8",
     borderTopColor: COLORS.green,
@@ -409,23 +413,22 @@ const styles = StyleSheet.create({
   },
   ringValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 9,
+    fontSize: 10,
     color: COLORS.ink,
   },
   ringUnit: {
     marginTop: 1,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 6.5,
+    fontSize: 6,
     color: COLORS.muted,
   },
-  goalInfo: {
+  goalMain: {
     flex: 1,
-    marginLeft: 10,
-    paddingRight: 4,
+    marginLeft: 12,
   },
   todayLabel: {
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 10,
+    fontFamily: "PlusJakartaSans_500Medium",
+    fontSize: 9,
     color: COLORS.muted,
   },
   calorieRow: {
@@ -435,18 +438,36 @@ const styles = StyleSheet.create({
   },
   calorieValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 19,
+    fontSize: 21,
     color: COLORS.ink,
   },
   calorieGoal: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 10,
+    fontSize: 9.5,
     color: COLORS.muted,
   },
+  adjustButton: {
+    height: 30,
+    paddingHorizontal: 9,
+    borderRadius: 9,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(255,255,255,0.82)",
+  },
+  adjustText: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 7,
+    color: COLORS.ink,
+  },
   macroRow: {
+    width: "100%",
     flexDirection: "row",
     gap: 8,
-    marginTop: 6,
+    marginTop: 12,
+    paddingTop: 9,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(45,140,69,0.10)",
   },
   macro: {
     flex: 1,
@@ -454,20 +475,20 @@ const styles = StyleSheet.create({
   macroHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 2,
+    marginBottom: 4,
   },
   macroLabel: {
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 8.5,
+    fontFamily: "PlusJakartaSans_500Medium",
+    fontSize: 7.5,
     color: COLORS.muted,
   },
   macroValue: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 8.5,
+    fontSize: 8,
     color: "#4E6761",
   },
   macroTrack: {
-    height: 3,
+    height: 4,
     borderRadius: 2,
     backgroundColor: "#D9E7DC",
     overflow: "hidden",
@@ -476,23 +497,6 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 2,
     backgroundColor: COLORS.green,
-  },
-  adjustButton: {
-    position: "absolute",
-    right: 8,
-    top: 9,
-    minHeight: 25,
-    paddingHorizontal: 7,
-    borderRadius: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    backgroundColor: "rgba(255,255,255,0.8)",
-  },
-  adjustText: {
-    fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 8.5,
-    color: COLORS.ink,
   },
   sectionHeader: {
     width: "100%",
