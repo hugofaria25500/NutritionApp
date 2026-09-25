@@ -19,6 +19,11 @@ export type ExploreIngredient = {
   image: string;
 };
 
+export type ExploreIngredientCategory = {
+  id: string;
+  title: string;
+};
+
 export const exploreCopy = {
   title: "Explorar",
   subtitle: "Descobre receitas, ingredientes e muito mais.",
@@ -206,3 +211,13 @@ export const discoveryIngredients: ExploreIngredient[] = [
   },
 ];
 
+
+
+export const ingredientCategories: ExploreIngredientCategory[] = [
+  { id: "proteins", title: "Proteínas" },
+  { id: "vegetables", title: "Vegetais" },
+  { id: "fruits", title: "Frutas" },
+  { id: "grains", title: "Cereais" },
+  { id: "legumes", title: "Leguminosas" },
+  { id: "dairy", title: "Laticínios" },
+];

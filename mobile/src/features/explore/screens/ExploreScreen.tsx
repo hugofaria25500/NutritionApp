@@ -9,6 +9,7 @@ import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
 import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
 import ExploreIngredientCard from "@/features/explore/components/ExploreIngredientCard";
+import ExploreIngredientCategoryCard from "@/features/explore/components/ExploreIngredientCategoryCard";
 import ExploreRecipeCard from "@/features/explore/components/ExploreRecipeCard";
 import ExploreSearchBar from "@/features/explore/components/ExploreSearchBar";
 import {
@@ -16,6 +17,7 @@ import {
   exploreFilters,
   discoveryIngredients,
   featuredIngredients,
+  ingredientCategories,
   forYouRecipes,
   popularRecipes,
   quickRecipes,
@@ -184,6 +186,22 @@ export default function ExploreScreen() {
                   <ExploreIngredientCard
                     key={ingredient.id}
                     ingredient={ingredient}
+                  />
+                ))}
+              </HomeCarousel>
+
+              <HomeSectionHeader
+                title="Explorar por categoria"
+                actionLabel=""
+                onActionPress={() => undefined}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={111}>
+                {ingredientCategories.map((category) => (
+                  <ExploreIngredientCategoryCard
+                    key={category.id}
+                    category={category}
                   />
                 ))}
               </HomeCarousel>
