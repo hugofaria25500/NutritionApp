@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Href, useRouter } from "expo-router";
+import { Href, usePathname, useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type NavigationItem = {
@@ -18,11 +18,12 @@ export default function HomeBottomNavigation({
   bottom,
 }: HomeBottomNavigationProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <View style={[styles.container, { bottom }]}>
       {items.map((item) => {
-        const active = item.route === "/home";
+        const active = pathname === item.route;
 
         return (
           <Pressable
