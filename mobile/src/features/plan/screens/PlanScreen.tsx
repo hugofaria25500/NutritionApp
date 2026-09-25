@@ -110,9 +110,6 @@ export default function PlanScreen() {
                 <View style={styles.notificationDot} />
               </Pressable>
 
-              <View style={styles.avatar}>
-                <Text style={styles.avatarText}>HF</Text>
-              </View>
             </View>
           </View>
 
