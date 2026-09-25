@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import { useAppFonts } from "@/components/ui/useAppFonts";
-import type { ExploreIngredient, ExploreRecipe } from "@/features/explore/data/exploreData";
+import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
 import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
 import ExploreRecipeCard from "@/features/explore/components/ExploreRecipeCard";
