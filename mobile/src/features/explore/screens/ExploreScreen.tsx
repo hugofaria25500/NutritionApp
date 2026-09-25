@@ -427,5 +427,24 @@ const styles = StyleSheet.create({
     color: "#7E8986",
     textAlign: "center",
   },
+  favoriteEmpty: {
+    width: "100%",
+    minHeight: 48,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "rgba(255,255,255,0.72)",
+    borderWidth: 1,
+    borderColor: "rgba(20,59,51,0.05)",
+  },
+  favoriteEmptyText: {
+    flex: 1,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 8,
+    lineHeight: 12,
+    color: "#7E8986",
+  },
 
 });
