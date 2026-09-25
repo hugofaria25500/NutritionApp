@@ -54,7 +54,6 @@ function filterRecipes(
 }
 
 export default function ExploreScreen() {
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
   const [query, setQuery] = useState("");
