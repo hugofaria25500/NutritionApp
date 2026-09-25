@@ -32,7 +32,6 @@ export const homeCopy = {
   greeting: "Como te podemos",
   greetingAccent: "ajudar hoje?",
   helper: "Escolhe uma opção ou descreve\no que te apetece. Nós tratamos do resto.",
-  searchPlaceholder: "Ex.: Carne, rápido e poucos\ningredientes...",
   popularTitle: "Sugestões populares",
   popularAction: "Ver todas",
   recipesTitle: "Receitas para ti",
