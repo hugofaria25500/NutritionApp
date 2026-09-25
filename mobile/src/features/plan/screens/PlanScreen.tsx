@@ -1,0 +1,473 @@
+import { Ionicons } from "@expo/vector-icons";
+import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import AppBackground from "@/components/ui/AppBackground";
+import AppLogo from "@/components/ui/AppLogo";
+import { useAppFonts } from "@/components/ui/useAppFonts";
+import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
+import { navigationItems } from "@/features/home/data/homeData";
+import PlanMealCard from "@/features/plan/components/PlanMealCard";
+import { planCopy, planMeals, planWeek } from "@/features/plan/data/planData";
+
+const COLORS = {
+  ink: "#082D31",
+  muted: "#7C8584",
+  green: "#2D8C45",
+  darkGreen: "#087C5B",
+};
+
+export default function PlanScreen() {
+  const insets = useSafeAreaInsets();
+  const [fontsLoaded] = useAppFonts();
+
+  if (!fontsLoaded) return null;
+
+  const bottomBarBottom = Math.max(insets.bottom, 8) + 8;
+
+  return (
+    <AppBackground
+      source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
+      resizeMode="cover"
+    >
+      <View style={styles.backgroundWash} />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: Math.max(insets.top, 8),
+            paddingBottom: 112 + insets.bottom,
+          },
+        ]}
+      >
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <AppLogo width={118} height={36} />
+
+            <View style={styles.headerActions}>
+              <Pressable style={styles.iconButton} hitSlop={6}>
+                <Ionicons name="notifications-outline" size={19} color={COLORS.ink} />
+                <View style={styles.notificationDot} />
+              </Pressable>
+
+              <View style={styles.avatar}>
+                <Text style={styles.avatarText}>HF</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.hero}>
+            <Text style={styles.title}>{planCopy.title}</Text>
+            <Text style={styles.subtitle}>{planCopy.subtitle}</Text>
+          </View>
+
+          <View style={styles.weekRow}>
+            <Pressable style={styles.weekArrow}>
+              <Ionicons name="chevron-back" size={13} color="#6E7D79" />
+            </Pressable>
+
+            {planWeek.map((item, index) => {
+              const selected = index === 3;
+
+              return (
+                <Pressable
+                  key={item.date}
+                  style={[styles.dayItem, selected && styles.selectedDay]}
+                >
+                  <Text style={[styles.dayName, selected && styles.selectedDayText]}>
+                    {item.day}
+                  </Text>
+                  <Text style={[styles.dayDate, selected && styles.selectedDayText]}>
+                    {item.date}
+                  </Text>
+                </Pressable>
+              );
+            })}
+
+            <Pressable style={styles.weekArrow}>
+              <Ionicons name="chevron-forward" size={13} color="#6E7D79" />
+            </Pressable>
+          </View>
+
+          <View style={styles.goalCard}>
+            <View style={styles.progressRing}>
+              <View style={styles.progressRingInner}>
+                <Text style={styles.ringValue}>{planCopy.calorieConsumed}</Text>
+                <Text style={styles.ringUnit}>kcal</Text>
+              </View>
+            </View>
+
+            <View style={styles.goalInfo}>
+              <Text style={styles.todayLabel}>Hoje</Text>
+              <View style={styles.calorieRow}>
+                <Text style={styles.calorieValue}>{planCopy.calorieConsumed}</Text>
+                <Text style={styles.calorieGoal}> / {planCopy.calorieGoal} kcal</Text>
+              </View>
+
+              <View style={styles.macroRow}>
+                <Macro label="Proteínas" value={planCopy.protein} progress={45} />
+                <Macro label="Hidratos" value={planCopy.carbs} progress={30} />
+                <Macro label="Gorduras" value={planCopy.fats} progress={25} />
+              </View>
+            </View>
+
+            <Pressable style={styles.adjustButton}>
+              <Ionicons name="options-outline" size={11} color={COLORS.ink} />
+              <Text style={styles.adjustText}>Ajustar objetivo</Text>
+            </Pressable>
+          </View>
+
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>As tuas refeições de hoje</Text>
+            <Pressable style={styles.planButton}>
+              <Ionicons name="sparkles-outline" size={12} color={COLORS.darkGreen} />
+              <Text style={styles.planButtonText}>Gerar plano</Text>
+            </Pressable>
+          </View>
+
+          <View style={styles.mealsList}>
+            {planMeals.map((meal) => (
+              <PlanMealCard key={meal.id} meal={meal} />
+            ))}
+          </View>
+
+          <Pressable style={styles.addMealCard}>
+            <View style={styles.addIcon}>
+              <Ionicons name="add" size={19} color="#FFFFFF" />
+            </View>
+            <View>
+              <Text style={styles.addTitle}>Adicionar refeição</Text>
+              <Text style={styles.addSubtitle}>Completa o teu dia com uma nova refeição</Text>
+            </View>
+          </Pressable>
+        </View>
+      </ScrollView>
+
+      <HomeBottomNavigation items={navigationItems} bottom={bottomBarBottom} />
+    </AppBackground>
+  );
+}
+
+function Macro({
+  label,
+  value,
+  progress,
+}: {
+  label: string;
+  value: string;
+  progress: number;
+}) {
+  return (
+    <View style={styles.macro}>
+      <View style={styles.macroHeader}>
+        <Text style={styles.macroLabel}>{label}</Text>
+        <Text style={styles.macroValue}>{value}</Text>
+      </View>
+      <View style={styles.macroTrack}>
+        <View style={[styles.macroFill, { width: `${progress}%` }]} />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  backgroundWash: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(247,250,244,0.58)",
+  },
+  scrollContent: {
+    width: "100%",
+    alignItems: "center",
+  },
+  content: {
+    width: "100%",
+    maxWidth: 430,
+    paddingHorizontal: 15,
+  },
+  header: {
+    width: "100%",
+    height: 42,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  iconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.84)",
+    borderWidth: 1,
+    borderColor: "rgba(15,54,49,0.07)",
+  },
+  notificationDot: {
+    position: "absolute",
+    top: 7,
+    right: 8,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "#E7493C",
+  },
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#DCEDE0",
+    borderWidth: 1,
+    borderColor: "rgba(20,59,51,0.08)",
+  },
+  avatarText: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 8,
+    color: "#286A4B",
+  },
+  hero: {
+    width: "100%",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  title: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 25,
+    lineHeight: 30,
+    letterSpacing: -0.7,
+    color: COLORS.ink,
+  },
+  subtitle: {
+    marginTop: 3,
+    maxWidth: 320,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 9.2,
+    lineHeight: 13,
+    color: COLORS.muted,
+  },
+  weekRow: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 9,
+  },
+  weekArrow: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.82)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(20,59,51,0.05)",
+  },
+  dayItem: {
+    width: 34,
+    height: 39,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectedDay: {
+    backgroundColor: COLORS.darkGreen,
+  },
+  dayName: {
+    fontFamily: "PlusJakartaSans_500Medium",
+    fontSize: 6.5,
+    color: "#7A8582",
+  },
+  dayDate: {
+    marginTop: 2,
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 9,
+    color: "#314C48",
+  },
+  selectedDayText: {
+    color: "#FFFFFF",
+  },
+  goalCard: {
+    width: "100%",
+    minHeight: 88,
+    padding: 10,
+    borderRadius: 14,
+    backgroundColor: "rgba(237,245,236,0.92)",
+    borderWidth: 1,
+    borderColor: "rgba(45,140,69,0.05)",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "relative",
+  },
+  progressRing: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 8,
+    borderColor: "#D4E8D8",
+    borderTopColor: COLORS.green,
+    borderRightColor: COLORS.green,
+    borderBottomColor: COLORS.green,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  progressRingInner: {
+    alignItems: "center",
+  },
+  ringValue: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 9,
+    color: COLORS.ink,
+  },
+  ringUnit: {
+    marginTop: 1,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 5.5,
+    color: COLORS.muted,
+  },
+  goalInfo: {
+    flex: 1,
+    marginLeft: 10,
+    paddingRight: 4,
+  },
+  todayLabel: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 7,
+    color: COLORS.muted,
+  },
+  calorieRow: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    marginTop: 1,
+  },
+  calorieValue: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 14,
+    color: COLORS.ink,
+  },
+  calorieGoal: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 8,
+    color: COLORS.muted,
+  },
+  macroRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 6,
+  },
+  macro: {
+    flex: 1,
+  },
+  macroHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 2,
+  },
+  macroLabel: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 5.5,
+    color: COLORS.muted,
+  },
+  macroValue: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 5.5,
+    color: "#4E6761",
+  },
+  macroTrack: {
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: "#D9E7DC",
+    overflow: "hidden",
+  },
+  macroFill: {
+    height: "100%",
+    borderRadius: 2,
+    backgroundColor: COLORS.green,
+  },
+  adjustButton: {
+    position: "absolute",
+    right: 8,
+    top: 9,
+    minHeight: 25,
+    paddingHorizontal: 7,
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(255,255,255,0.8)",
+  },
+  adjustText: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 5.8,
+    color: COLORS.ink,
+  },
+  sectionHeader: {
+    width: "100%",
+    marginTop: 10,
+    marginBottom: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  sectionTitle: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 11,
+    color: COLORS.ink,
+  },
+  planButton: {
+    height: 26,
+    paddingHorizontal: 9,
+    borderRadius: 13,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(231,243,233,0.92)",
+  },
+  planButtonText: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 6.5,
+    color: COLORS.darkGreen,
+  },
+  mealsList: {
+    width: "100%",
+    gap: 6,
+  },
+  addMealCard: {
+    width: "100%",
+    minHeight: 52,
+    marginTop: 7,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#CFE2D2",
+    backgroundColor: "rgba(255,255,255,0.48)",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    gap: 9,
+  },
+  addIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.darkGreen,
+  },
+  addTitle: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 7.5,
+    color: COLORS.ink,
+  },
+  addSubtitle: {
+    marginTop: 2,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 5.8,
+    color: COLORS.muted,
+  },
+});
