@@ -1,11 +1,11 @@
 import { useRouter } from "expo-router";
-import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import { useAppFonts } from "@/components/ui/useAppFonts";
+import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 import ExploreCategoryCard from "@/features/explore/components/ExploreCategoryCard";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
 import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
@@ -111,7 +111,6 @@ export default function ExploreScreen() {
     });
   };
 
-
   return (
     <AppBackground
       source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
@@ -204,6 +203,8 @@ export default function ExploreScreen() {
                   <ExploreRecipeCard
                     key={recipe.id}
                     recipe={recipe}
+                    isFavorite={favoriteRecipeIds.has(recipe.id)}
+                    onFavoritePress={() => toggleFavorite(recipe.id)}
                     onPress={() => router.push("/explore")}
                   />
                 ))}
