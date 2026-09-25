@@ -10,7 +10,7 @@ import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigatio
 import { navigationItems } from "@/features/home/data/homeData";
 import ProgressHabitRow from "@/features/progress/components/ProgressHabitRow";
 import ProgressMetricCard from "@/features/progress/components/ProgressMetricCard";
-import { habits, insights, progressCopy, progressMetrics, weeklyCalories } from "@/features/progress/data/progressData";
+import { habits, insights, progressCopy, weeklyCalories } from "@/features/progress/data/progressData";
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
 
@@ -53,21 +53,6 @@ export default function ProgressScreen() {
                 <Text style={[styles.tabText,item===period&&styles.activeTabText]}>{item}</Text>
               </Pressable>
             ))}
-          </View>
-
-          <View style={styles.todayCard}>
-            <View style={styles.cardHeader}>
-              <View style={styles.headingLine}><Ionicons name="calendar-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.cardTitle}>Hoje</Text></View>
-              <Ionicons name="chevron-forward" size={14} color="#5E726D"/>
-            </View>
-            <View style={styles.todayContent}>
-              <View style={styles.calorieRing}>
-                <View style={styles.ringInner}><Text style={styles.ringNumber}>1 250</Text><Text style={styles.ringUnit}>/ 1 800 kcal</Text></View>
-              </View>
-              <View style={styles.metricList}>
-                {progressMetrics.map(metric=><ProgressMetricCard key={metric.label} {...metric}/>)}
-              </View>
-            </View>
           </View>
 
           <View style={styles.grid}>
