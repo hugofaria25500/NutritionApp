@@ -5,12 +5,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import { useAppFonts } from "@/components/ui/useAppFonts";
-import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
-import HomeCarousel from "@/features/home/components/HomeCarousel";
-import HomeHeader from "@/features/home/components/HomeHeader";
-import HomeSectionHeader from "@/features/home/components/HomeSectionHeader";
 import ExploreCategoryCard from "@/features/explore/components/ExploreCategoryCard";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
+import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
 import ExploreIngredientCard from "@/features/explore/components/ExploreIngredientCard";
 import ExploreRecipeCard from "@/features/explore/components/ExploreRecipeCard";
 import ExploreSearchBar from "@/features/explore/components/ExploreSearchBar";
@@ -21,34 +18,79 @@ import {
   featuredRecipes,
   popularCategories,
   quickRecipes,
-  recentSearches,
 } from "@/features/explore/data/exploreData";
+import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
+import HomeCarousel from "@/features/home/components/HomeCarousel";
+import HomeHeader from "@/features/home/components/HomeHeader";
+import HomeSectionHeader from "@/features/home/components/HomeSectionHeader";
 import { navigationItems } from "@/features/home/data/homeData";
 
-type ExploreFilter = (typeof exploreFilters)[number];
+type ExploreContentType = (typeof exploreFilters)[number];
+type TimeFilter = "all" | "15" | "30";
+type DifficultyFilter = "all" | "easy" | "medium";
 
 export default function ExploreScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
   const [query, setQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<ExploreFilter>("Tudo");
+  const [activeContentType, setActiveContentType] =
+    useState<ExploreContentType>("Receitas");
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [selectedTime, setSelectedTime] = useState<TimeFilter>("all");
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<DifficultyFilter>("all");
 
-  const visibleRecipes = useMemo(() => {
-    if (!query.trim()) return featuredRecipes;
-    const normalized = query.trim().toLowerCase();
-    return featuredRecipes.filter((recipe) =>
-      recipe.title.toLowerCase().includes(normalized),
+  const filterRecipes = (recipes: typeof featuredRecipes) =>
+    recipes.filter((recipe) => {
+      const normalizedQuery = query.trim().toLowerCase();
+      const matchesQuery =
+        !normalizedQuery ||
+        recipe.title.toLowerCase().includes(normalizedQuery);
+
+      const minutes = Number.parseInt(recipe.meta, 10);
+      const matchesTime =
+        selectedTime === "all" ||
+        (selectedTime === "15" && minutes <= 15) ||
+        (selectedTime === "30" && minutes <= 30);
+
+      const matchesDifficulty =
+        selectedDifficulty === "all" ||
+        (selectedDifficulty === "easy" && recipe.detail.includes("Fácil")) ||
+        (selectedDifficulty === "medium" && recipe.detail.includes("Médio"));
+
+      return matchesQuery && matchesTime && matchesDifficulty;
+    });
+
+  const visibleFeaturedRecipes = useMemo(
+    () => filterRecipes(featuredRecipes),
+    [query, selectedTime, selectedDifficulty],
+  );
+
+  const visibleQuickRecipes = useMemo(
+    () => filterRecipes(quickRecipes),
+    [query, selectedTime, selectedDifficulty],
+  );
+
+  const visibleIngredients = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) return featuredIngredients;
+
+    return featuredIngredients.filter((ingredient) =>
+      ingredient.title.toLowerCase().includes(normalizedQuery),
     );
   }, [query]);
 
   if (!fontsLoaded) return null;
 
-  const goToSearch = () => {
-    // Search screen will be connected here when its route is introduced.
+  const resetFilters = () => {
+    setSelectedTime("all");
+    setSelectedDifficulty("all");
   };
 
-  const selectRecentSearch = (value: string) => setQuery(value);
+  const hasActiveFilters =
+    selectedTime !== "all" || selectedDifficulty !== "all";
 
   return (
     <AppBackground
@@ -79,115 +121,188 @@ export default function ExploreScreen() {
             value={query}
             placeholder={exploreCopy.searchPlaceholder}
             onChangeText={setQuery}
-            onFilterPress={goToSearch}
+            onFilterPress={() => setFilterVisible(true)}
           />
 
           <ExploreFilterChips
             filters={exploreFilters}
-            activeFilter={activeFilter}
-            onFilterChange={setActiveFilter}
+            activeFilter={activeContentType}
+            onFilterChange={setActiveContentType}
           />
 
-          <HomeSectionHeader
-            title="Pesquisas recentes"
-            actionLabel="Limpar"
-            onActionPress={() => setQuery("")}
-            marginTop={13}
-          />
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.recentRow}
-          >
-            {recentSearches.map((search) => (
-              <View key={search.id} style={styles.recentChip}>
-                <Text style={styles.recentText}>{search.label}</Text>
-                <Text style={styles.recentClose}>×</Text>
-              </View>
-            ))}
-          </ScrollView>
-
-          <HomeSectionHeader
-            title="Categorias populares"
-            actionLabel="Ver todas"
-            onActionPress={goToSearch}
-            marginTop={15}
-          />
-
-          <HomeCarousel snapInterval={90}>
-            {popularCategories.map((category) => (
-              <ExploreCategoryCard
-                key={category.id}
-                category={category}
-                onPress={() => setQuery(category.title)}
-              />
-            ))}
-          </HomeCarousel>
-
-          <HomeSectionHeader
-            title="Receitas em destaque"
-            actionLabel="Ver todas"
-            onActionPress={goToSearch}
-            marginTop={18}
-          />
-
-          <HomeCarousel snapInterval={188} large>
-            {visibleRecipes.map((recipe) => (
-              <ExploreRecipeCard
-                key={recipe.id}
-                recipe={recipe}
-                onPress={() => router.push("/explore")}
-              />
-            ))}
-          </HomeCarousel>
-
-          <HomeSectionHeader
-            title="Receitas rápidas"
-            actionLabel="Ver todas"
-            onActionPress={goToSearch}
-            marginTop={18}
-          />
-
-          <HomeCarousel snapInterval={188} large>
-            {quickRecipes.map((recipe) => (
-              <ExploreRecipeCard
-                key={recipe.id}
-                recipe={recipe}
-                onPress={() => router.push("/explore")}
-              />
-            ))}
-          </HomeCarousel>
-
-          <HomeSectionHeader
-            title="Ingredientes em destaque"
-            actionLabel="Ver todos"
-            onActionPress={goToSearch}
-            marginTop={18}
-          />
-
-          <HomeCarousel snapInterval={79}>
-            {featuredIngredients.map((ingredient) => (
-              <ExploreIngredientCard
-                key={ingredient.id}
-                ingredient={ingredient}
-                onPress={() => setQuery(ingredient.title)}
-              />
-            ))}
-          </HomeCarousel>
-
-          {activeFilter === "Favoritos" && (
+          {activeContentType === "Guardados" ? (
             <View style={styles.emptyState}>
-              <Text style={styles.emptyTitle}>Os teus favoritos aparecem aqui.</Text>
+              <View style={styles.emptyIcon}>
+                <Text style={styles.emptyHeart}>♡</Text>
+              </View>
+              <Text style={styles.emptyTitle}>Ainda não tens guardados</Text>
               <Text style={styles.emptyText}>
-                Guarda receitas com o coração para as encontrares rapidamente.
+                Guarda as receitas que queres experimentar e encontra-as aqui
+                rapidamente.
               </Text>
             </View>
+          ) : activeContentType === "Ingredientes" ? (
+            <>
+              <HomeSectionHeader
+                title="Ingredientes em destaque"
+                actionLabel="Ver todos"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={79}>
+                {visibleIngredients.map((ingredient) => (
+                  <ExploreIngredientCard
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                    onPress={() => setQuery(ingredient.title)}
+                  />
+                ))}
+              </HomeCarousel>
+
+              <HomeSectionHeader
+                title="Categorias populares"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={90}>
+                {popularCategories.map((category) => (
+                  <ExploreCategoryCard
+                    key={category.id}
+                    category={category}
+                    onPress={() => setQuery(category.title)}
+                  />
+                ))}
+              </HomeCarousel>
+
+              <HomeSectionHeader
+                title="Receitas com ingredientes em destaque"
+                actionLabel="Ver todas"
+                onActionPress={() => setActiveContentType("Receitas")}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={188} large>
+                {visibleFeaturedRecipes.map((recipe) => (
+                  <ExploreRecipeCard
+                    key={recipe.id}
+                    recipe={recipe}
+                    onPress={() => router.push("/explore")}
+                  />
+                ))}
+              </HomeCarousel>
+            </>
+          ) : (
+            <>
+              <HomeSectionHeader
+                title="Categorias populares"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={90}>
+                {popularCategories.map((category) => (
+                  <ExploreCategoryCard
+                    key={category.id}
+                    category={category}
+                    onPress={() => setQuery(category.title)}
+                  />
+                ))}
+              </HomeCarousel>
+
+              <HomeSectionHeader
+                title="Receitas em destaque"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              {visibleFeaturedRecipes.length > 0 ? (
+                <HomeCarousel snapInterval={188} large>
+                  {visibleFeaturedRecipes.map((recipe) => (
+                    <ExploreRecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      onPress={() => router.push("/explore")}
+                    />
+                  ))}
+                </HomeCarousel>
+              ) : (
+                <Text style={styles.noResults}>
+                  Não encontrámos receitas com estes filtros.
+                </Text>
+              )}
+
+              <HomeSectionHeader
+                title="Receitas rápidas"
+                actionLabel="Ver todas"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              {visibleQuickRecipes.length > 0 ? (
+                <HomeCarousel snapInterval={188} large>
+                  {visibleQuickRecipes.map((recipe) => (
+                    <ExploreRecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      onPress={() => router.push("/explore")}
+                    />
+                  ))}
+                </HomeCarousel>
+              ) : (
+                <Text style={styles.noResults}>
+                  Não encontrámos receitas com estes filtros.
+                </Text>
+              )}
+
+              <HomeSectionHeader
+                title="Ingredientes em destaque"
+                actionLabel="Ver todos"
+                onActionPress={() => setActiveContentType("Ingredientes")}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={79}>
+                {featuredIngredients.map((ingredient) => (
+                  <ExploreIngredientCard
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                    onPress={() => {
+                      setQuery(ingredient.title);
+                      setActiveContentType("Ingredientes");
+                    }}
+                  />
+                ))}
+              </HomeCarousel>
+            </>
           )}
         </View>
       </ScrollView>
 
-      <HomeBottomNavigation items={navigationItems} bottom={Math.max(insets.bottom, 8) + 8} />
+      <HomeBottomNavigation
+        items={navigationItems}
+        bottom={Math.max(insets.bottom, 8) + 8}
+      />
+
+      <ExploreFilterSheet
+        visible={filterVisible}
+        onClose={() => setFilterVisible(false)}
+        selectedTime={selectedTime}
+        selectedDifficulty={selectedDifficulty}
+        onTimeChange={setSelectedTime}
+        onDifficultyChange={setSelectedDifficulty}
+        onReset={resetFilters}
+      />
+
+      {hasActiveFilters && (
+        <View pointerEvents="none" style={styles.filterIndicator}>
+          <Text style={styles.filterIndicatorText}>Filtros ativos</Text>
+        </View>
+      )}
     </AppBackground>
   );
 }
@@ -225,51 +340,64 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: "#7C8584",
   },
-  recentRow: {
-    gap: 7,
-    paddingRight: 4,
-  },
-  recentChip: {
-    height: 31,
-    paddingHorizontal: 10,
-    borderRadius: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(235,242,237,0.92)",
-    borderWidth: 1,
-    borderColor: "rgba(23,73,64,0.04)",
-  },
-  recentText: {
-    fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 8.5,
-    color: "#365D57",
-  },
-  recentClose: {
-    fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 13,
-    lineHeight: 13,
-    color: "#6F817C",
-  },
   emptyState: {
     width: "100%",
-    marginTop: 20,
-    padding: 16,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.82)",
+    marginTop: 34,
+    paddingHorizontal: 28,
+    paddingVertical: 28,
+    borderRadius: 18,
+    backgroundColor: "rgba(255,255,255,0.86)",
     alignItems: "center",
   },
+  emptyIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#E8F1EA",
+  },
+  emptyHeart: {
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 29,
+    lineHeight: 32,
+    color: "#087C5B",
+  },
   emptyTitle: {
+    marginTop: 12,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 11,
+    fontSize: 12,
     color: "#123E3B",
   },
   emptyText: {
-    marginTop: 4,
+    marginTop: 5,
+    maxWidth: 280,
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 8.5,
     lineHeight: 13,
     color: "#7E8986",
     textAlign: "center",
+  },
+  noResults: {
+    width: "100%",
+    paddingVertical: 18,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 9,
+    color: "#7E8986",
+    textAlign: "center",
+  },
+  filterIndicator: {
+    position: "absolute",
+    top: 0,
+    right: 24,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    backgroundColor: "#075A50",
+  },
+  filterIndicatorText: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 6.5,
+    color: "#FFFFFF",
   },
 });
