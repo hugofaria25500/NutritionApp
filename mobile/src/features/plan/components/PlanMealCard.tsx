@@ -10,7 +10,12 @@ type PlanMealCardProps = {
   onMorePress?: () => void;
 };
 
-export default function PlanMealCard({ meal }: PlanMealCardProps) {
+export default function PlanMealCard({
+  meal,
+  isFavorite = false,
+  onFavoritePress,
+  onMorePress,
+}: PlanMealCardProps) {
   return (
     <Pressable style={styles.card}>
       <Image source={{ uri: meal.image }} style={styles.image} />

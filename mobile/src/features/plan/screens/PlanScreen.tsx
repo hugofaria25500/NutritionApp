@@ -458,12 +458,12 @@ const styles = StyleSheet.create({
   },
   macroLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 5.5,
+    fontSize: 7,
     color: COLORS.muted,
   },
   macroValue: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 5.5,
+    fontSize: 7,
     color: "#4E6761",
   },
   macroTrack: {
@@ -518,7 +518,7 @@ const styles = StyleSheet.create({
   },
   planButtonText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 6.5,
+    fontSize: 8,
     color: COLORS.darkGreen,
   },
   mealsList: {
@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
   addSubtitle: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 5.8,
+    fontSize: 7,
     color: COLORS.muted,
   },
 });
