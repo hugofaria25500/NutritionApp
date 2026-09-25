@@ -173,7 +173,13 @@ export default function ExploreScreen() {
             <ExploreFilterChips
               filters={exploreFilters}
               activeFilter={activeContentType}
-              onFilterChange={setActiveContentType}
+              onFilterChange={(filter) => {
+                setActiveContentType(filter);
+                setQuery("");
+                if (filter === "Ingredientes") {
+                  setVisibleIngredientCount(30);
+                }
+              }}
             />
           </View>
 
