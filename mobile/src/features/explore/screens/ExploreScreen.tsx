@@ -1,4 +1,3 @@
-import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -7,7 +6,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppBackground from "@/components/ui/AppBackground";
 import { useAppFonts } from "@/components/ui/useAppFonts";
 import type { ExploreRecipe } from "@/features/explore/data/exploreData";
-import ExploreCategoryCard from "@/features/explore/components/ExploreCategoryCard";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
 import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
 import ExploreIngredientCard from "@/features/explore/components/ExploreIngredientCard";
@@ -19,7 +17,6 @@ import {
   discoveryIngredients,
   featuredIngredients,
   forYouRecipes,
-  popularCategories,
   popularRecipes,
   quickRecipes,
 } from "@/features/explore/data/exploreData";
@@ -59,7 +56,6 @@ function filterRecipes(
 }
 
 export default function ExploreScreen() {
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
   const [query, setQuery] = useState("");
@@ -310,21 +306,6 @@ export default function ExploreScreen() {
                 </Text>
               )}
 
-              <HomeSectionHeader
-                title="Ingredientes em destaque"
-                actionLabel="Ver todos"
-                onActionPress={() => setActiveContentType("Ingredientes")}
-                marginTop={20}
-              />
-
-              <HomeCarousel snapInterval={79}>
-                {featuredIngredients.map((ingredient) => (
-                  <ExploreIngredientCard
-                    key={ingredient.id}
-                    ingredient={ingredient}
-                  />
-                ))}
-              </HomeCarousel>
             </>
           )}
         </View>
