@@ -264,6 +264,34 @@ export default function ExploreScreen() {
               )}
 
               <HomeSectionHeader
+                title="Os teus favoritos"
+                actionLabel="Ver todos"
+                onActionPress={() => setQuery("")}
+                marginTop={20}
+              />
+
+              {favoriteRecipes.length > 0 ? (
+                <HomeCarousel snapInterval={188} large>
+                  {favoriteRecipes.map((recipe) => (
+                    <ExploreRecipeCard
+                      key={recipe.id}
+                      recipe={recipe}
+                      isFavorite
+                      onFavoritePress={() => toggleFavorite(recipe.id)}
+                      onPress={() => router.push("/explore")}
+                    />
+                  ))}
+                </HomeCarousel>
+              ) : (
+                <View style={styles.favoriteEmpty}>
+                  <Ionicons name="heart-outline" size={16} color="#6F817C" />
+                  <Text style={styles.favoriteEmptyText}>
+                    Guarda receitas com o coração e elas aparecem aqui.
+                  </Text>
+                </View>
+              )}
+
+              <HomeSectionHeader
                 title="Receitas rápidas"
                 actionLabel="Ver todas"
                 onActionPress={() => setQuery("")}
