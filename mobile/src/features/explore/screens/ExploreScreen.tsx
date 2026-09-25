@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -29,6 +30,31 @@ type ExploreContentType = (typeof exploreFilters)[number];
 type TimeFilter = "all" | "15" | "30";
 type DifficultyFilter = "all" | "easy" | "medium";
 
+function filterRecipes(
+  recipes: ExploreRecipe[],
+  query: string,
+  selectedTime: TimeFilter,
+  selectedDifficulty: DifficultyFilter,
+) {
+  const normalizedQuery = query.trim().toLowerCase();
+
+  return recipes.filter((recipe) => {
+    const matchesQuery =
+      !normalizedQuery || recipe.title.toLowerCase().includes(normalizedQuery);
+    const minutes = Number.parseInt(recipe.meta, 10);
+    const matchesTime =
+      selectedTime === "all" ||
+      (selectedTime === "15" && minutes <= 15) ||
+      (selectedTime === "30" && minutes <= 30);
+    const matchesDifficulty =
+      selectedDifficulty === "all" ||
+      (selectedDifficulty === "easy" && recipe.detail.includes("Fácil")) ||
+      (selectedDifficulty === "medium" && recipe.detail.includes("Médio"));
+
+    return matchesQuery && matchesTime && matchesDifficulty;
+  });
+}
+
 export default function ExploreScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -41,34 +67,13 @@ export default function ExploreScreen() {
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<DifficultyFilter>("all");
 
-  const filterRecipes = (recipes: typeof featuredRecipes) =>
-    recipes.filter((recipe) => {
-      const normalizedQuery = query.trim().toLowerCase();
-      const matchesQuery =
-        !normalizedQuery ||
-        recipe.title.toLowerCase().includes(normalizedQuery);
-
-      const minutes = Number.parseInt(recipe.meta, 10);
-      const matchesTime =
-        selectedTime === "all" ||
-        (selectedTime === "15" && minutes <= 15) ||
-        (selectedTime === "30" && minutes <= 30);
-
-      const matchesDifficulty =
-        selectedDifficulty === "all" ||
-        (selectedDifficulty === "easy" && recipe.detail.includes("Fácil")) ||
-        (selectedDifficulty === "medium" && recipe.detail.includes("Médio"));
-
-      return matchesQuery && matchesTime && matchesDifficulty;
-    });
-
   const visibleFeaturedRecipes = useMemo(
-    () => filterRecipes(featuredRecipes),
+    () => filterRecipes(featuredRecipes, query, selectedTime, selectedDifficulty),
     [query, selectedTime, selectedDifficulty],
   );
 
   const visibleQuickRecipes = useMemo(
-    () => filterRecipes(quickRecipes),
+    () => filterRecipes(quickRecipes, query, selectedTime, selectedDifficulty),
     [query, selectedTime, selectedDifficulty],
   );
 
@@ -89,8 +94,6 @@ export default function ExploreScreen() {
     setSelectedDifficulty("all");
   };
 
-  const hasActiveFilters =
-    selectedTime !== "all" || selectedDifficulty !== "all";
 
   return (
     <AppBackground
@@ -298,11 +301,6 @@ export default function ExploreScreen() {
         onReset={resetFilters}
       />
 
-      {hasActiveFilters && (
-        <View pointerEvents="none" style={styles.filterIndicator}>
-          <Text style={styles.filterIndicatorText}>Filtros ativos</Text>
-        </View>
-      )}
     </AppBackground>
   );
 }
@@ -386,18 +384,5 @@ const styles = StyleSheet.create({
     color: "#7E8986",
     textAlign: "center",
   },
-  filterIndicator: {
-    position: "absolute",
-    top: 0,
-    right: 24,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10,
-    backgroundColor: "#075A50",
-  },
-  filterIndicatorText: {
-    fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 6.5,
-    color: "#FFFFFF",
-  },
+
 });
