@@ -15,6 +15,7 @@ import {
   homeCopy,
   navigationItems,
   popularSuggestions,
+  recipeSuggestions,
 } from "@/data/homeData";
 
 const COLORS = {
@@ -155,6 +156,49 @@ export default function HomeScreen() {
                 </Pressable>
               ))}
             </ScrollView>
+          <View style={styles.recipesHeader}>
+            <Text style={styles.sectionTitle}>{homeCopy.recipesTitle}</Text>
+            <Pressable style={styles.seeAll} onPress={() => router.push("/explore")}>
+              <Text style={styles.seeAllText}>{homeCopy.recipesAction}</Text>
+              <Ionicons name="arrow-forward" size={15} color={COLORS.greenDark} />
+            </Pressable>
+          </View>
+
+          <View style={styles.recipeCarouselViewport}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              snapToInterval={157}
+              decelerationRate="fast"
+              snapToAlignment="start"
+              contentContainerStyle={styles.recipeCardsRow}
+            >
+              {recipeSuggestions.map((recipe) => (
+                <Pressable
+                  key={recipe.title}
+                  style={({ pressed }) => [
+                    styles.recipeSuggestionCard,
+                    pressed && styles.pressed,
+                  ]}
+                  onPress={() => router.push("/explore")}
+                >
+                  <Image source={{ uri: recipe.image }} style={styles.recipeSuggestionImage} />
+                  <View style={styles.recipeSuggestionOverlay} />
+                  <View style={styles.favoriteBadge}>
+                    <Ionicons name="heart-outline" size={16} color="#FFFFFF" />
+                  </View>
+                  <View style={styles.recipeSuggestionCopy}>
+                    <Text style={styles.recipeSuggestionTitle} numberOfLines={2}>
+                      {recipe.title}
+                    </Text>
+                    <Text style={styles.recipeSuggestionMeta}>{recipe.meta}</Text>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+
           </View>
         </View>
       </ScrollView>
@@ -426,6 +470,58 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.9)",
     fontSize: 7.2,
     lineHeight: 9,
+  },
+  recipesHeader: {
+    width: "100%",
+    marginTop: 19,
+    marginBottom: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  recipeCarouselViewport: {
+    width: "100%",
+    overflow: "hidden",
+  },
+  recipeCardsRow: {
+    gap: 7,
+    paddingBottom: 5,
+    paddingRight: 7,
+  },
+  recipeSuggestionCard: {
+    width: 150,
+    height: 172,
+    borderRadius: 14,
+    overflow: "hidden",
+    backgroundColor: "#B8C3BA",
+  },
+  recipeSuggestionImage: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+  },
+  recipeSuggestionOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(4,25,21,0.20)",
+  },
+  recipeSuggestionCopy: {
+    position: "absolute",
+    left: 10,
+    right: 9,
+    bottom: 9,
+  },
+  recipeSuggestionTitle: {
+    fontFamily: "PlusJakartaSans_700Bold",
+    color: "#FFFFFF",
+    fontSize: 11.5,
+    lineHeight: 14,
+  },
+  recipeSuggestionMeta: {
+    marginTop: 3,
+    fontFamily: "PlusJakartaSans_500Medium",
+    color: "rgba(255,255,255,0.9)",
+    fontSize: 8,
+    lineHeight: 10,
   },
   bottomNav: {
     position: "absolute",
