@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -53,6 +54,7 @@ function filterRecipes(
 }
 
 export default function ExploreScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
   const [query, setQuery] = useState("");
