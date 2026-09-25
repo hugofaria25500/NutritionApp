@@ -60,7 +60,7 @@ export const popularCategories: ExploreCategory[] = [
   },
 ];
 
-export const featuredRecipes: ExploreRecipe[] = [
+export const popularRecipes: ExploreRecipe[] = [
   {
     id: "steak",
     title: "Bife com Batata Doce e Legumes",
@@ -88,6 +88,31 @@ export const featuredRecipes: ExploreRecipe[] = [
     meta: "30 min",
     detail: "Fácil · 9 ingredientes · 510 kcal",
     image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
+  },
+];
+
+
+export const forYouRecipes: ExploreRecipe[] = [
+  {
+    id: "you-salmon",
+    title: "Salmão com Legumes e Arroz",
+    meta: "22 min",
+    detail: "Fácil · 7 ingredientes · 460 kcal",
+    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "you-chicken",
+    title: "Frango Cremoso com Espinafres",
+    meta: "24 min",
+    detail: "Fácil · 8 ingredientes · 495 kcal",
+    image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "you-bowl",
+    title: "Bowl Mediterrânico",
+    meta: "18 min",
+    detail: "Fácil · 6 ingredientes · 410 kcal",
+    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -147,3 +172,37 @@ export const featuredIngredients: ExploreIngredient[] = [
     image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=400&q=80",
   },
 ];
+
+export const discoveryIngredients: ExploreIngredient[] = [
+  {
+    id: "avocado",
+    title: "Abacate",
+    image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "rice",
+    title: "Arroz",
+    image: "https://images.unsplash.com/photo-1536304993881-ff6e9e8d8c1f?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "potato",
+    title: "Batata",
+    image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "onion",
+    title: "Cebola",
+    image: "https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "pepper",
+    title: "Pimento",
+    image: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "yogurt",
+    title: "Iogurte",
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=400&q=80",
+  },
+];
+
