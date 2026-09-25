@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 type OnboardingIntroProps = {
   title: ReactNode;
-  subtitle: React.ReactNode;
+  subtitle: ReactNode;
   minHeight?: number;
   subtitleMaxWidth?: number;
 };
