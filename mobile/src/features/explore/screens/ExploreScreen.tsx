@@ -11,11 +11,15 @@ import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
 import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
 import ExploreIngredientCard from "@/features/explore/components/ExploreIngredientCard";
+import ExploreIngredientCategoryCard from "@/features/explore/components/ExploreIngredientCategoryCard";
 import ExploreRecipeCard from "@/features/explore/components/ExploreRecipeCard";
 import ExploreSearchBar from "@/features/explore/components/ExploreSearchBar";
 import {
   exploreCopy,
   exploreFilters,
+  discoveryIngredients,
+  featuredIngredients,
+  ingredientCategories,
   forYouRecipes,
   popularRecipes,
   quickRecipes,
@@ -168,16 +172,67 @@ export default function ExploreScreen() {
               filters={exploreFilters}
               activeFilter={activeContentType}
               onFilterChange={(filter) => {
-              if (filter === "Ingredientes") {
-                router.push("/explore/ingredients");
-                return;
-              }
-              setActiveContentType(filter);
-            }}
+                if (filter === "Ingredientes") {
+                  router.push("/explore/ingredients");
+                  return;
+                }
+                setActiveContentType(filter);
+              }}
             />
           </View>
 
-: (
+          {activeContentType === "Ingredientes" ? (
+            <>
+              <HomeSectionHeader
+                title="Ingredientes populares"
+                actionLabel="Ver todos"
+                onActionPress={() => router.push({ pathname: "/explore/ingredients", params: { collection: "popular" } })}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={79}>
+                {visibleIngredients.map((ingredient) => (
+                  <ExploreIngredientCard
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                  />
+                ))}
+              </HomeCarousel>
+
+              <HomeSectionHeader
+                title="Explorar por categoria"
+                actionLabel=""
+                onActionPress={() => undefined}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={111}>
+                {ingredientCategories.map((category) => (
+                  <ExploreIngredientCategoryCard
+                    key={category.id}
+                    category={category}
+                  />
+                ))}
+              </HomeCarousel>
+
+              <HomeSectionHeader
+                title="Descobre novos ingredientes"
+                actionLabel="Ver todos"
+                onActionPress={() => router.push({ pathname: "/explore/ingredients", params: { collection: "discovery" } })}
+                marginTop={20}
+              />
+
+              <HomeCarousel snapInterval={79}>
+                {discoveryIngredients.map((ingredient) => (
+                  <ExploreIngredientCard
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                  />
+                ))}
+              </HomeCarousel>
+
+            </>
+          ) : (
             <>
               <HomeSectionHeader
                 title="Os teus favoritos"
