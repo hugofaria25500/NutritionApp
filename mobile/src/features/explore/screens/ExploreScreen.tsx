@@ -1,17 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import { useAppFonts } from "@/components/ui/useAppFonts";
-import type { ExploreRecipe } from "@/features/explore/data/exploreData";
+import type { ExploreIngredient, ExploreRecipe } from "@/features/explore/data/exploreData";
 import ExploreFilterChips from "@/features/explore/components/ExploreFilterChips";
 import ExploreFilterSheet from "@/features/explore/components/ExploreFilterSheet";
 import ExploreRecipeCard from "@/features/explore/components/ExploreRecipeCard";
 import ExploreSearchBar from "@/features/explore/components/ExploreSearchBar";
 import {
+  allIngredients,
   exploreCopy,
   exploreFilters,
   forYouRecipes,
@@ -67,6 +67,7 @@ export default function ExploreScreen() {
   const [selectedTime, setSelectedTime] = useState<TimeFilter>("all");
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<DifficultyFilter>("all");
+  const [visibleIngredientCount, setVisibleIngredientCount] = useState(30);
 
   const visiblePopularRecipes = useMemo(
     () => filterRecipes(popularRecipes, query, selectedTime, selectedDifficulty),
@@ -91,7 +92,17 @@ export default function ExploreScreen() {
     [favoriteRecipeIds],
   );
 
+  const visibleIngredients = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
 
+    if (!normalizedQuery) {
+      return allIngredients.slice(0, visibleIngredientCount);
+    }
+
+    return allIngredients.filter((ingredient) =>
+      ingredient.title.toLowerCase().includes(normalizedQuery),
+    );
+  }, [query, visibleIngredientCount]);
 
   if (!fontsLoaded) return null;
 
@@ -144,9 +155,14 @@ export default function ExploreScreen() {
 
           <ExploreSearchBar
             value={query}
-            placeholder={exploreCopy.searchPlaceholder}
+            placeholder={
+              activeContentType === "Ingredientes"
+                ? "Pesquisar ingredientes..."
+                : exploreCopy.searchPlaceholder
+            }
             onChangeText={setQuery}
             onFilterPress={() => setFilterVisible(true)}
+            showFilterButton={activeContentType === "Receitas"}
           />
 
           <View style={styles.contentTypeSection}>
@@ -157,18 +173,11 @@ export default function ExploreScreen() {
             <ExploreFilterChips
               filters={exploreFilters}
               activeFilter={activeContentType}
-              onFilterChange={(filter) => {
-                if (filter === "Ingredientes") {
-                  router.push("/explore/ingredients");
-                  return;
-                }
-                setActiveContentType(filter);
-              }}
+              onFilterChange={setActiveContentType}
             />
           </View>
 
           <>
-            <>
               <HomeSectionHeader
                 title="Os teus favoritos"
                 actionLabel="Ver todos"
@@ -269,8 +278,68 @@ export default function ExploreScreen() {
               )}
 
             </>
-          </>
-        </View>
+          ) : (
+            <>
+              <View style={styles.ingredientHeaderRow}>
+                <Text style={styles.ingredientCount}>
+                  {query.trim()
+                    ? `${visibleIngredients.length} resultados`
+                    : `${Math.min(visibleIngredientCount, allIngredients.length)} ingredientes`}
+                </Text>
+              </View>
+
+              {visibleIngredients.length > 0 ? (
+                <View style={styles.ingredientGrid}>
+                  {visibleIngredients.map((ingredient) => (
+                    <View key={ingredient.id} style={styles.ingredientGridItem}>
+                      <View style={styles.ingredientCard}>
+                        <Image
+                          source={{ uri: ingredient.image }}
+                          style={styles.ingredientImage}
+                        />
+                        <View style={styles.ingredientCardFooter}>
+                          <Text style={styles.ingredientTitle}>
+                            {ingredient.title}
+                          </Text>
+                          <Ionicons
+                            name="chevron-forward"
+                            size={10}
+                            color="#7A8985"
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.ingredientEmptyState}>
+                  <Ionicons name="search-outline" size={20} color="#6F817C" />
+                  <Text style={styles.ingredientEmptyTitle}>
+                    Não encontrámos esse ingrediente
+                  </Text>
+                  <Text style={styles.ingredientEmptyText}>
+                    Experimenta pesquisar por outro nome.
+                  </Text>
+                </View>
+              )}
+
+              {!query.trim() &&
+                visibleIngredientCount < allIngredients.length && (
+                  <Pressable
+                    style={styles.loadMoreButton}
+                    onPress={() =>
+                      setVisibleIngredientCount((count) =>
+                        Math.min(count + 30, allIngredients.length),
+                      )
+                    }
+                    accessibilityLabel="Carregar mais ingredientes"
+                  >
+                    <Ionicons name="add" size={22} color="#FFFFFF" />
+                  </Pressable>
+                )}
+            </>
+          )}
+        </View>        </View>
       </ScrollView>
 
       <HomeBottomNavigation
@@ -339,6 +408,79 @@ const styles = StyleSheet.create({
     fontSize: 11.5,
     lineHeight: 16,
     color: "#7C8584",
+  },
+  ingredientHeaderRow: {
+    width: "100%",
+    marginTop: 14,
+    marginBottom: 10,
+  },
+  ingredientCount: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 9,
+    color: "#6C7D78",
+  },
+  ingredientGrid: {
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    rowGap: 10,
+  },
+  ingredientGridItem: { width: "31.5%" },
+  ingredientCard: {
+    width: "100%",
+    overflow: "hidden",
+    borderRadius: 13,
+    backgroundColor: "rgba(255,255,255,0.94)",
+    borderWidth: 1,
+    borderColor: "rgba(20,59,51,0.06)",
+  },
+  ingredientImage: { width: "100%", height: 96 },
+  ingredientCardFooter: {
+    minHeight: 34,
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  ingredientTitle: {
+    flex: 1,
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 7.5,
+    color: "#234B46",
+  },
+  loadMoreButton: {
+    alignSelf: "center",
+    marginTop: 22,
+    marginBottom: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#075A50",
+  },
+  ingredientEmptyState: {
+    marginTop: 24,
+    paddingVertical: 30,
+    paddingHorizontal: 22,
+    borderRadius: 18,
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.82)",
+    borderWidth: 1,
+    borderColor: "rgba(20,59,51,0.05)",
+  },
+  ingredientEmptyTitle: {
+    marginTop: 10,
+    fontFamily: "PlusJakartaSans_700Bold",
+    fontSize: 11,
+    color: "#244C47",
+  },
+  ingredientEmptyText: {
+    marginTop: 4,
+    fontFamily: "PlusJakartaSans_400Regular",
+    fontSize: 9,
+    color: "#7E8986",
   },
   emptyState: {
     width: "100%",

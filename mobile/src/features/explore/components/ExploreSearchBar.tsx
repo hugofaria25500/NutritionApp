@@ -5,7 +5,8 @@ type ExploreSearchBarProps = {
   value: string;
   placeholder: string;
   onChangeText: (value: string) => void;
-  onFilterPress: () => void;
+  onFilterPress?: () => void;
+  showFilterButton?: boolean;
 };
 
 export default function ExploreSearchBar({
@@ -13,6 +14,7 @@ export default function ExploreSearchBar({
   placeholder,
   onChangeText,
   onFilterPress,
+  showFilterButton = true,
 }: ExploreSearchBarProps) {
   return (
     <View style={styles.row}>
@@ -28,9 +30,11 @@ export default function ExploreSearchBar({
         />
       </View>
 
-      <Pressable style={styles.filterButton} onPress={onFilterPress}>
-        <Ionicons name="options-outline" size={19} color="#174B47" />
-      </Pressable>
+      {showFilterButton && (
+        <Pressable style={styles.filterButton} onPress={onFilterPress}>
+          <Ionicons name="options-outline" size={19} color="#174B47" />
+        </Pressable>
+      )}
     </View>
   );
 }
