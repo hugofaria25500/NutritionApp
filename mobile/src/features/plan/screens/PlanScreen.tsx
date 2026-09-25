@@ -368,13 +368,13 @@ const styles = StyleSheet.create({
   },
   dayName: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 8,
+    fontSize: 10,
     color: "#7A8582",
   },
   dayDate: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 10.5,
+    fontSize: 12,
     color: "#314C48",
   },
   selectedDayText: {
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
   },
   todayLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 8,
+    fontSize: 10,
     color: COLORS.muted,
   },
   calorieRow: {
@@ -435,12 +435,12 @@ const styles = StyleSheet.create({
   },
   calorieValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 16,
+    fontSize: 19,
     color: COLORS.ink,
   },
   calorieGoal: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 8,
+    fontSize: 10,
     color: COLORS.muted,
   },
   macroRow: {
@@ -458,12 +458,12 @@ const styles = StyleSheet.create({
   },
   macroLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 7,
+    fontSize: 8.5,
     color: COLORS.muted,
   },
   macroValue: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7,
+    fontSize: 8.5,
     color: "#4E6761",
   },
   macroTrack: {
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
   },
   adjustText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7,
+    fontSize: 8.5,
     color: COLORS.ink,
   },
   sectionHeader: {
