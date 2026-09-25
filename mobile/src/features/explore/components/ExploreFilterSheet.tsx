@@ -51,8 +51,8 @@ export default function ExploreFilterSheet({
   }, [visible, selectedTime, selectedDifficulty]);
 
   const handleReset = () => {
-    setDraftTime("all");
-    setDraftDifficulty("all");
+    onApply("all", "all");
+    onClose();
   };
 
   const handleApply = () => {
