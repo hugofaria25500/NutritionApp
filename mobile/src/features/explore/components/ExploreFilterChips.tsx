@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-type ExploreContentType = "Receitas" | "Ingredientes" | "Guardados";
+type ExploreContentType = "Receitas" | "Ingredientes";
 
 type ExploreFilterChipsProps = {
   filters: readonly ExploreContentType[];
