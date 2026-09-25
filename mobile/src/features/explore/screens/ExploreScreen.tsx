@@ -62,6 +62,9 @@ export default function ExploreScreen() {
   const [query, setQuery] = useState("");
   const [activeContentType, setActiveContentType] =
     useState<ExploreContentType>("Receitas");
+  const [favoriteRecipeIds, setFavoriteRecipeIds] = useState<Set<string>>(
+    new Set(),
+  );
   const [filterVisible, setFilterVisible] = useState(false);
   const [selectedTime, setSelectedTime] = useState<TimeFilter>("all");
   const [selectedDifficulty, setSelectedDifficulty] =
@@ -92,6 +95,20 @@ export default function ExploreScreen() {
   const resetFilters = () => {
     setSelectedTime("all");
     setSelectedDifficulty("all");
+  };
+
+  const toggleFavorite = (recipeId: string) => {
+    setFavoriteRecipeIds((current) => {
+      const next = new Set(current);
+
+      if (next.has(recipeId)) {
+        next.delete(recipeId);
+      } else {
+        next.add(recipeId);
+      }
+
+      return next;
+    });
   };
 
 
@@ -139,18 +156,7 @@ export default function ExploreScreen() {
             />
           </View>
 
-          {activeContentType === "Guardados" ? (
-            <View style={styles.emptyState}>
-              <View style={styles.emptyIcon}>
-                <Text style={styles.emptyHeart}>♡</Text>
-              </View>
-              <Text style={styles.emptyTitle}>Ainda não tens guardados</Text>
-              <Text style={styles.emptyText}>
-                Guarda as receitas que queres experimentar e encontra-as aqui
-                rapidamente.
-              </Text>
-            </View>
-          ) : activeContentType === "Ingredientes" ? (
+          {activeContentType === "Ingredientes" ? (
             <>
               <HomeSectionHeader
                 title="Ingredientes em destaque"
@@ -235,6 +241,8 @@ export default function ExploreScreen() {
                     <ExploreRecipeCard
                       key={recipe.id}
                       recipe={recipe}
+                      isFavorite={favoriteRecipeIds.has(recipe.id)}
+                      onFavoritePress={() => toggleFavorite(recipe.id)}
                       onPress={() => router.push("/explore")}
                     />
                   ))}
