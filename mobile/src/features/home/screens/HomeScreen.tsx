@@ -47,7 +47,7 @@ export default function HomeScreen() {
           styles.scrollContent,
           {
             paddingTop: Math.max(insets.top, 10),
-            paddingBottom: 116 + insets.bottom,
+            paddingBottom: 100 + insets.bottom,
           },
         ]}
       >
