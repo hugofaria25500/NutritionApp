@@ -174,7 +174,7 @@ export default function ExploreScreen() {
           {activeContentType === "Ingredientes" ? (
             <>
               <HomeSectionHeader
-                title="Ingredientes em destaque"
+                title="Ingredientes populares"
                 actionLabel="Ver todos"
                 onActionPress={() => setQuery("")}
                 marginTop={20}
@@ -185,48 +185,40 @@ export default function ExploreScreen() {
                   <ExploreIngredientCard
                     key={ingredient.id}
                     ingredient={ingredient}
-                    onPress={() => setQuery(ingredient.title)}
                   />
                 ))}
               </HomeCarousel>
 
               <HomeSectionHeader
-                title="Categorias populares"
-                actionLabel="Ver todas"
+                title="Descobre novos ingredientes"
+                actionLabel="Ver todos"
                 onActionPress={() => setQuery("")}
                 marginTop={20}
               />
 
-              <HomeCarousel snapInterval={90}>
-                {popularCategories.map((category) => (
-                  <ExploreCategoryCard
-                    key={category.id}
-                    category={category}
-                    onPress={() => setQuery(category.title)}
+              <HomeCarousel snapInterval={79}>
+                {discoveryIngredients.map((ingredient) => (
+                  <ExploreIngredientCard
+                    key={ingredient.id}
+                    ingredient={ingredient}
                   />
                 ))}
               </HomeCarousel>
 
               <HomeSectionHeader
-                title="Receitas com ingredientes em destaque"
-                actionLabel="Ver todas"
+                title="Encontra um ingrediente"
+                actionLabel="Pesquisar"
                 onActionPress={() => setActiveContentType("Receitas")}
                 marginTop={20}
               />
 
-              <HomeCarousel snapInterval={188} large>
-                {visibleFeaturedRecipes.map((recipe) => (
-                  <ExploreRecipeCard
-                    key={recipe.id}
-                    recipe={recipe}
-                    isFavorite={favoriteRecipeIds.has(recipe.id)}
-                    onFavoritePress={() => toggleFavorite(recipe.id)}
-                    onPress={() => router.push("/explore")}
-                  />
-                ))}
-              </HomeCarousel>
-            </>
-          ) : (
+              <View style={styles.ingredientHint}>
+                <Ionicons name="search-outline" size={15} color="#58706A" />
+                <Text style={styles.ingredientHintText}>
+                  Usa a pesquisa no topo para encontrar um ingrediente específico.
+                </Text>
+              </View>
+            </>          ) : (
             <>
               <HomeSectionHeader
                 title="Categorias populares"
@@ -252,9 +244,9 @@ export default function ExploreScreen() {
                 marginTop={20}
               />
 
-              {visibleFeaturedRecipes.length > 0 ? (
+              {visiblePopularRecipes.length > 0 ? (
                 <HomeCarousel snapInterval={188} large>
-                  {visibleFeaturedRecipes.map((recipe) => (
+                  {visiblePopularRecipes.map((recipe) => (
                     <ExploreRecipeCard
                       key={recipe.id}
                       recipe={recipe}
