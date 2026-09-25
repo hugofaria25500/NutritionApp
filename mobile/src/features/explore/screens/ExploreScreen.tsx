@@ -205,19 +205,6 @@ export default function ExploreScreen() {
                 ))}
               </HomeCarousel>
 
-              <HomeSectionHeader
-                title="Encontra um ingrediente"
-                actionLabel="Pesquisar"
-                onActionPress={() => setActiveContentType("Receitas")}
-                marginTop={20}
-              />
-
-              <View style={styles.ingredientHint}>
-                <Ionicons name="search-outline" size={15} color="#58706A" />
-                <Text style={styles.ingredientHintText}>
-                  Usa a pesquisa no topo para encontrar um ingrediente específico.
-                </Text>
-              </View>
             </>          ) : (
             <>
               <HomeSectionHeader
