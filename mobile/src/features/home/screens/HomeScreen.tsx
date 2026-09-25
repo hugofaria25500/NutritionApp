@@ -16,7 +16,7 @@ import {
   navigationItems,
   popularSuggestions,
   recipeSuggestions,
-} from "@/data/homeData";
+} from "@/features/home/data/homeData";
 
 const COLORS = {
   ink: "#082D31",
