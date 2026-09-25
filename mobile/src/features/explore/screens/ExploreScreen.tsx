@@ -108,9 +108,12 @@ export default function ExploreScreen() {
 
   if (!fontsLoaded) return null;
 
-  const resetFilters = () => {
-    setSelectedTime("all");
-    setSelectedDifficulty("all");
+  const applyFilters = (
+    time: TimeFilter,
+    difficulty: DifficultyFilter,
+  ) => {
+    setSelectedTime(time);
+    setSelectedDifficulty(difficulty);
   };
 
   const toggleFavorite = (recipeId: string) => {
@@ -352,9 +355,7 @@ export default function ExploreScreen() {
         onClose={() => setFilterVisible(false)}
         selectedTime={selectedTime}
         selectedDifficulty={selectedDifficulty}
-        onTimeChange={setSelectedTime}
-        onDifficultyChange={setSelectedDifficulty}
-        onReset={resetFilters}
+        onApply={applyFilters}
       />
 
     </AppBackground>
