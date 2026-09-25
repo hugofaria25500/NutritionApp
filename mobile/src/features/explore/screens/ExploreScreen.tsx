@@ -177,7 +177,8 @@ export default function ExploreScreen() {
             />
           </View>
 
-          <>
+          {activeContentType === "Receitas" ? (
+            <>
               <HomeSectionHeader
                 title="Os teus favoritos"
                 actionLabel="Ver todos"
@@ -339,7 +340,7 @@ export default function ExploreScreen() {
                 )}
             </>
           )}
-        </View>        </View>
+        </View>
       </ScrollView>
 
       <HomeBottomNavigation
