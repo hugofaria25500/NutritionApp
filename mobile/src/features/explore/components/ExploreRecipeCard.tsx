@@ -6,11 +6,15 @@ import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 type ExploreRecipeCardProps = {
   recipe: ExploreRecipe;
   onPress: () => void;
+  isFavorite?: boolean;
+  onFavoritePress?: () => void;
 };
 
 export default function ExploreRecipeCard({
   recipe,
   onPress,
+  isFavorite = false,
+  onFavoritePress,
 }: ExploreRecipeCardProps) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
@@ -22,10 +26,17 @@ export default function ExploreRecipeCard({
         </View>
         <Pressable
           style={styles.favorite}
-          onPress={(event) => event.stopPropagation()}
+          onPress={(event) => {
+            event.stopPropagation();
+            onFavoritePress?.();
+          }}
           hitSlop={6}
         >
-          <Ionicons name="heart-outline" size={17} color="#60716D" />
+          <Ionicons
+            name={isFavorite ? "heart" : "heart-outline"}
+            size={17}
+            color={isFavorite ? "#087C5B" : "#60716D"}
+          />
         </Pressable>
       </View>
 
