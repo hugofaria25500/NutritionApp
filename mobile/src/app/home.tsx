@@ -156,6 +156,8 @@ export default function HomeScreen() {
                 </Pressable>
               ))}
             </ScrollView>
+          </View>
+
           <View style={styles.recipesHeader}>
             <Text style={styles.sectionTitle}>{homeCopy.recipesTitle}</Text>
             <Pressable style={styles.seeAll} onPress={() => router.push("/explore")}>
