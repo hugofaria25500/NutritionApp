@@ -75,21 +75,28 @@ export default function ProgressScreen() {
 
               <View style={styles.weightChart}>
                 <View style={styles.weightGridLineTop}/>
+                <View style={styles.weightGridLineMiddle}/>
                 <View style={styles.weightGridLineBottom}/>
-                {weightEntries.map((point, i) => (
+                {weightEntries.map((point) => (
                   <View
-                    key={point.date}
+                    key={point.day}
                     style={[
                       styles.weightPointWrap,
                       {
-                        left: `${(i / (weightEntries.length - 1)) * 100}%`,
+                        left: `${((point.day - 1) / 29) * 100}%`,
                         bottom: point.height,
                       },
                     ]}
                   >
+                    <Text style={styles.weightPointValue}>{point.value}</Text>
                     <View style={styles.weightPoint}/>
-                    <Text style={styles.weightDate}>{point.date}</Text>
                   </View>
+                ))}
+              </View>
+
+              <View style={styles.weightTimeline}>
+                {[1, 8, 15, 22, 30].map((day) => (
+                  <Text key={day} style={styles.weightTimelineLabel}>{day} Set</Text>
                 ))}
               </View>
 

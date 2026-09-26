@@ -51,12 +51,12 @@ export const weightMonth = {
 };
 
 export const weightEntries = [
-  { date: "2 Set", value: "70,6", height: 44 },
-  { date: "5 Set", value: "70,2", height: 39 },
-  { date: "9 Set", value: "70,4", height: 42 },
-  { date: "12 Set", value: "69,8", height: 35 },
-  { date: "16 Set", value: "69,5", height: 30 },
-  { date: "19 Set", value: "69,2", height: 26 },
-  { date: "22 Set", value: "68,8", height: 20 },
-  { date: "26 Set", value: "68,2", height: 14 },
+  { day: 2, value: "70,6", height: 44 },
+  { day: 5, value: "70,2", height: 39 },
+  { day: 9, value: "70,4", height: 42 },
+  { day: 12, value: "69,8", height: 35 },
+  { day: 16, value: "69,5", height: 30 },
+  { day: 19, value: "69,2", height: 26 },
+  { day: 22, value: "68,8", height: 20 },
+  { day: 26, value: "68,2", height: 14 },
 ];
