@@ -43,23 +43,23 @@ export default function ProgressScreen() {
 
           <View style={styles.grid}>
             <View style={styles.smallCard}>
-              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="bar-chart-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Evolução semanal</Text></View><Ionicons name="chevron-forward" size={13} color="#60736E"/></View>
+              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="bar-chart-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Evolução semanal</Text></View></View>
               <Text style={styles.bigMetric}>{progressCopy.calorieAverage}</Text>
               <View style={styles.changeRow}><Text style={styles.change}>{progressCopy.calorieChange}</Text><Text style={styles.caption}>vs. semana anterior</Text></View>
               <View style={styles.chart}>{weeklyCalories.map((item,index)=><View key={item.day} style={styles.barWrap}><View style={[styles.bar,{height:14+(item.value-1500)/35},index===3&&styles.activeBar]}/><Text style={styles.barLabel}>{item.day}</Text></View>)}</View>
             </View>
 
             <View style={styles.smallCard}>
-              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="locate-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Objetivo</Text></View><Ionicons name="chevron-forward" size={13} color="#60736E"/></View>
+              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="locate-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Objetivo</Text></View></View>
               <Text style={styles.goalTitle}>Défice calórico moderado</Text>
               <Text style={styles.goalSub}>-300 kcal/dia</Text>
               <View style={styles.goalTrack}><View style={[styles.fill,{width:"55%"}]}/></View>
               <Text style={styles.caption}>3 de 8 semanas</Text>
-              <View style={styles.goalBadge}><Ionicons name="flag-outline" size={11} color="#D49B20"/><Text style={styles.badgeText}>Estás no bom caminho!</Text></View>
+              <Text style={styles.goalStatus}>3 de 8 semanas concluídas</Text>
             </View>
 
             <View style={styles.smallCard}>
-              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="scale-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Peso</Text></View><Ionicons name="chevron-forward" size={13} color="#60736E"/></View>
+              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="scale-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Peso</Text></View></View>
               <Text style={styles.bigMetric}>{progressCopy.weight}</Text>
               <Text style={styles.change}>{progressCopy.weightChange}</Text>
               <View style={styles.lineChart}><View style={styles.lineBase}/>{[20,18,22,17,13,15,9,7].map((h,i)=><View key={i} style={[styles.linePoint,{left:`${i*12}%`,bottom:h}]} />)}</View>
@@ -67,14 +67,24 @@ export default function ProgressScreen() {
             </View>
 
             <View style={styles.smallCard}>
-              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="leaf-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Hábitos</Text></View><Ionicons name="chevron-forward" size={13} color="#60736E"/></View>
+              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="leaf-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Hábitos</Text></View></View>
               {habits.map(habit=><Pressable key={habit.id} onPress={()=>toggleHabit(habit.id)}><ProgressHabitRow {...habit} progress={completedHabits.includes(habit.id)?100:habit.progress}/></Pressable>)}
             </View>
           </View>
 
           <View style={styles.insightHeader}><Text style={styles.sectionTitle}>Insights personalizados</Text><Pressable onPress={()=>Alert.alert("Insights","Todos os teus insights serão apresentados aqui.")}><Text style={styles.seeAll}>Ver todos →</Text></Pressable></View>
           <View style={styles.insights}>
-            {insights.map(item=><View key={item.id} style={styles.insight}><View style={styles.insightIcon}><Ionicons name={item.icon as keyof typeof Ionicons.glyphMap} size={14} color={COLORS.darkGreen}/></View><Text style={styles.insightTitle} numberOfLines={2}>{item.title}</Text><Text style={styles.insightDetail} numberOfLines={2}>{item.detail}</Text></View>)}
+            {insights.map(item=>(
+              <View key={item.id} style={styles.insight}>
+                <View style={styles.insightIcon}>
+                  <Ionicons name={item.icon as keyof typeof Ionicons.glyphMap} size={14} color={COLORS.darkGreen}/>
+                </View>
+                <View style={styles.insightText}>
+                  <Text style={styles.insightTitle} numberOfLines={2}>{item.title}</Text>
+                  <Text style={styles.insightDetail} numberOfLines={2}>{item.detail}</Text>
+                </View>
+              </View>
+            ))}
           </View>
         </View>
       </ScrollView>
@@ -93,5 +103,5 @@ const styles=StyleSheet.create({
  hero:{marginTop:10,marginBottom:10},title:{fontFamily:"PlusJakartaSans_700Bold",fontSize:28,lineHeight:33,color:COLORS.ink},accent:{color:COLORS.darkGreen},subtitle:{marginTop:2,maxWidth:330,fontFamily:"PlusJakartaSans_400Regular",fontSize:9.5,lineHeight:13,color:COLORS.muted},
  tabs:{width:"100%",flexDirection:"row",gap:6,marginBottom:8},tab:{flex:1,height:28,borderRadius:14,alignItems:"center",justifyContent:"center",backgroundColor:"rgba(255,255,255,.55)"},activeTab:{backgroundColor:COLORS.darkGreen},tabText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#63736F"},activeTabText:{color:"#FFF"},
  todayCard:{width:"100%",padding:10,borderRadius:15,backgroundColor:"rgba(237,245,236,.92)"},cardHeader:{flexDirection:"row",justifyContent:"space-between",alignItems:"center"},headingLine:{flexDirection:"row",alignItems:"center",gap:5},cardTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:8.5,color:COLORS.ink},todayContent:{flexDirection:"row",alignItems:"center",gap:10,marginTop:7},calorieRing:{width:78,height:78,borderRadius:39,borderWidth:8,borderColor:"#D4E8D8",borderLeftColor:COLORS.darkGreen,borderBottomColor:COLORS.darkGreen,alignItems:"center",justifyContent:"center"},ringInner:{alignItems:"center"},ringNumber:{fontFamily:"PlusJakartaSans_700Bold",fontSize:14,color:COLORS.ink},ringUnit:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:COLORS.muted},metricList:{flex:1,gap:5},
-grid:{width:"100%",flexDirection:"row",flexWrap:"wrap",gap:8,marginTop:8},smallCard:{width:"48.8%",minHeight:145,padding:9,borderRadius:13,backgroundColor:"rgba(255,255,255,.78)",borderWidth:1,borderColor:"rgba(20,59,51,.05)"},smallHeader:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},smallTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:11,color:COLORS.ink},bigMetric:{marginTop:10,fontFamily:"PlusJakartaSans_700Bold",fontSize:18,color:COLORS.ink},changeRow:{flexDirection:"row",alignItems:"center",gap:5,marginTop:2},change:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:9,color:"#2D8C45"},caption:{fontFamily:"PlusJakartaSans_400Regular",fontSize:8,color:"#7B8985"},chart:{height:68,marginTop:12,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between",paddingHorizontal:3},barWrap:{height:"100%",alignItems:"center",justifyContent:"flex-end",gap:2},bar:{width:9,borderRadius:3,backgroundColor:"#CFE5D3"},activeBar:{backgroundColor:COLORS.darkGreen},barLabel:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#8A9693"},goalTitle:{marginTop:10,fontFamily:"PlusJakartaSans_600SemiBold",fontSize:11,color:"#34514C"},goalSub:{marginTop:3,fontFamily:"PlusJakartaSans_400Regular",fontSize:9,color:COLORS.muted},goalTrack:{height:6,borderRadius:2,backgroundColor:"#DCE8DE",overflow:"hidden",marginTop:7},fill:{height:"100%",backgroundColor:COLORS.darkGreen,borderRadius:2},goalBadge:{marginTop:10,padding:8,borderRadius:7,backgroundColor:"#F8F1D9",flexDirection:"row",gap:4,alignItems:"center"},badgeText:{flex:1,fontFamily:"PlusJakartaSans_500Medium",fontSize:9,color:"#806B2D"},lineChart:{height:68,marginTop:12,borderBottomWidth:1,borderBottomColor:"#DCE5E0",position:"relative"},lineBase:{position:"absolute",left:"5%",right:"5%",top:43,height:1,backgroundColor:"#DCE5E0"},linePoint:{position:"absolute",width:8,height:8,borderRadius:3,backgroundColor:COLORS.darkGreen},chartDates:{flexDirection:"row",justifyContent:"space-between",marginTop:6},insightHeader:{marginTop:14,marginBottom:8,flexDirection:"row",justifyContent:"space-between",alignItems:"center"},sectionTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,color:COLORS.ink},seeAll:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:8,color:COLORS.darkGreen},insights:{flexDirection:"column",gap:8,paddingBottom:4},insight:{width:"100%",minHeight:86,padding:12,borderRadius:11,backgroundColor:"rgba(255,255,255,.78)"},insightIcon:{width:28,height:28,borderRadius:11,backgroundColor:"#EDF5EC",alignItems:"center",justifyContent:"center",marginBottom:4},insightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,lineHeight:12,color:COLORS.ink},insightDetail:{marginTop:4,fontFamily:"PlusJakartaSans_400Regular",fontSize:8,lineHeight:11,color:COLORS.muted}
+grid:{width:"100%",flexDirection:"row",flexWrap:"wrap",gap:8,marginTop:8},smallCard:{width:"48.8%",minHeight:145,padding:11,borderRadius:13,backgroundColor:"rgba(255,255,255,.78)",borderWidth:0},smallHeader:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},smallTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:11,color:COLORS.ink},bigMetric:{marginTop:10,fontFamily:"PlusJakartaSans_700Bold",fontSize:18,color:COLORS.ink},changeRow:{flexDirection:"row",alignItems:"center",gap:5,marginTop:2},change:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:9,color:"#2D8C45"},caption:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#7B8985"},chart:{height:68,marginTop:12,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between",paddingHorizontal:3},barWrap:{height:"100%",alignItems:"center",justifyContent:"flex-end",gap:2},bar:{width:9,borderRadius:3,backgroundColor:"#CFE5D3"},activeBar:{backgroundColor:COLORS.darkGreen},barLabel:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#8A9693"},goalTitle:{marginTop:10,fontFamily:"PlusJakartaSans_600SemiBold",fontSize:11,color:"#34514C"},goalSub:{marginTop:3,fontFamily:"PlusJakartaSans_400Regular",fontSize:9,color:COLORS.muted},goalTrack:{height:6,borderRadius:2,backgroundColor:"#DCE8DE",overflow:"hidden",marginTop:7},fill:{height:"100%",backgroundColor:COLORS.darkGreen,borderRadius:2},goalStatus:{marginTop:9,fontFamily:"PlusJakartaSans_500Medium",fontSize:8,color:"#6F7F79"},lineChart:{height:68,marginTop:12,borderBottomWidth:1,borderBottomColor:"#DCE5E0",position:"relative"},lineBase:{position:"absolute",left:"5%",right:"5%",top:43,height:1,backgroundColor:"#DCE5E0"},linePoint:{position:"absolute",width:8,height:8,borderRadius:3,backgroundColor:COLORS.darkGreen},chartDates:{flexDirection:"row",justifyContent:"space-between",marginTop:6},insightHeader:{marginTop:14,marginBottom:8,flexDirection:"row",justifyContent:"space-between",alignItems:"center"},sectionTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,color:COLORS.ink},seeAll:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:8,color:COLORS.darkGreen},insights:{flexDirection:"column",gap:6,paddingBottom:4},insight:{width:"100%",minHeight:66,paddingHorizontal:10,paddingVertical:9,borderRadius:11,backgroundColor:"rgba(255,255,255,.72)",flexDirection:"row",alignItems:"center",gap:9},insightIcon:{width:30,height:30,borderRadius:15,backgroundColor:"#EDF5EC",alignItems:"center",justifyContent:"center"},insightText:{flex:1},insightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9,lineHeight:11,color:COLORS.ink},insightDetail:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:7,lineHeight:9,color:COLORS.muted}
 });
