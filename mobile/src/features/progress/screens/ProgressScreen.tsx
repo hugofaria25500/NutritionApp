@@ -51,10 +51,10 @@ export default function ProgressScreen() {
             <View style={styles.calorieChart}>
               <View style={styles.chartGridLine} />
               {weeklyCalories.map((item,index)=>(
-                <View key={item.day} style={styles.caloriePointWrap}>
+                <View key={item.label} style={styles.caloriePointWrap}>
                   <View style={[styles.caloriePoint,{bottom:12 + ((item.value - 1500) / 25)}]} />
-                  <Text style={styles.calorieDay}>{item.day}</Text>
-                  <Text style={styles.calorieDate}>{22+index}</Text>
+                  <Text style={styles.calorieDay}>{item.label}</Text>
+                  <Text style={styles.calorieDate}>{item.date}</Text>
                 </View>
               ))}
               <View style={styles.targetLine}><Text style={styles.targetLabel}>{calorieSummary.target}</Text></View>

@@ -1,5 +1,6 @@
 export type ProgressPoint = {
   label: string;
+  date: number;
   value: number;
 };
 
@@ -41,13 +42,13 @@ export const calorieSummary = {
 };
 
 export const weeklyCalories: ProgressPoint[] = [
-  { label: "Seg", value: 1580 },
-  { label: "Ter", value: 1710 },
-  { label: "Qua", value: 1600 },
-  { label: "Qui", value: 1650 },
-  { label: "Sex", value: 1680 },
-  { label: "Sáb", value: 1720 },
-  { label: "Dom", value: 1550 },
+  { label: "Seg", date: 22, value: 1580 },
+  { label: "Ter", date: 23, value: 1710 },
+  { label: "Qua", date: 24, value: 1600 },
+  { label: "Qui", date: 25, value: 1650 },
+  { label: "Sex", date: 26, value: 1680 },
+  { label: "Sáb", date: 27, value: 1720 },
+  { label: "Dom", date: 28, value: 1550 },
 ];
 
 export const macronutrients: MacroData[] = [
