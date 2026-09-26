@@ -72,7 +72,9 @@ export default function ProgressScreen() {
             </View>
           </View>
 
-          <View style={styles.insightHeader}><Text style={styles.sectionTitle}>Insights personalizados</Text><Pressable onPress={()=>Alert.alert("Insights","Todos os teus insights serão apresentados aqui.")}><Text style={styles.seeAll}>Ver todos →</Text></Pressable></View>
+          <View style={styles.insightHeader}>
+            <Text style={styles.sectionTitle}>Insights personalizados</Text>
+          </View>
           <View style={styles.insights}>
             {insights.map(item=>(
               <View key={item.id} style={styles.insight}>
