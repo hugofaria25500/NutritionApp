@@ -88,7 +88,6 @@ export default function ProgressScreen() {
                       },
                     ]}
                   >
-                    <Text style={styles.weightPointValue}>{point.value}</Text>
                     <View style={styles.weightPoint}/>
                   </View>
                 ))}
