@@ -8,19 +8,15 @@ import AppLogo from "@/components/ui/AppLogo";
 import { useAppFonts } from "@/components/ui/useAppFonts";
 import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
 import { navigationItems } from "@/features/home/data/homeData";
-import ProgressHabitRow from "@/features/progress/components/ProgressHabitRow";
-import { habits, insights, progressCopy, progressMetrics, weeklyCalories, weightEntries, weightMonth } from "@/features/progress/data/progressData";
+import { calorieSummary, insights, macronutrients, progressCopy, weeklyCalories, weightEntries, weightGoal, weightSummary } from "@/features/progress/data/progressData";
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
 
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
-  const [completedHabits, setCompletedHabits] = useState<string[]>([]);
-  if (!fontsLoaded) return null;
+    if (!fontsLoaded) return null;
   const bottom = Math.max(insets.bottom,8)+8;
-
-  const toggleHabit = (id:string) => setCompletedHabits(current => current.includes(id) ? current.filter(item=>item!==id) : [...current,id]);
 
   return (
     <AppBackground source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")} resizeMode="cover">
@@ -50,18 +46,18 @@ export default function ProgressScreen() {
                 <Text style={styles.moreText}>Ver mais →</Text>
               </Pressable>
             </View>
-            <Text style={styles.mainValue}>1 250 kcal</Text>
+            <Text style={styles.mainValue}>{calorieSummary.current.toLocaleString("pt-PT")} {calorieSummary.unit}</Text>
             <Text style={styles.mainCaption}>Média diária esta semana</Text>
             <View style={styles.calorieChart}>
               <View style={styles.chartGridLine} />
               {weeklyCalories.map((item,index)=>(
                 <View key={item.day} style={styles.caloriePointWrap}>
-                  <View style={[styles.caloriePoint,{bottom:12 + (item.value-1500)/18}]} />
+                  <View style={[styles.caloriePoint,{bottom:12 + ((item.value - 1500) / 25)}]} />
                   <Text style={styles.calorieDay}>{item.day}</Text>
                   <Text style={styles.calorieDate}>{22+index}</Text>
                 </View>
               ))}
-              <View style={styles.targetLine}><Text style={styles.targetLabel}>1800</Text></View>
+              <View style={styles.targetLine}><Text style={styles.targetLabel}>{calorieSummary.target}</Text></View>
             </View>
           </View>
 
@@ -79,17 +75,18 @@ export default function ProgressScreen() {
               <View style={[styles.macroSegment,{flex:25,backgroundColor:"#FF8054"}]}/>
             </View>
             <View style={styles.macroCards}>
-              {progressMetrics.map((metric,index)=>(
+              {macronutrients.map((metric,index)=>(
+
                 <View key={metric.label} style={styles.macroItem}>
-                  <View style={[styles.macroIcon,{backgroundColor:index===0?"#E8F5E8":index===1?"#FFF3D8":"#FFE9E1"}]}>
-                    <Ionicons name={index===0?"leaf-outline":index===1?"flash-outline":"flame-outline"} size={14} color={index===0?"#35A65A":index===1?"#E6A521":"#FF6840"}/>
+                  <View style={[styles.macroIcon,{backgroundColor:`${metric.color}18`}]}>
+                    <Ionicons name={metric.icon as keyof typeof Ionicons.glyphMap} size={14} color={metric.color}/>
                   </View>
                   <View style={styles.macroInfo}>
                     <Text style={styles.macroName}>{metric.label}</Text>
-                    <Text style={styles.macroPercent}>{metric.detail}</Text>
-                    <Text style={styles.macroAmount}>{metric.value}</Text>
+                    <Text style={styles.macroPercent}>{metric.percentage}%</Text>
+                    <Text style={styles.macroAmount}>{metric.current} / {metric.target} {metric.unit}</Text>
                   </View>
-                  <View style={styles.macroMiniTrack}><View style={[styles.macroMiniFill,{width:`${metric.progress}%`,backgroundColor:index===0?"#35A65A":index===1?"#FFC34D":"#FF8054"}]}/></View>
+                  <View style={styles.macroMiniTrack}><View style={[styles.macroMiniFill,{width:`${metric.progress}%`,backgroundColor:metric.color}]}/></View>
                 </View>
               ))}
             </View>
@@ -101,16 +98,16 @@ export default function ProgressScreen() {
                 <View style={styles.headingLine}><Ionicons name="scale-outline" size={14} color={COLORS.darkGreen}/><Text style={styles.sectionCardTitle}>Peso</Text></View>
                 <Pressable onPress={()=>Alert.alert("Peso","Aqui poderás consultar o histórico completo de pesagens.")}><Text style={styles.moreText}>Ver mais →</Text></Pressable>
               </View>
-              <Text style={styles.halfValue}>{progressCopy.weight}</Text>
-              <Text style={styles.change}>{progressCopy.weightChange} desde 1 Set</Text>
+              <Text style={styles.halfValue}>{weightSummary.current.toFixed(1).replace(".", ",")} {weightSummary.unit}</Text>
+              <Text style={styles.change}>{weightSummary.change.toFixed(1).replace(".", ",")} {weightSummary.unit} {weightSummary.changeLabel}</Text>
               <View style={styles.miniWeightChart}>
                 <View style={styles.miniChartLine}/>
                 {weightEntries.slice(-6).map((point,i)=>(
-                  <View key={point.day} style={[styles.miniWeightPoint,{left:`${(i/5)*100}%`,bottom:8+(point.height-14)*0.55}]}>
+                  <View key={point.day} style={[styles.miniWeightPoint,{left:`${(i/5)*100}%`,bottom:8 + ((point.value - 68) / 3) * 32}]}>
                     <View style={styles.weightPoint}/>
                   </View>
                 ))}
-                <View style={styles.weightBubble}><Text style={styles.weightBubbleText}>68,2</Text></View>
+                <View style={styles.weightBubble}><Text style={styles.weightBubbleText}>{weightSummary.current.toFixed(1).replace(".", ",")}</Text></View>
               </View>
               <View style={styles.axisRow}><Text style={styles.axisText}>1 Set</Text><Text style={styles.axisText}>8 Set</Text><Text style={styles.axisText}>15 Set</Text><Text style={styles.axisText}>22 Set</Text></View>
             </View>
@@ -120,15 +117,15 @@ export default function ProgressScreen() {
                 <View style={styles.headingLine}><Ionicons name="locate-outline" size={14} color={COLORS.darkGreen}/><Text style={styles.sectionCardTitle}>Objetivo</Text></View>
                 <Ionicons name="chevron-forward" size={14} color="#60736E"/>
               </View>
-              <Text style={styles.goalBig}>Perder 5 kg</Text>
-              <Text style={styles.goalProgress}><Text style={styles.change}>2,4 kg</Text> de 5 kg</Text>
-              <View style={styles.goalTrack}><View style={[styles.fill,{width:"48%"}]}/></View>
-              <Text style={styles.goalPercent}>48%</Text>
+              <Text style={styles.goalBig}>{weightGoal.label}</Text>
+              <Text style={styles.goalProgress}><Text style={styles.change}>{weightGoal.achieved.toFixed(1).replace(".", ",")} kg</Text> de {weightGoal.total} kg</Text>
+              <View style={styles.goalTrack}><View style={[styles.fill,{width:`${(weightGoal.achieved / weightGoal.total) * 100}%`}]}/></View>
+              <Text style={styles.goalPercent}>{Math.round((weightGoal.achieved / weightGoal.total) * 100)}%</Text>
               <View style={styles.goalStats}>
-                <View><Text style={styles.axisText}>Peso atual</Text><Text style={styles.goalStatValue}>68,2 kg</Text></View>
-                <View><Text style={styles.axisText}>Peso objetivo</Text><Text style={styles.goalStatValue}>65,0 kg</Text></View>
+                <View><Text style={styles.axisText}>Peso atual</Text><Text style={styles.goalStatValue}>{weightGoal.current.toFixed(1).replace(".", ",")} kg</Text></View>
+                <View><Text style={styles.axisText}>Peso objetivo</Text><Text style={styles.goalStatValue}>{weightGoal.target.toFixed(1).replace(".", ",")} kg</Text></View>
               </View>
-              <View style={styles.goalFooter}><Ionicons name="flag-outline" size={14} color={COLORS.darkGreen}/><View><Text style={styles.goalFooterTitle}>Faltam 3 semanas</Text><Text style={styles.axisText}>Mantém o ritmo!</Text></View></View>
+              <View style={styles.goalFooter}><Ionicons name="flag-outline" size={14} color={COLORS.darkGreen}/><View><Text style={styles.goalFooterTitle}>Faltam {weightGoal.remainingWeeks} semanas</Text><Text style={styles.axisText}>Mantém o ritmo!</Text></View></View>
             </View>
           </View>
 
@@ -145,6 +142,7 @@ export default function ProgressScreen() {
           </View>
           <View style={styles.insights}>
             {insights.slice(1).map(item=>(
+
               <View key={item.id} style={styles.insight}>
                 <View style={styles.insightIcon}>
                   <Ionicons name={item.icon as keyof typeof Ionicons.glyphMap} size={14} color={COLORS.darkGreen}/>
