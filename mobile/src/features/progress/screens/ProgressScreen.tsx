@@ -62,7 +62,24 @@ export default function ProgressScreen() {
               <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="scale-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Peso</Text></View></View>
               <Text style={styles.bigMetric}>{progressCopy.weight}</Text>
               <Text style={styles.change}>{progressCopy.weightChange}</Text>
-              <View style={styles.lineChart}><View style={styles.lineBase}/>{[20,18,22,17,13,15,9,7].map((h,i)=><View key={i} style={[styles.linePoint,{left:`${i*12}%`,bottom:h}]} />)}</View>
+              <View style={styles.lineChart}>
+                <View style={styles.lineBase}/>
+                {[
+                  { value: "70,6", height: 20 },
+                  { value: "70,2", height: 18 },
+                  { value: "70,4", height: 22 },
+                  { value: "69,8", height: 17 },
+                  { value: "69,5", height: 13 },
+                  { value: "69,2", height: 15 },
+                  { value: "68,8", height: 9 },
+                  { value: "68,2", height: 7 },
+                ].map((point, i) => (
+                  <View key={i} style={[styles.linePointWrap, { left: `${i * 12}%`, bottom: point.height }]}>
+                    <View style={styles.linePoint} />
+                    <Text style={styles.pointValue}>{point.value}</Text>
+                  </View>
+                ))}
+              </View>
               <View style={styles.chartDates}><Text style={styles.caption}>1 Set</Text><Text style={styles.caption}>8 Set</Text><Text style={styles.caption}>15 Set</Text><Text style={styles.caption}>22 Set</Text></View>
             </View>
 
