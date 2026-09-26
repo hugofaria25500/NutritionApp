@@ -98,10 +98,6 @@ export default function ProgressScreen() {
                 <Text style={styles.weightRangeText}>68,2 kg</Text>
               </View>
 
-              <View style={styles.previousWeight}>
-                <Text style={styles.previousWeightLabel}>{weightMonth.previousMonthLabel}</Text>
-                <Text style={styles.previousWeightValue}>{progressCopy.previousMonthWeight}</Text>
-              </View>
             </View>
 
             <View style={styles.smallCard}>
@@ -152,7 +148,7 @@ weightPointWrap:{position:"absolute",width:22,alignItems:"center",transform:[{tr
 weightPoint:{width:7,height:7,borderRadius:4,backgroundColor:COLORS.darkGreen},
 weightDate:{marginTop:5,fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7D8B87",whiteSpace:"nowrap"},
 weightRange:{marginTop:3,flexDirection:"row",justifyContent:"space-between"},
-weightRangeText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:6,color:"#8A9693"},
+weightRangeText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#687773"},
 previousWeight:{marginTop:6,paddingTop:5,borderTopWidth:1,borderTopColor:"#E1E9E3",flexDirection:"row",justifyContent:"space-between"},
 previousWeightLabel:{fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,color:COLORS.muted},
 previousWeightValue:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7,color:COLORS.ink},
