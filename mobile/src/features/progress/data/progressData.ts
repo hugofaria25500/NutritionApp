@@ -13,6 +13,7 @@ export const progressCopy = {
   calorieChange: "-12%",
   weight: "68,2 kg",
   weightChange: "-2,4 kg",
+  previousMonthWeight: "70,6 kg",
 };
 
 export const progressMetrics: ProgressMetric[] = [
@@ -42,4 +43,20 @@ export const insights = [
   { id: "protein", title: "Tens comido mais proteína esta semana", detail: "+20% em relação à semana anterior.", icon: "bulb-outline" },
   { id: "meals", title: "As tuas refeições estão mais equilibradas", detail: "Boa distribuição de macronutrientes.", icon: "bar-chart-outline" },
   { id: "water", title: "Mantém o ritmo!", detail: "Estás 72% mais perto do teu objetivo.", icon: "sparkles-outline" },
+];
+
+export const weightMonth = {
+  label: "Setembro 2026",
+  previousMonthLabel: "Agosto",
+};
+
+export const weightEntries = [
+  { date: "2 Set", value: "70,6", height: 44 },
+  { date: "5 Set", value: "70,2", height: 39 },
+  { date: "9 Set", value: "70,4", height: 42 },
+  { date: "12 Set", value: "69,8", height: 35 },
+  { date: "16 Set", value: "69,5", height: 30 },
+  { date: "19 Set", value: "69,2", height: 26 },
+  { date: "22 Set", value: "68,8", height: 20 },
+  { date: "26 Set", value: "68,2", height: 14 },
 ];

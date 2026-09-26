@@ -9,8 +9,7 @@ import { useAppFonts } from "@/components/ui/useAppFonts";
 import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
 import { navigationItems } from "@/features/home/data/homeData";
 import ProgressHabitRow from "@/features/progress/components/ProgressHabitRow";
-import ProgressMetricCard from "@/features/progress/components/ProgressMetricCard";
-import { habits, insights, progressCopy, weeklyCalories } from "@/features/progress/data/progressData";
+import { habits, insights, progressCopy, weeklyCalories, weightEntries, weightMonth } from "@/features/progress/data/progressData";
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
 
@@ -59,28 +58,33 @@ export default function ProgressScreen() {
             </View>
 
             <View style={styles.smallCard}>
-              <View style={styles.smallHeader}><View style={styles.headingLine}><Ionicons name="scale-outline" size={12} color={COLORS.darkGreen}/><Text style={styles.smallTitle}>Peso</Text></View></View>
-              <Text style={styles.bigMetric}>{progressCopy.weight}</Text>
-              <Text style={styles.change}>{progressCopy.weightChange}</Text>
+              <View style={styles.smallHeader}>
+                <View style={styles.headingLine}>
+                  <Ionicons name="scale-outline" size={12} color={COLORS.darkGreen}/>
+                  <Text style={styles.smallTitle}>Peso</Text>
+                </View>
+              </View>
+              <View style={styles.weightSummary}>
+                <View>
+                  <Text style={styles.bigMetric}>{progressCopy.weight}</Text>
+                  <Text style={styles.change}>{progressCopy.weightChange} vs. {weightMonth.previousMonthLabel}</Text>
+                </View>
+                <Text style={styles.monthLabel}>{weightMonth.label}</Text>
+              </View>
               <View style={styles.lineChart}>
                 <View style={styles.lineBase}/>
-                {[
-                  { value: "70,6", height: 20 },
-                  { value: "70,2", height: 18 },
-                  { value: "70,4", height: 22 },
-                  { value: "69,8", height: 17 },
-                  { value: "69,5", height: 13 },
-                  { value: "69,2", height: 15 },
-                  { value: "68,8", height: 9 },
-                  { value: "68,2", height: 7 },
-                ].map((point, i) => (
-                  <View key={i} style={[styles.linePointWrap, { left: `${i * 12}%`, bottom: point.height }]}>
-                    <View style={styles.linePoint} />
+                {weightEntries.map((point, i) => (
+                  <View key={point.date} style={[styles.linePointWrap, { left: `${(i / (weightEntries.length - 1)) * 100}%`, bottom: point.height }]}>
                     <Text style={styles.pointValue}>{point.value}</Text>
+                    <View style={styles.linePoint}/>
+                    <Text style={styles.pointDate}>{point.date}</Text>
                   </View>
                 ))}
               </View>
-              <View style={styles.chartDates}><Text style={styles.caption}>1 Set</Text><Text style={styles.caption}>8 Set</Text><Text style={styles.caption}>15 Set</Text><Text style={styles.caption}>22 Set</Text></View>
+              <View style={styles.previousWeight}>
+                <Text style={styles.previousWeightLabel}>{weightMonth.previousMonthLabel}</Text>
+                <Text style={styles.previousWeightValue}>{progressCopy.previousMonthWeight}</Text>
+              </View>
             </View>
 
             <View style={styles.smallCard}>
@@ -122,5 +126,5 @@ const styles=StyleSheet.create({
  hero:{marginTop:10,marginBottom:10},title:{fontFamily:"PlusJakartaSans_700Bold",fontSize:28,lineHeight:33,color:COLORS.ink},accent:{color:COLORS.darkGreen},subtitle:{marginTop:2,maxWidth:330,fontFamily:"PlusJakartaSans_400Regular",fontSize:9.5,lineHeight:13,color:COLORS.muted},
  tabs:{width:"100%",flexDirection:"row",gap:6,marginBottom:8},tab:{flex:1,height:28,borderRadius:14,alignItems:"center",justifyContent:"center",backgroundColor:"rgba(255,255,255,.55)"},activeTab:{backgroundColor:COLORS.darkGreen},tabText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#63736F"},activeTabText:{color:"#FFF"},
  todayCard:{width:"100%",padding:10,borderRadius:15,backgroundColor:"rgba(237,245,236,.92)"},cardHeader:{flexDirection:"row",justifyContent:"space-between",alignItems:"center"},headingLine:{flexDirection:"row",alignItems:"center",gap:5},cardTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:8.5,color:COLORS.ink},todayContent:{flexDirection:"row",alignItems:"center",gap:10,marginTop:7},calorieRing:{width:78,height:78,borderRadius:39,borderWidth:8,borderColor:"#D4E8D8",borderLeftColor:COLORS.darkGreen,borderBottomColor:COLORS.darkGreen,alignItems:"center",justifyContent:"center"},ringInner:{alignItems:"center"},ringNumber:{fontFamily:"PlusJakartaSans_700Bold",fontSize:14,color:COLORS.ink},ringUnit:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:COLORS.muted},metricList:{flex:1,gap:5},
-grid:{width:"100%",flexDirection:"row",flexWrap:"wrap",gap:8,marginTop:8},smallCard:{width:"48.8%",minHeight:145,padding:11,borderRadius:13,backgroundColor:"rgba(255,255,255,.78)",borderWidth:0},smallHeader:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},smallTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:11,color:COLORS.ink},bigMetric:{marginTop:10,fontFamily:"PlusJakartaSans_700Bold",fontSize:18,color:COLORS.ink},changeRow:{flexDirection:"row",alignItems:"center",gap:5,marginTop:2},change:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:9,color:"#2D8C45"},caption:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#7B8985"},chart:{height:68,marginTop:12,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between",paddingHorizontal:3},barWrap:{height:"100%",alignItems:"center",justifyContent:"flex-end",gap:2},bar:{width:9,borderRadius:3,backgroundColor:"#CFE5D3"},activeBar:{backgroundColor:COLORS.darkGreen},barLabel:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#8A9693"},goalTitle:{marginTop:10,fontFamily:"PlusJakartaSans_600SemiBold",fontSize:11,color:"#34514C"},goalSub:{marginTop:3,fontFamily:"PlusJakartaSans_400Regular",fontSize:9,color:COLORS.muted},goalTrack:{height:6,borderRadius:2,backgroundColor:"#DCE8DE",overflow:"hidden",marginTop:7},fill:{height:"100%",backgroundColor:COLORS.darkGreen,borderRadius:2},goalStatus:{marginTop:9,fontFamily:"PlusJakartaSans_500Medium",fontSize:8,color:"#6F7F79"},lineChart:{height:68,marginTop:12,borderBottomWidth:1,borderBottomColor:"#DCE5E0",position:"relative"},lineBase:{position:"absolute",left:"5%",right:"5%",top:43,height:1,backgroundColor:"#DCE5E0"},linePoint:{position:"absolute",width:8,height:8,borderRadius:3,backgroundColor:COLORS.darkGreen},chartDates:{flexDirection:"row",justifyContent:"space-between",marginTop:6},insightHeader:{marginTop:14,marginBottom:8,flexDirection:"row",justifyContent:"space-between",alignItems:"center"},sectionTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,color:COLORS.ink},seeAll:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:8,color:COLORS.darkGreen},insights:{flexDirection:"column",gap:6,paddingBottom:4},insight:{width:"100%",minHeight:66,paddingHorizontal:10,paddingVertical:9,borderRadius:11,backgroundColor:"rgba(255,255,255,.72)",flexDirection:"row",alignItems:"center",gap:9},insightIcon:{width:30,height:30,borderRadius:15,backgroundColor:"#EDF5EC",alignItems:"center",justifyContent:"center"},insightText:{flex:1},insightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9,lineHeight:11,color:COLORS.ink},insightDetail:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:7,lineHeight:9,color:COLORS.muted}
+grid:{width:"100%",flexDirection:"row",flexWrap:"wrap",gap:8,marginTop:8},smallCard:{width:"48.8%",minHeight:170,padding:11,borderRadius:13,backgroundColor:"rgba(255,255,255,.78)",borderWidth:0},smallHeader:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},smallTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:11,color:COLORS.ink},bigMetric:{marginTop:10,fontFamily:"PlusJakartaSans_700Bold",fontSize:18,color:COLORS.ink},changeRow:{flexDirection:"row",alignItems:"center",gap:5,marginTop:2},change:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:9,color:"#2D8C45"},caption:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#7B8985"},chart:{height:68,marginTop:12,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between",paddingHorizontal:3},barWrap:{height:"100%",alignItems:"center",justifyContent:"flex-end",gap:2},bar:{width:9,borderRadius:3,backgroundColor:"#CFE5D3"},activeBar:{backgroundColor:COLORS.darkGreen},barLabel:{fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:"#8A9693"},goalTitle:{marginTop:10,fontFamily:"PlusJakartaSans_600SemiBold",fontSize:11,color:"#34514C"},goalSub:{marginTop:3,fontFamily:"PlusJakartaSans_400Regular",fontSize:9,color:COLORS.muted},goalTrack:{height:6,borderRadius:2,backgroundColor:"#DCE8DE",overflow:"hidden",marginTop:7},fill:{height:"100%",backgroundColor:COLORS.darkGreen,borderRadius:2},goalStatus:{marginTop:9,fontFamily:"PlusJakartaSans_500Medium",fontSize:8,color:"#6F7F79"},weightSummary:{marginTop:2,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between"},monthLabel:{fontFamily:"PlusJakartaSans_500Medium",fontSize:7,color:COLORS.muted},lineChart:{height:82,marginTop:8,borderBottomWidth:1,borderBottomColor:"#DCE5E0",position:"relative"},lineBase:{position:"absolute",left:"5%",right:"5%",bottom:25,height:1,backgroundColor:"#DCE5E0"},linePoint:{position:"absolute",width:8,height:8,borderRadius:3,backgroundColor:COLORS.darkGreen},chartDates:{flexDirection:"row",justifyContent:"space-between",marginTop:6},insightHeader:{marginTop:14,marginBottom:8,flexDirection:"row",justifyContent:"space-between",alignItems:"center"},sectionTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,color:COLORS.ink},seeAll:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:8,color:COLORS.darkGreen},insights:{flexDirection:"column",gap:6,paddingBottom:4},insight:{width:"100%",minHeight:66,paddingHorizontal:10,paddingVertical:9,borderRadius:11,backgroundColor:"rgba(255,255,255,.72)",flexDirection:"row",alignItems:"center",gap:9},insightIcon:{width:30,height:30,borderRadius:15,backgroundColor:"#EDF5EC",alignItems:"center",justifyContent:"center"},insightText:{flex:1},insightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9,lineHeight:11,color:COLORS.ink},insightDetail:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:7,lineHeight:9,color:COLORS.muted}
 });
