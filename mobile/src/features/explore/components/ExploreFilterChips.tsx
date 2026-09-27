@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { RADIUS, TYPOGRAPHY } from "@/components/ui/theme";
 
 type ExploreContentType = "Receitas" | "Ingredientes";
 
@@ -46,10 +47,10 @@ const styles = StyleSheet.create({
     borderColor: "rgba(55,99,88,0.06)",
   },
   item: {
-    minWidth: 88,
-    height: 32,
+    minWidth: 110,
+    height: 38,
     paddingHorizontal: 14,
-    borderRadius: 17,
+    borderRadius: RADIUS.lg,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 9,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#58706A",
   },
   activeText: {

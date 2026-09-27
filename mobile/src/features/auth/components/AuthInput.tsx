@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type AuthInputProps = {
   icon: keyof typeof Ionicons.glyphMap;
@@ -51,21 +52,21 @@ export default function AuthInput({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: 44,
-    borderRadius: 22,
+    height: 48,
+    borderRadius: RADIUS.xl,
     borderWidth: 1,
-    borderColor: "#E1E4DF",
+    borderColor: COLORS.border,
     backgroundColor: "rgba(255, 255, 255, 0.72)",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 14,
+    paddingHorizontal: SPACING.md,
   },
   input: {
     flex: 1,
     height: "100%",
     marginLeft: 10,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
-    color: "#333333",
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    color: COLORS.ink,
   },
 });

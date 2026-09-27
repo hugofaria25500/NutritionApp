@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
+import { TYPOGRAPHY } from "@/components/ui/theme";
 import type { ExploreRecipe } from "@/features/explore/data/exploreData";
 
 type ExploreRecipeCardProps = {
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   },
   time: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#28564F",
   },
   favorite: {
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 9.5,
+    fontSize: TYPOGRAPHY.label.fontSize,
     lineHeight: 12,
     color: "#123E3B",
   },
   detail: {
     marginTop: 4,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 6.8,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     lineHeight: 9,
     color: "#7E8986",
   },

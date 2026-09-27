@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Href } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { LAYOUT, SPACING } from "@/components/ui/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -49,8 +50,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 21,
-    paddingVertical: 16,
+    paddingHorizontal: LAYOUT.horizontalPadding,
+    paddingVertical: SPACING.lg,
   },
   scrollView: {
     flex: 1,

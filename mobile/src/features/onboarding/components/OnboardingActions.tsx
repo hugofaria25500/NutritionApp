@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type OnboardingActionsProps = {
   disabled?: boolean;
@@ -34,15 +35,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 8,
-    marginTop: 14,
-    paddingBottom: 8,
+    gap: SPACING.sm,
+    marginTop: SPACING.lg,
+    paddingBottom: SPACING.sm,
   },
   primaryButton: {
     width: "100%",
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "#168653",
+    height: 48,
+    borderRadius: RADIUS.xl,
+    backgroundColor: COLORS.greenStrong,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -53,12 +54,12 @@ const styles = StyleSheet.create({
   },
   primaryText: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 13,
-    color: "#FFFFFF",
+    fontSize: TYPOGRAPHY.button.fontSize,
+    color: COLORS.white,
   },
   laterText: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 12,
-    color: "#087C5B",
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    color: COLORS.green,
   },
 });

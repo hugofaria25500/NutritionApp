@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 export type OnboardingOption = {
   id: string;
@@ -19,7 +20,7 @@ export default function OnboardingOptionCard({
   option,
   selected,
   onPress,
-  minHeight = 100,
+  minHeight = 112,
 }: OnboardingOptionCardProps) {
   return (
     <Pressable
@@ -48,13 +49,13 @@ export default function OnboardingOptionCard({
 
 const styles = StyleSheet.create({
   card: {
-    width: "48%",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 11,
+    width: "48.5%",
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.md,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: "#ECEDE9",
-    backgroundColor: "#ECEDE9",
+    borderColor: COLORS.border,
+    backgroundColor: "rgba(255,255,255,0.78)",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.04,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   },
   selected: {
     borderColor: "#7BCB9D",
-    backgroundColor: "#E5F2E5",
+    backgroundColor: COLORS.greenSoft,
   },
   header: {
     flexDirection: "row",
@@ -81,15 +82,15 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 4,
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 14,
-    lineHeight: 14,
+    fontSize: TYPOGRAPHY.bodyMedium.fontSize,
+    lineHeight: TYPOGRAPHY.bodyMedium.lineHeight,
     color: "#123B34",
   },
   description: {
     marginTop: 1,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
-    lineHeight: 15,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
     color: "#858B87",
   },
 });

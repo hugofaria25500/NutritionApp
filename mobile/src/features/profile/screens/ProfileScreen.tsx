@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -267,8 +268,8 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    maxWidth: 430,
-    paddingHorizontal: 15,
+    maxWidth: LAYOUT.maxContentWidth,
+    paddingHorizontal: LAYOUT.horizontalPadding,
   },
   topBar: {
     width: "100%",
@@ -330,7 +331,7 @@ const styles = StyleSheet.create({
     bottom: 2,
     width: 22,
     height: 22,
-    borderRadius: 11,
+    borderRadius: RADIUS.md,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
@@ -350,8 +351,8 @@ const styles = StyleSheet.create({
   profileName: {
     flex: 1,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 22,
-    lineHeight: 22,
+    fontSize: 20,
+    lineHeight: 24,
     color: COLORS.ink,
   },
   editProfileButton: {
@@ -367,14 +368,14 @@ const styles = StyleSheet.create({
   },
   editProfileText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 11,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: COLORS.ink,
   },
   profileHelper: {
     marginTop: 4,
     maxWidth: 260,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     lineHeight: 10.5,
     color: COLORS.muted,
   },
@@ -398,12 +399,12 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 13,
+    fontSize: TYPOGRAPHY.bodyMedium.fontSize,
     color: COLORS.ink,
   },
   statLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 9,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: COLORS.muted,
   },
   statDivider: {
@@ -420,7 +421,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 15,
+    fontSize: TYPOGRAPHY.h3.fontSize,
     color: COLORS.ink,
   },
   sectionAction: {
@@ -437,12 +438,12 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    columnGap: 7,
-    rowGap: 7,
+    columnGap: SPACING.sm,
+    rowGap: SPACING.sm,
   },
   preferenceCard: {
-    width: "calc(33.333% - 5px)",
-    minHeight: 76,
+    width: "32%",
+    minHeight: 84,
     paddingHorizontal: 6,
     paddingVertical: 7,
     borderRadius: 11,
@@ -461,7 +462,7 @@ const styles = StyleSheet.create({
   preferenceLabel: {
     fontFamily: "PlusJakartaSans_600SemiBold",
     fontSize: 9,
-    lineHeight: 7.2,
+    lineHeight: TYPOGRAPHY.label.lineHeight,
     color: "#465A55",
     textAlign: "center",
   },
@@ -471,8 +472,8 @@ const styles = StyleSheet.create({
   },
   goalCard: {
     width: "100%",
-    minHeight: 58,
-    borderRadius: 12,
+    minHeight: 64,
+    borderRadius: RADIUS.md,
     paddingHorizontal: 9,
     paddingVertical: 8,
     backgroundColor: "rgba(238,247,239,0.92)",

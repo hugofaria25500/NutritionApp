@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text } from "react-native";
+import { COLORS, RADIUS, TYPOGRAPHY } from "@/components/ui/theme";
 
 type AuthPrimaryButtonProps = {
   label: string;
@@ -16,15 +17,15 @@ export default function AuthPrimaryButton({ label, onPress }: AuthPrimaryButtonP
 const styles = StyleSheet.create({
   button: {
     width: "100%",
-    height: 44,
-    borderRadius: 25,
-    backgroundColor: "#168653",
+    height: 48,
+    borderRadius: RADIUS.xl,
+    backgroundColor: COLORS.greenStrong,
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
     fontFamily: "PlusJakartaSans_500Medium",
-    color: "#FFFFFF",
-    fontSize: 13,
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.button.fontSize,
   },
 });

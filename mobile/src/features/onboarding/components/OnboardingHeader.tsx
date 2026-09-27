@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Href, useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
+import { COLORS, RADIUS, SPACING } from "@/components/ui/theme";
 
 type OnboardingHeaderProps = {
   backRoute: Href;
@@ -22,7 +23,7 @@ export default function OnboardingHeader({
         style={styles.backButton}
         hitSlop={10}
       >
-        <Ionicons name="chevron-back" size={20} color="#087C5B" />
+        <Ionicons name="chevron-back" size={22} color={COLORS.green} />
       </Pressable>
 
       <View style={styles.progressContainer}>
@@ -46,11 +47,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    height: 34,
-    marginBottom: 15,
+    height: 40,
+    marginBottom: SPACING.lg,
   },
   backButton: {
-    width: 24,
+    width: 40,
     height: 34,
     alignItems: "flex-start",
     justifyContent: "center",
@@ -59,18 +60,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 5,
-    marginHorizontal: 5,
+    gap: SPACING.xs,
+    marginHorizontal: SPACING.xs,
   },
   progressSegment: {
     flex: 1,
-    height: 3,
-    borderRadius: 3,
+    height: 4,
+    borderRadius: RADIUS.pill,
   },
   progressActive: {
-    backgroundColor: "#087C5B",
+    backgroundColor: COLORS.green,
   },
   progressInactive: {
-    backgroundColor: "#E1E4DF",
+    backgroundColor: COLORS.border,
   },
 });
