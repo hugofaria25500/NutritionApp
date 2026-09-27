@@ -12,14 +12,10 @@ import { navigationItems } from "@/features/home/data/homeData";
 import { calorieSummary, insights, macronutrients, progressCopy, weeklyCalories, weightEntries, weightGoal, weightSummary } from "@/features/progress/data/progressData";
 
 const weightValues = weightEntries.map((entry) => entry.value);
-const weightChartMin = Math.floor(Math.min(...weightValues) - 5);
-const weightChartMax = Math.ceil(Math.max(...weightValues) + 5);
+const weightChartMin = Math.floor((Math.min(...weightValues) - 5) / 5) * 5;
+const weightChartMax = Math.ceil((Math.max(...weightValues) + 5) / 5) * 5;
 const weightChartSections = 4;
 const weightChartStep = (weightChartMax - weightChartMin) / weightChartSections;
-const weightChartLabels = Array.from(
-  { length: weightChartSections + 1 },
-  (_, index) => (weightChartMax - index * weightChartStep).toFixed(0),
-);
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
 
@@ -155,13 +151,13 @@ export default function ProgressScreen() {
                   data={weightEntries.slice(-6).map((point) => ({ value: point.value }))}
                   width={122}
                   height={58}
-                  minValue={weightChartMin}
-                  maxValue={weightChartMax}
+                  maxValue={weightChartMax - weightChartMin}
+                  yAxisOffset={weightChartMin}
                   stepValue={weightChartStep}
                   noOfSections={weightChartSections}
-                  yAxisLabelTexts={weightChartLabels}
                   yAxisLabelWidth={20}
                   yAxisTextStyle={styles.weightYAxisText}
+                  formatYLabel={(label) => Number(label).toFixed(0)}
                   yAxisColor="#E5ECE7"
                   yAxisThickness={1}
                   rulesColor="#E5ECE7"
