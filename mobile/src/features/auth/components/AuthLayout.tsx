@@ -19,7 +19,7 @@ export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_three_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
     >
       <SafeAreaView style={styles.safeArea}>
         <Pressable
