@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: height < 700 ? SPACING.sm : SPACING.xl,
+    paddingTop: SPACING.xl,
   },
   tagline: {
     marginTop: SPACING.xs,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   actions: {
     width: "100%",
     gap: SPACING.md,
-    paddingBottom: height < 700 ? SPACING.xs : 0,
+    paddingBottom: SPACING.xs,
   },
   primaryButton: {
     width: "100%",
