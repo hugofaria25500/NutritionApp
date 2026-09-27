@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-gifted-charts";
 import { useState } from "react";
+import Svg, { Circle, Line, Polyline, Text as SvgText } from "react-native-svg";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -148,72 +149,71 @@ export default function ProgressScreen() {
               <Text style={styles.halfValue}>{weightSummary.current.toFixed(1).replace(".", ",")} {weightSummary.unit}</Text>
               <Text style={styles.change}>{weightSummary.change.toFixed(1).replace(".", ",")} {weightSummary.unit} {weightSummary.changeLabel}</Text>
               <View style={styles.miniWeightChart}>
-                <LineChart
-                  data={weightEntries.slice(-6).map((point) => ({ value: point.value }))}
-                  width={130}
-                  height={58}
-                  maxValue={weightChartMax - weightChartMin}
-                  yAxisOffset={weightChartMin}
-                  stepValue={weightChartStep}
-                  noOfSections={weightChartSections}
-                  yAxisLabelWidth={14}
-                  yAxisTextStyle={styles.weightYAxisText}
-                  formatYLabel={(label) => Number(label).toFixed(0)}
-                  yAxisColor="#E5ECE7"
-                  yAxisThickness={1}
-                  rulesColor="#E5ECE7"
-                  rulesThickness={1}
-                  hideAxesAndRules={false}
-                  color={COLORS.darkGreen}
-                  thickness={1.5}
-                  dataPointsColor={COLORS.darkGreen}
-                  dataPointsRadius={3.5}
-                  dataPointsHeight={7}
-                  dataPointsWidth={7}
-                  customDataPoint={() => <View style={styles.giftedDataPoint} />}
-                  curved={false}
-                  initialSpacing={2}
-                  endSpacing={2}
-                  spacing={25}
-                  disableScroll
-                />
-                <View style={styles.webWeightTouchLayer}>
-                  {weightEntries.slice(-6).map((point, index, points) => {
-                    const x = 2 + (index / (points.length - 1)) * 124;
-                    const y = 51 - ((point.value - weightChartMin) / (weightChartMax - weightChartMin)) * 44;
+                <Svg width="100%" height={64} viewBox="0 0 150 64">
+                  {[0, 1, 2, 3, 4].map((index) => {
+                    const value = weightChartMax - index * weightChartStep;
+                    const y = 5 + (index / weightChartSections) * 48;
+                    return (
+                      <React.Fragment key={value}>
+                        <Line x1="18" x2="146" y1={y} y2={y} stroke="#E5ECE7" strokeWidth="1" strokeDasharray="5 7" />
+                        <SvgText x="15" y={y + 2} fill="#7C8584" fontSize="5.5" textAnchor="end">{value.toFixed(0)}</SvgText>
+                      </React.Fragment>
+                    );
+                  })}
+                  <Polyline
+                    points={weightEntries.map((point) => {
+                      const x = 20 + ((point.day - 1) / 29) * 124;
+                      const y = 5 + ((weightChartMax - point.value) / (weightChartMax - weightChartMin)) * 48;
+                      return `${x},${y}`;
+                    }).join(" ")}
+                    fill="none"
+                    stroke={COLORS.darkGreen}
+                    strokeWidth="1.7"
+                  />
+                  {weightEntries.map((point, index) => {
+                    const x = 20 + ((point.day - 1) / 29) * 124;
+                    const y = 5 + ((weightChartMax - point.value) / (weightChartMax - weightChartMin)) * 48;
+                    return <Circle key={point.day} cx={x} cy={y} r="3.5" fill={COLORS.darkGreen} />;
+                  })}
+                </Svg>
+                <View style={styles.weightTouchLayer}>
+                  {weightEntries.map((point, index) => {
+                    const x = 20 + ((point.day - 1) / 29) * 124;
+                    const y = 5 + ((weightChartMax - point.value) / (weightChartMax - weightChartMin)) * 48;
                     return (
                       <Pressable
                         key={point.day}
                         onPress={() => setSelectedWeightIndex(selectedWeightIndex === index ? null : index)}
-                        style={[styles.webWeightTouchPoint, { left: x, top: y }]}
+                        style={[styles.weightTouchPoint, { left: x, top: y }]}
                       />
                     );
                   })}
                 </View>
-                {selectedWeightIndex !== null && weightEntries.slice(-6)[selectedWeightIndex] && (() => {
-                  const point = weightEntries.slice(-6)[selectedWeightIndex];
-                  const x = 2 + (selectedWeightIndex / 5) * 124;
-                  const y = 51 - ((point.value - weightChartMin) / (weightChartMax - weightChartMin)) * 44;
+                {selectedWeightIndex !== null && weightEntries[selectedWeightIndex] && (() => {
+                  const point = weightEntries[selectedWeightIndex];
+                  const x = 20 + ((point.day - 1) / 29) * 124;
+                  const y = 5 + ((weightChartMax - point.value) / (weightChartMax - weightChartMin)) * 48;
                   return (
                     <View
                       pointerEvents="none"
                       style={[
                         styles.selectedWeightBubble,
                         {
-                          left: Math.max(0, Math.min(x - 19, 130 - 38)),
-                          top: Math.max(0, y - 25),
+                          left: Math.max(0, Math.min(x - 21, 136 - 42)),
+                          top: Math.max(0, y - 27),
                         },
                       ]}
                     >
-                      <Text style={styles.weightBubbleText}>{point.value.toFixed(1).replace(".", ",")}</Text>
+                      <Text style={styles.weightBubbleText}>{point.value.toFixed(1).replace(".", ",")} kg</Text>
+                      <Text style={styles.weightBubbleDate}>{point.date}</Text>
                     </View>
                   );
                 })()}
               </View>
               <View style={styles.axisRow}>
-                <Text style={styles.axisText}>{weightEntries[weightEntries.length - 6]?.day} Set</Text>
-                <Text style={styles.axisText}>{weightEntries[weightEntries.length - 4]?.day} Set</Text>
-                <Text style={styles.axisText}>{weightEntries[weightEntries.length - 1]?.day} Set</Text>
+                {[1, 8, 15, 23, 30].map((day) => (
+                  <Text key={day} style={styles.axisText}>{day} Set</Text>
+                ))}
               </View>
             </View>
 
@@ -277,7 +277,7 @@ const styles=StyleSheet.create({
  sectionTop:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},headingLine:{flexDirection:"row",alignItems:"center",gap:6},sectionCardTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9.5,color:COLORS.ink},moreText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:COLORS.darkGreen},
  calorieCard:{width:"100%",minHeight:166,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},mainValue:{marginTop:8,fontFamily:"PlusJakartaSans_700Bold",fontSize:20,color:COLORS.ink},mainCaption:{marginTop:1,fontFamily:"PlusJakartaSans_400Regular",fontSize:7.5,color:COLORS.muted},
  calorieChart:{height:96,marginTop:7,position:"relative"},webChart:{width:"100%",height:96},webChartLabels:{height:24,marginTop:-2,marginRight:28,flexDirection:"row",justifyContent:"space-between"},webChartTick:{width:24,alignItems:"center"},caloriePlot:{height:70,marginRight:28,position:"relative",overflow:"visible"},calorieGridLine:{position:"absolute",left:0,right:0,height:1,backgroundColor:"#E6ECE8"},calorieAreaBar:{position:"absolute",width:"16.66%",backgroundColor:"rgba(45,140,69,0.08)"},calorieLineSegment:{position:"absolute",height:2,width:"16.6667%",backgroundColor:COLORS.darkGreen,transformOrigin:"center center",marginTop:-1},caloriePointWrap:{position:"absolute",width:8,height:8,marginLeft:-4,marginTop:-4,alignItems:"center",justifyContent:"center",zIndex:3},caloriePoint:{width:7,height:7,borderRadius:4,backgroundColor:COLORS.darkGreen},calorieTooltip:{position:"absolute",bottom:10,left:-14,minWidth:39,paddingHorizontal:6,paddingVertical:4,borderRadius:6,backgroundColor:COLORS.ink,alignItems:"center"},calorieTooltipText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},calorieAxisLabel:{position:"absolute",right:-25,transform:[{translateY:-3}],fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},calorieXAxis:{height:24,marginRight:28,marginTop:1,flexDirection:"row",justifyContent:"space-between"},calorieXTick:{width:24,alignItems:"center"},calorieDay:{fontFamily:"PlusJakartaSans_500Medium",fontSize:6.5,color:"#657570",lineHeight:8},calorieDayActive:{fontFamily:"PlusJakartaSans_700Bold",color:COLORS.ink},calorieDate:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#8A9693",lineHeight:7},calorieDateActive:{fontFamily:"PlusJakartaSans_600SemiBold",color:COLORS.ink},
-macroCard:{width:"100%",minHeight:151,marginTop:8,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},macroToday:{fontFamily:"PlusJakartaSans_500Medium",fontSize:7,color:COLORS.muted},macroTotalBar:{height:9,borderRadius:5,overflow:"hidden",flexDirection:"row",marginTop:11,backgroundColor:"#E7ECE8"},macroSegment:{height:"100%"},macroCards:{flexDirection:"row",gap:7,marginTop:11},macroItem:{flex:1,minWidth:0},macroIcon:{width:26,height:26,borderRadius:13,alignItems:"center",justifyContent:"center",marginBottom:5},macroInfo:{minHeight:32},macroName:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#526762"},macroPercent:{fontFamily:"PlusJakartaSans_700Bold",fontSize:12,color:COLORS.ink,marginTop:1},macroAmount:{fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,color:COLORS.muted,marginTop:1},macroMiniTrack:{height:5,borderRadius:3,backgroundColor:"#E7ECE8",overflow:"hidden",marginTop:5},giftedDataPoint:{width:7,height:7,borderRadius:3.5,backgroundColor:COLORS.darkGreen},weightYAxisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},webWeightTouchLayer:{...StyleSheet.absoluteFillObject,zIndex:5},webWeightTouchPoint:{position:"absolute",width:18,height:18,marginLeft:-9,marginTop:-9},selectedWeightBubble:{position:"absolute",minWidth:38,height:22,paddingHorizontal:6,borderRadius:7,backgroundColor:COLORS.ink,alignItems:"center",justifyContent:"center",zIndex:6},giftedTooltip:{minWidth:39,paddingHorizontal:6,paddingVertical:4,borderRadius:6,backgroundColor:COLORS.ink,alignItems:"center",justifyContent:"center"},giftedTooltipText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},giftedYAxisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},giftedXAxisText:{fontFamily:"PlusJakartaSans_500Medium",fontSize:5.5,color:"#657570"},macroMiniFill:{height:"100%",borderRadius:3},
+macroCard:{width:"100%",minHeight:151,marginTop:8,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},macroToday:{fontFamily:"PlusJakartaSans_500Medium",fontSize:7,color:COLORS.muted},macroTotalBar:{height:9,borderRadius:5,overflow:"hidden",flexDirection:"row",marginTop:11,backgroundColor:"#E7ECE8"},macroSegment:{height:"100%"},macroCards:{flexDirection:"row",gap:7,marginTop:11},macroItem:{flex:1,minWidth:0},macroIcon:{width:26,height:26,borderRadius:13,alignItems:"center",justifyContent:"center",marginBottom:5},macroInfo:{minHeight:32},macroName:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#526762"},macroPercent:{fontFamily:"PlusJakartaSans_700Bold",fontSize:12,color:COLORS.ink,marginTop:1},macroAmount:{fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,color:COLORS.muted,marginTop:1},macroMiniTrack:{height:5,borderRadius:3,backgroundColor:"#E7ECE8",overflow:"hidden",marginTop:5},giftedDataPoint:{width:7,height:7,borderRadius:3.5,backgroundColor:COLORS.darkGreen},weightYAxisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},weightTouchLayer:{...StyleSheet.absoluteFillObject,zIndex:5},weightTouchPoint:{position:"absolute",width:18,height:18,marginLeft:-9,marginTop:-9},selectedWeightBubble:{position:"absolute",minWidth:46,paddingHorizontal:6,paddingVertical:4,borderRadius:7,backgroundColor:COLORS.ink,alignItems:"center",justifyContent:"center",zIndex:6},weightBubbleDate:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5,color:"#DCE8E3",marginTop:1},giftedTooltip:{minWidth:39,paddingHorizontal:6,paddingVertical:4,borderRadius:6,backgroundColor:COLORS.ink,alignItems:"center",justifyContent:"center"},giftedTooltipText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},giftedYAxisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},giftedXAxisText:{fontFamily:"PlusJakartaSans_500Medium",fontSize:5.5,color:"#657570"},macroMiniFill:{height:"100%",borderRadius:3},
 twoColumnGrid:{width:"100%",flexDirection:"row",gap:8,marginTop:8},halfCard:{flex:1,minHeight:178,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},halfValue:{marginTop:9,fontFamily:"PlusJakartaSans_700Bold",fontSize:18,color:COLORS.ink},goalBig:{marginTop:10,fontFamily:"PlusJakartaSans_700Bold",fontSize:12,color:COLORS.ink},goalProgress:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:8,color:COLORS.muted},goalTrack:{height:6,borderRadius:3,backgroundColor:"#DCE8DE",overflow:"hidden",marginTop:7},fill:{height:"100%",backgroundColor:COLORS.darkGreen,borderRadius:3},goalPercent:{alignSelf:"flex-end",marginTop:2,fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7,color:"#657570"},goalStats:{marginTop:9,flexDirection:"row",justifyContent:"space-between"},goalStatValue:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:8,color:COLORS.ink,marginTop:2},goalFooter:{marginTop:9,padding:7,borderRadius:9,backgroundColor:"#EDF5EC",flexDirection:"row",alignItems:"center",gap:7},goalFooterTitle:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7,color:COLORS.ink},axisRow:{marginTop:4,flexDirection:"row",justifyContent:"space-between"},axisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7D8B87"},
 change:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#2D8C45"},miniWeightChart:{height:72,marginTop:7,position:"relative",borderBottomWidth:1,borderBottomColor:"#E2EAE5"},miniChartLine:{position:"absolute",left:0,right:0,bottom:27,height:1,backgroundColor:"#E5ECE7"},miniWeightPoint:{position:"absolute",width:7,height:7,borderRadius:4,backgroundColor:COLORS.darkGreen,transform:[{translateX:-3.5}]},weightBubble:{position:"absolute",right:0,bottom:35,paddingHorizontal:5,paddingVertical:3,borderRadius:5,backgroundColor:COLORS.ink},weightBubbleText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:6,color:"#FFF"},
 insightHeader:{marginTop:12,marginBottom:6},sectionTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,color:COLORS.ink},featuredInsight:{width:"100%",minHeight:76,padding:10,borderRadius:13,backgroundColor:"rgba(255,255,255,.84)",flexDirection:"row",alignItems:"center",gap:9},featuredInsightIcon:{width:34,height:34,borderRadius:17,backgroundColor:"#FFF3D8",alignItems:"center",justifyContent:"center"},featuredInsightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9,color:COLORS.ink},featuredInsightDetail:{marginTop:3,fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:COLORS.muted,lineHeight:9},insightText:{flex:1},insights:{flexDirection:"column",gap:6,paddingTop:6,paddingBottom:4},insight:{width:"100%",minHeight:55,paddingHorizontal:10,paddingVertical:8,borderRadius:11,backgroundColor:"rgba(255,255,255,.72)",flexDirection:"row",alignItems:"center",gap:9},insightIcon:{width:28,height:28,borderRadius:14,backgroundColor:"#EDF5EC",alignItems:"center",justifyContent:"center"},insightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:8,color:COLORS.ink},insightDetail:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,lineHeight:8,color:COLORS.muted}

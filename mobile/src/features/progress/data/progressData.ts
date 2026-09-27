@@ -17,6 +17,7 @@ export type MacroData = {
 
 export type WeightEntry = {
   day: number;
+  date: string;
   value: number;
 };
 
@@ -67,14 +68,14 @@ export const weightSummary = {
 };
 
 export const weightEntries: WeightEntry[] = [
-  { day: 2, value: 70.6 },
-  { day: 5, value: 70.2 },
-  { day: 9, value: 70.4 },
-  { day: 12, value: 69.8 },
-  { day: 16, value: 69.5 },
-  { day: 19, value: 69.2 },
-  { day: 22, value: 68.8 },
-  { day: 26, value: 68.2 },
+  { day: 2, date: "2 Set", value: 70.6 },
+  { day: 5, date: "5 Set", value: 70.2 },
+  { day: 9, date: "9 Set", value: 70.4 },
+  { day: 12, date: "12 Set", value: 69.8 },
+  { day: 16, date: "16 Set", value: 69.5 },
+  { day: 19, date: "19 Set", value: 69.2 },
+  { day: 22, date: "22 Set", value: 68.8 },
+  { day: 26, date: "26 Set", value: 68.2 },
 ];
 
 export const weightGoal = {
