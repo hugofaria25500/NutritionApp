@@ -5,6 +5,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
 import { useAppFonts } from "@/components/ui/useAppFonts";
+import { COLORS, LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
+import { useAppResponsive } from "@/components/ui/useAppResponsive";
 
 const benefits = [
   { icon: "restaurant-outline" as const, label: "Receitas personalizadas" },
@@ -15,6 +17,7 @@ const benefits = [
 export default function InitScreen() {
   const router = useRouter();
   const [fontsLoaded] = useAppFonts();
+  const { width, height, size } = useAppResponsive();
 
   if (!fontsLoaded) return null;
 
@@ -24,7 +27,7 @@ export default function InitScreen() {
     >
       <View style={styles.content}>
         <View style={styles.branding}>
-          <AppLogo />
+          <AppLogo width={size(width < 380 ? 190 : 210)} height={size(width < 380 ? 104 : 112)} />
           <Text style={styles.tagline}>Eat better, with what you have.</Text>
         </View>
 
@@ -66,28 +69,34 @@ export default function InitScreen() {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    paddingVertical: 24,
-    paddingHorizontal: 48,
+    width: "100%",
+    maxWidth: LAYOUT.maxContentWidth,
+    paddingVertical: SPACING.xl,
+    paddingHorizontal: LAYOUT.horizontalPadding,
+    alignSelf: "center",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   branding: {
+    width: "100%",
     alignItems: "center",
-    justifyContent: "flex-end",
-    marginBottom: 40,
+    justifyContent: "center",
+    paddingTop: height < 700 ? SPACING.sm : SPACING.xl,
   },
   tagline: {
+    marginTop: SPACING.xs,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 13,
-    color: "#888888",
-    fontWeight: "500",
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
+    color: COLORS.muted,
+    textAlign: "center",
   },
   benefits: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 50,
+    alignItems: "flex-start",
+    marginVertical: SPACING.lg,
   },
   benefit: {
     width: "31%",
@@ -99,52 +108,57 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#EAF3E8",
-    marginBottom: 8,
+    backgroundColor: COLORS.greenSoft,
+    marginBottom: SPACING.sm,
   },
   benefitText: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 11,
-    color: "#777777",
+    fontSize: TYPOGRAPHY.label.fontSize,
+    lineHeight: TYPOGRAPHY.label.lineHeight,
+    color: COLORS.muted,
     textAlign: "center",
   },
   actions: {
     width: "100%",
-    gap: 12,
+    gap: SPACING.md,
+    paddingBottom: height < 700 ? SPACING.xs : 0,
   },
   primaryButton: {
     width: "100%",
-    height: 44,
-    borderRadius: 28,
-    backgroundColor: "#168653",
+    minHeight: 48,
+    borderRadius: RADIUS.pill,
+    backgroundColor: COLORS.greenStrong,
     alignItems: "center",
     justifyContent: "center",
   },
   primaryButtonText: {
     fontFamily: "PlusJakartaSans_500Medium",
-    color: "#FFFFFF",
-    fontSize: 15,
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.button.fontSize,
+    lineHeight: TYPOGRAPHY.button.lineHeight,
   },
   secondaryButton: {
     width: "100%",
-    height: 44,
-    borderRadius: 28,
+    minHeight: 48,
+    borderRadius: RADIUS.pill,
     borderWidth: 1,
-    borderColor: "#D9DDD7",
-    backgroundColor: "rgba(255,255,255,0.55)",
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.surface,
     alignItems: "center",
     justifyContent: "center",
   },
   secondaryButtonText: {
     fontFamily: "PlusJakartaSans_500Medium",
-    color: "#087C5B",
-    fontSize: 15,
+    color: COLORS.green,
+    fontSize: TYPOGRAPHY.button.fontSize,
+    lineHeight: TYPOGRAPHY.button.lineHeight,
   },
   footerText: {
-    marginTop: 0,
+    marginTop: SPACING.xs,
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 12,
-    color: "#999999",
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
+    color: COLORS.muted,
     textAlign: "center",
   },
 });
