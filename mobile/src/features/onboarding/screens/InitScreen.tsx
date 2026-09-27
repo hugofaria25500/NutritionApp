@@ -31,7 +31,7 @@ export default function InitScreen() {
         style={[
           styles.content,
           {
-            minHeight: Math.max(height - insets.top - insets.bottom, 0),
+            height: Math.max(height - insets.top - insets.bottom, 0),
             paddingTop: Math.max(SPACING.lg, insets.top),
             paddingBottom: Math.max(SPACING.lg, insets.bottom),
           },
