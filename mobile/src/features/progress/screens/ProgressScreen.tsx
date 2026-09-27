@@ -40,7 +40,7 @@ export default function ProgressScreen() {
   const bottom = Math.max(insets.bottom,8)+8;
 
   return (
-    <AppBackground source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")} resizeMode="cover">
+    <AppBackground source={require("@/assets/images/backgrounds/background_variation_two_white.png")} resizeMode="cover">
       <View style={styles.wash} />
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scroll,{paddingTop:Math.max(insets.top,8),paddingBottom:112+insets.bottom}]}>
         <View style={styles.content}>
