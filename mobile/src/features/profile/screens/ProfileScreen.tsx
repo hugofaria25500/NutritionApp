@@ -437,11 +437,11 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    columnGap: 7,
     rowGap: 7,
   },
   preferenceCard: {
-    width: "32%",
+    width: "calc(33.333% - 5px)",
     minHeight: 76,
     paddingHorizontal: 6,
     paddingVertical: 7,
