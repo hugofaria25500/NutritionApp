@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#B8C3BA",
   },
   smallCard: {
-    width: 90,
+    width: 96,
     height: 115,
   },
   largeCard: {
