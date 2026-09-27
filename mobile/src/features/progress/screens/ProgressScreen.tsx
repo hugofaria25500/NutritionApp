@@ -19,6 +19,11 @@ const weightChartSections = 4;
 const weightChartStep = (weightChartMax - weightChartMin) / weightChartSections;
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
+const CALORIE_CHART_WIDTH = 300;
+const CALORIE_Y_AXIS_WIDTH = 24;
+const CALORIE_INITIAL_SPACING = 12;
+const CALORIE_END_SPACING = 8;
+const CALORIE_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weeklyCalories.length - 1);
 
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
@@ -64,7 +69,7 @@ export default function ProgressScreen() {
                   value: item.value,
                   label: item.label,
                 }))}
-                width={300}
+                width={CALORIE_CHART_WIDTH}
                 height={72}
                 maxValue={1800}
                 noOfSections={3}
@@ -75,9 +80,9 @@ export default function ProgressScreen() {
                 yAxisTextStyle={styles.giftedYAxisText}
                 xAxisLabelTextStyle={styles.giftedXAxisText}
                 xAxisLabelsHeight={22}
-                initialSpacing={2}
-                endSpacing={2}
-                spacing={45}
+                initialSpacing={CALORIE_INITIAL_SPACING}
+                endSpacing={CALORIE_END_SPACING}
+                spacing={CALORIE_SPACING}
                 adjustToWidth
                 rulesColor="#E6ECE8"
                 rulesThickness={1}
@@ -107,14 +112,14 @@ export default function ProgressScreen() {
                     onPress={() => setSelectedCalorieIndex(selectedCalorieIndex === index ? null : index)}
                     style={[
                       styles.calorieTouchPoint,
-                      { left: 2 + index * 45, top: 4 + (1 - item.value / 1800) * 64 },
+                      { left: CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + index * CALORIE_SPACING, top: 4 + (1 - item.value / 1800) * 64 },
                     ]}
                   />
                 ))}
               </View>
               {selectedCalorieIndex !== null && weeklyCalories[selectedCalorieIndex] && (() => {
                 const item = weeklyCalories[selectedCalorieIndex];
-                const x = 2 + selectedCalorieIndex * 45;
+                const x = CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + selectedCalorieIndex * CALORIE_SPACING;
                 const y = 4 + (1 - item.value / 1800) * 64;
                 return (
                   <View
