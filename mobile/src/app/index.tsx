@@ -1,7 +1,11 @@
 import { useEffect } from "react";
+import { Platform } from "react-native";
 import { useRouter, useRootNavigationState } from "expo-router";
+import * as NativeSplashScreen from "expo-splash-screen";
 
-import SplashScreen from "@/features/splash/screens/SplashScreen";
+if (Platform.OS !== "web") {
+  NativeSplashScreen.preventAutoHideAsync().catch(() => {});
+}
 
 export default function Index() {
   const router = useRouter();
@@ -12,10 +16,14 @@ export default function Index() {
 
     const timeout = setTimeout(() => {
       router.replace("/(onboarding)/init");
-    }, 1500);
+
+      if (Platform.OS !== "web") {
+        NativeSplashScreen.hideAsync().catch(() => {});
+      }
+    }, 1200);
 
     return () => clearTimeout(timeout);
   }, [navigationState?.key, router]);
 
-  return <SplashScreen />;
+  return null;
 }
