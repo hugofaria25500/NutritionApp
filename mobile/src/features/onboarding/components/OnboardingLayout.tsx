@@ -20,7 +20,7 @@ export default function OnboardingLayout({
 }: OnboardingLayoutProps) {
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_variation_four_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
     >
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
