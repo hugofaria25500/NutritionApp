@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -26,7 +25,6 @@ const COLORS = {
 };
 
 export default function ProfileScreen() {
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
 
@@ -384,7 +382,7 @@ const styles = StyleSheet.create({
   statsCard: {
     marginTop: 10,
     width: "100%",
-    minHeight: 58,
+    minHeight: 68,
     borderRadius: 14,
     paddingHorizontal: 6,
     paddingVertical: 7,
@@ -444,7 +442,7 @@ const styles = StyleSheet.create({
   },
   preferenceCard: {
     width: "23.8%",
-    minHeight: 62,
+    minHeight: 76,
     paddingHorizontal: 6,
     paddingVertical: 7,
     borderRadius: 11,
@@ -473,7 +471,7 @@ const styles = StyleSheet.create({
   },
   goalCard: {
     width: "100%",
-    minHeight: 48,
+    minHeight: 58,
     borderRadius: 12,
     paddingHorizontal: 9,
     paddingVertical: 8,
@@ -512,7 +510,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.83)",
   },
   menuRow: {
-    minHeight: 40,
+    minHeight: 48,
     paddingHorizontal: 10,
     flexDirection: "row",
     alignItems: "center",
