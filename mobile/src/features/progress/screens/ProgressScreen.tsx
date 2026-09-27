@@ -359,7 +359,7 @@ const styles=StyleSheet.create({
  wash:{...StyleSheet.absoluteFillObject,backgroundColor:"rgba(247,250,244,0.58)"},
  scroll:{width:"100%",alignItems:"center"},
  content:{width:"100%",maxWidth: LAYOUT.maxContentWidth,paddingHorizontal: LAYOUT.horizontalPadding},
- header:{width:"100%",height:42,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},
+ header:{width:"100%",height:42,flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:5},
  notification:{width:36,height:36,borderRadius:18,alignItems:"center",justifyContent:"center",backgroundColor:"rgba(255,255,255,.84)",borderWidth:1,borderColor:"rgba(15,54,49,.07)"},
  dot:{position:"absolute",top:7,right:8,width:6,height:6,borderRadius:3,backgroundColor:"#E7493C"},
  hero:{marginTop:10,marginBottom:12},title:{fontFamily:"PlusJakartaSans_700Bold",fontSize: TYPOGRAPHY.display.fontSize,lineHeight:33,color:COLORS.ink},accent:{color:COLORS.darkGreen},subtitle:{marginTop:2,maxWidth:340,fontFamily:"PlusJakartaSans_400Regular",fontSize: TYPOGRAPHY.bodySmall.fontSize,lineHeight:13,color:COLORS.muted},
