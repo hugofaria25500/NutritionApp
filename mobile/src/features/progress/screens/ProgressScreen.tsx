@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-gifted-charts";
 import { useState } from "react";
+import { Platform } from "react-native";
+import Svg, { Circle, Line, Polygon, Polyline, Text as SvgText } from "react-native-svg";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -12,6 +14,75 @@ import { navigationItems } from "@/features/home/data/homeData";
 import { calorieSummary, insights, macronutrients, progressCopy, weeklyCalories, weightEntries, weightGoal, weightSummary } from "@/features/progress/data/progressData";
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
+
+const WEB_CHART_WIDTH = 300;
+const WEB_CHART_HEIGHT = 72;
+const WEB_CHART_LEFT = 4;
+const WEB_CHART_RIGHT = 28;
+const WEB_CHART_TOP = 4;
+const WEB_CHART_BOTTOM = 10;
+
+function WebCalorieChart() {
+  const plotWidth = WEB_CHART_WIDTH - WEB_CHART_LEFT - WEB_CHART_RIGHT;
+  const plotHeight = WEB_CHART_HEIGHT - WEB_CHART_TOP - WEB_CHART_BOTTOM;
+  const points = weeklyCalories.map((item, index) => {
+    const x = WEB_CHART_LEFT + (index / (weeklyCalories.length - 1)) * plotWidth;
+    const y = WEB_CHART_TOP + (1 - item.value / 1800) * plotHeight;
+    return { x, y, item };
+  });
+  const pointsString = points.map((point) => `${point.x},${point.y}`).join(" ");
+  const areaString = [
+    `${points[0].x},${points[0].y}`,
+    ...points.slice(1).map((point) => `${point.x},${point.y}`),
+    `${points[points.length - 1].x},${WEB_CHART_TOP + plotHeight}`,
+    `${points[0].x},${WEB_CHART_TOP + plotHeight}`,
+  ].join(" ");
+
+  return (
+    <View style={styles.webChart}>
+      <Svg width="100%" height={96} viewBox={`0 0 ${WEB_CHART_WIDTH} 96`}>
+        {[0, 600, 1200, 1800].map((value) => {
+          const y = WEB_CHART_TOP + (1 - value / 1800) * plotHeight;
+          return (
+            <Line
+              key={value}
+              x1={WEB_CHART_LEFT}
+              x2={WEB_CHART_WIDTH - WEB_CHART_RIGHT}
+              y1={y}
+              y2={y}
+              stroke="#E6ECE8"
+              strokeWidth="1"
+            />
+          );
+        })}
+        <Polygon points={areaString} fill={COLORS.darkGreen} opacity={0.07} />
+        <Polyline points={pointsString} fill="none" stroke={COLORS.darkGreen} strokeWidth="1.7" />
+        {points.map((point, index) => (
+          <Circle
+            key={point.item.label}
+            cx={point.x}
+            cy={point.y}
+            r={index === 3 ? 3.8 : 3.2}
+            fill={COLORS.darkGreen}
+          />
+        ))}
+        <SvgText x={WEB_CHART_WIDTH - 2} y={WEB_CHART_TOP + 3} fill="#7C8584" fontSize="5.5" textAnchor="end">1800</SvgText>
+        <SvgText x={WEB_CHART_WIDTH - 2} y={WEB_CHART_TOP + plotHeight / 3 + 2} fill="#7C8584" fontSize="5.5" textAnchor="end">1200</SvgText>
+        <SvgText x={WEB_CHART_WIDTH - 2} y={WEB_CHART_TOP + (plotHeight * 2) / 3 + 2} fill="#7C8584" fontSize="5.5" textAnchor="end">600</SvgText>
+        <SvgText x={WEB_CHART_WIDTH - 2} y={WEB_CHART_TOP + plotHeight + 2} fill="#7C8584" fontSize="5.5" textAnchor="end">0</SvgText>
+        <SvgText x={points[3].x} y={points[3].y - 8} fill="#FFFFFF" fontSize="6.5" fontWeight="700" textAnchor="middle">1450</SvgText>
+      </Svg>
+      <View style={styles.webChartLabels}>
+        {weeklyCalories.map((item, index) => (
+          <View key={item.label} style={styles.webChartTick}>
+            <Text style={[styles.calorieDay, index === 3 && styles.calorieDayActive]}>{item.label}</Text>
+            <Text style={[styles.calorieDate, index === 3 && styles.calorieDateActive]}>{item.date}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
 
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
@@ -50,57 +121,61 @@ export default function ProgressScreen() {
             <Text style={styles.mainValue}>{calorieSummary.current.toLocaleString("pt-PT")} {calorieSummary.unit}</Text>
             <Text style={styles.mainCaption}>Média diária esta semana</Text>
             <View style={styles.calorieChart}>
-              <LineChart
-                data={weeklyCalories.map((item, index) => ({
-                  value: item.value,
-                  label: `${item.label}\\n${item.date}`,
-                  dataPointLabelComponent: index === 3
-                    ? () => (
-                        <View style={styles.giftedTooltip}>
-                          <Text style={styles.giftedTooltipText}>{item.value}</Text>
-                        </View>
-                      )
-                    : undefined,
-                }))}
-                width={300}
-                height={72}
-                maxValue={1800}
-                noOfSections={3}
-                stepValue={600}
-                yAxisSide="right"
-                yAxisLabelWidth={24}
-                yAxisLabelTexts={["0", "600", "1200", "1800"]}
-                yAxisTextStyle={styles.giftedYAxisText}
-                xAxisLabelTextStyle={styles.giftedXAxisText}
-                xAxisLabelsHeight={22}
-                initialSpacing={2}
-                endSpacing={2}
-                spacing={45}
-                adjustToWidth
-                rulesColor="#E6ECE8"
-                rulesThickness={1}
-                hideRules={false}
-                hideAxesAndRules={false}
-                xAxisColor="#E1E9E4"
-                xAxisThickness={1}
-                color={COLORS.darkGreen}
-                thickness={1.5}
-                dataPointsColor={COLORS.darkGreen}
-                dataPointsRadius={3.5}
-                areaChart
-                startFillColor={COLORS.darkGreen}
-                endFillColor={COLORS.darkGreen}
-                startOpacity={0.12}
-                endOpacity={0.01}
-                curved={false}
-                focusEnabled
-                focusedDataPointIndex={3}
-                focusedDataPointRadius={4}
-                focusedDataPointColor={COLORS.darkGreen}
-                showDataPointLabelOnFocus
-                overflowTop={18}
-                disableScroll
-              />
+              {Platform.OS === "web" ? (
+                <WebCalorieChart />
+              ) : (
+                <LineChart
+                  data={weeklyCalories.map((item, index) => ({
+                    value: item.value,
+                    label: `${item.label}\\n${item.date}`,
+                    dataPointLabelComponent: index === 3
+                      ? () => (
+                          <View style={styles.giftedTooltip}>
+                            <Text style={styles.giftedTooltipText}>{item.value}</Text>
+                          </View>
+                        )
+                      : undefined,
+                  }))}
+                  width={300}
+                  height={72}
+                  maxValue={1800}
+                  noOfSections={3}
+                  stepValue={600}
+                  yAxisSide="right"
+                  yAxisLabelWidth={24}
+                  yAxisLabelTexts={["0", "600", "1200", "1800"]}
+                  yAxisTextStyle={styles.giftedYAxisText}
+                  xAxisLabelTextStyle={styles.giftedXAxisText}
+                  xAxisLabelsHeight={22}
+                  initialSpacing={2}
+                  endSpacing={2}
+                  spacing={45}
+                  adjustToWidth
+                  rulesColor="#E6ECE8"
+                  rulesThickness={1}
+                  hideRules={false}
+                  hideAxesAndRules={false}
+                  xAxisColor="#E1E9E4"
+                  xAxisThickness={1}
+                  color={COLORS.darkGreen}
+                  thickness={1.5}
+                  dataPointsColor={COLORS.darkGreen}
+                  dataPointsRadius={3.5}
+                  areaChart
+                  startFillColor={COLORS.darkGreen}
+                  endFillColor={COLORS.darkGreen}
+                  startOpacity={0.12}
+                  endOpacity={0.01}
+                  curved={false}
+                  focusEnabled
+                  focusedDataPointIndex={3}
+                  focusedDataPointRadius={4}
+                  focusedDataPointColor={COLORS.darkGreen}
+                  showDataPointLabelOnFocus
+                  overflowTop={18}
+                  disableScroll
+                />
+              )}
             </View>
           </View>
 
