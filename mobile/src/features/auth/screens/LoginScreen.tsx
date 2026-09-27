@@ -5,6 +5,7 @@ import { useAppFonts } from "@/components/ui/useAppFonts";
 import AuthDivider from "@/features/auth/components/AuthDivider";
 import AuthLayout from "@/features/auth/components/AuthLayout";
 import AuthSocialButton from "@/features/auth/components/AuthSocialButton";
+import { SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 export default function LoginScreen() {
   const router = useRouter();
