@@ -21,18 +21,13 @@ const CALORIE_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_IN
 const weightChartValues = weightEntries.map((entry) => entry.value);
 const weightChartValueMin = Math.min(...weightChartValues);
 const weightChartValueMax = Math.max(...weightChartValues);
-const weightChartRange = Math.max(weightChartValueMax - weightChartValueMin, 1);
-const weightChartPadding = Math.max(weightChartRange * 0.15, 0.5);
-const weightChartRawMin = weightChartValueMin - weightChartPadding;
-const weightChartRawMax = weightChartValueMax + weightChartPadding;
-const weightChartRawStep = (weightChartRawMax - weightChartRawMin) / 5;
-const weightChartMagnitude = 10 ** Math.floor(Math.log10(weightChartRawStep));
-const weightChartNormalizedStep = weightChartRawStep / weightChartMagnitude;
-const weightChartNiceFactor = weightChartNormalizedStep <= 1 ? 1 : weightChartNormalizedStep <= 2 ? 2 : weightChartNormalizedStep <= 5 ? 5 : 10;
-const weightChartStep = weightChartNiceFactor * weightChartMagnitude;
-const weightChartMin = Math.floor(weightChartRawMin / weightChartStep) * weightChartStep;
-const weightChartMax = Math.ceil(weightChartRawMax / weightChartStep) * weightChartStep;
-const weightChartSections = Math.round((weightChartMax - weightChartMin) / weightChartStep);
+const weightChartRange = Math.max(weightChartValueMax - weightChartValueMin, 10);
+const weightChartTargetMin = weightChartValueMin - weightChartRange * 0.1;
+const weightChartTargetMax = weightChartValueMax + weightChartRange * 0.1;
+const weightChartStep = 2.5;
+const weightChartMin = Math.floor(weightChartTargetMin / weightChartStep) * weightChartStep;
+const weightChartMax = Math.ceil(weightChartTargetMax / weightChartStep) * weightChartStep;
+const weightChartSections = Math.max(1, Math.round((weightChartMax - weightChartMin) / weightChartStep));
 const WEIGHT_CHART_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weightEntries.length - 1);
 
 export default function ProgressScreen() {
@@ -205,12 +200,13 @@ export default function ProgressScreen() {
                 }))}
                 width={CALORIE_CHART_WIDTH}
                 height={72}
-                maxValue={weightChartMax}
-                noOfSections={3}
+                maxValue={weightChartMax - weightChartMin}
+                yAxisOffset={weightChartMin}
+                noOfSections={weightChartSections}
                 stepValue={weightChartStep}
                 yAxisSide="right"
                 yAxisLabelWidth={24}
-                yAxisLabelTexts={Array.from({ length: weightChartSections + 1 }, (_, index) => String(Math.round(weightChartMin + index * weightChartStep)))}
+                yAxisLabelTexts={Array.from({ length: weightChartSections + 1 }, (_, index) => String(weightChartMin + index * weightChartStep))}
                 yAxisTextStyle={styles.giftedYAxisText}
                 xAxisLabelTextStyle={styles.giftedXAxisText}
                 xAxisLabelsHeight={22}
