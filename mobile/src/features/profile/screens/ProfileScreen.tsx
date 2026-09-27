@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import { LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -26,6 +27,7 @@ const COLORS = {
 };
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
 
@@ -184,6 +186,14 @@ export default function ProfileScreen() {
               />
             ))}
           </View>
+
+          <Pressable
+            style={styles.signOutButton}
+            onPress={() => router.replace("/(onboarding)/init")}
+          >
+            <Ionicons name="log-out-outline" size={17} color="#B64A43" />
+            <Text style={styles.signOutText}>Terminar sessão</Text>
+          </Pressable>
         </View>
       </ScrollView>
 
@@ -506,6 +516,24 @@ const styles = StyleSheet.create({
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 9,
     color: COLORS.muted,
+  },
+  signOutButton: {
+    width: "100%",
+    minHeight: 48,
+    marginTop: 10,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.83)",
+    borderWidth: 1,
+    borderColor: "rgba(182,74,67,0.12)",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 7,
+  },
+  signOutText: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 12,
+    color: "#B64A43",
   },
   menuCard: {
     width: "100%",
