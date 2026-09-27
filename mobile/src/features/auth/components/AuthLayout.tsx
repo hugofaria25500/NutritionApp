@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Href, useRouter } from "expo-router";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS, LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -15,6 +15,7 @@ type AuthLayoutProps = {
 
 export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   return (
     <AppBackground
@@ -23,7 +24,7 @@ export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
       <SafeAreaView style={styles.safeArea}>
         <Pressable
           onPress={() => router.replace(backRoute)}
-          style={styles.backButton}
+          style={[styles.backButton, { top: insets.top + SPACING.sm }]}
           hitSlop={10}
         >
           <Ionicons name="chevron-back" size={14} color="#FFFFFF" />
@@ -80,7 +81,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 20,
     left: LAYOUT.horizontalPadding,
     zIndex: 10,
     flexDirection: "row",
