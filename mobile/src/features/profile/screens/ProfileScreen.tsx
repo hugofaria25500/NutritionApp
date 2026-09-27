@@ -89,7 +89,6 @@ export default function ProfileScreen() {
                   <Text style={styles.editProfileText}>Editar perfil</Text>
                 </Pressable>
               </View>
-              <Text style={styles.profileHelper}>{profileUser.helper}</Text>
             </View>
           </View>
 
