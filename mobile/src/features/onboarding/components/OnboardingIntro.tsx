@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type OnboardingIntroProps = {
   title: ReactNode;
