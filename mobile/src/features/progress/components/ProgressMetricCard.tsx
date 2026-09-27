@@ -1,3 +1,4 @@
+import { SPACING, RADIUS, TYPOGRAPHY } from "@/components/ui/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -30,11 +31,11 @@ export default function ProgressMetricCard({ label, value, detail, progress, ico
 }
 
 const styles = StyleSheet.create({
-  card: { flex: 1, padding: 8, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.72)" },
+  card: { flex: 1, padding: SPACING.md, borderRadius: RADIUS.md, backgroundColor: "rgba(255,255,255,0.72)" },
   topRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  iconCircle: { width: 20, height: 20, borderRadius: 10, backgroundColor: "#E8F3E9", alignItems: "center", justifyContent: "center" },
-  label: { flex: 1, fontFamily: "PlusJakartaSans_600SemiBold", fontSize: 7.2, color: "#234B46" },
-  detail: { fontFamily: "PlusJakartaSans_500Medium", fontSize: 6.5, color: "#71817D" },
+  iconCircle: { width: 28, height: 28, borderRadius: 14, backgroundColor: "#E8F3E9", alignItems: "center", justifyContent: "center" },
+  label: { flex: 1, fontFamily: "PlusJakartaSans_600SemiBold", fontSize: TYPOGRAPHY.label.fontSize, color: "#234B46" },
+  detail: { fontFamily: "PlusJakartaSans_500Medium", fontSize: TYPOGRAPHY.caption.fontSize, color: "#71817D" },
   bottomRow: { marginTop: 7, flexDirection: "row", alignItems: "center", gap: 5 },
   track: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "#DCE9DE", overflow: "hidden" },
   fill: { height: "100%", borderRadius: 2, backgroundColor: "#2D8C45" },

@@ -1,23 +1,21 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-gifted-charts";
 import React, { useState } from "react";
-import Svg, { Circle, Line, Polyline, Text as SvgText } from "react-native-svg";
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
 import { useAppFonts } from "@/components/ui/useAppFonts";
+import { LAYOUT, TYPOGRAPHY } from "@/components/ui/theme";
 import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigation";
 import { navigationItems } from "@/features/home/data/homeData";
 import { calorieSummary, consistencySummary, insights, macronutrients, progressCopy, weeklyCalories, weightEntries, weightGoal, weightSummary } from "@/features/progress/data/progressData";
 
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
-const CALORIE_CHART_WIDTH = 300;
 const CALORIE_Y_AXIS_WIDTH = 24;
 const CALORIE_INITIAL_SPACING = 12;
 const CALORIE_END_SPACING = 8;
-const CALORIE_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weeklyCalories.length - 1);
 const weightChartValues = weightEntries.map((entry) => entry.value);
 const weightChartValueMin = Math.min(...weightChartValues);
 const weightChartValueMax = Math.max(...weightChartValues);
@@ -28,10 +26,13 @@ const weightChartStep = 2.5;
 const weightChartMin = Math.floor(weightChartTargetMin / weightChartStep) * weightChartStep;
 const weightChartMax = Math.ceil(weightChartTargetMax / weightChartStep) * weightChartStep;
 const weightChartSections = Math.max(1, Math.round((weightChartMax - weightChartMin) / weightChartStep));
-const WEIGHT_CHART_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weightEntries.length - 1);
 
 export default function ProgressScreen() {
   const insets = useSafeAreaInsets();
+  const { width: windowWidth } = useWindowDimensions();
+  const chartWidth = Math.min(Math.max(windowWidth - LAYOUT.horizontalPadding * 2 - 10, 280), 360);
+  const calorieSpacing = (chartWidth - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weeklyCalories.length - 1);
+  const weightChartSpacing = (chartWidth - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weightEntries.length - 1);
   const [fontsLoaded] = useAppFonts();
   const [selectedWeightIndex, setSelectedWeightIndex] = useState<number | null>(null);
   const [selectedCalorieIndex, setSelectedCalorieIndex] = useState<number | null>(null);
@@ -39,7 +40,7 @@ export default function ProgressScreen() {
   const bottom = Math.max(insets.bottom,8)+8;
 
   return (
-    <AppBackground source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")} resizeMode="cover">
+    <AppBackground source={require("@/assets/images/backgrounds/background_variation_two_white.png")} resizeMode="cover">
       <View style={styles.wash} />
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scroll,{paddingTop:Math.max(insets.top,8),paddingBottom:112+insets.bottom}]}>
         <View style={styles.content}>
@@ -74,7 +75,7 @@ export default function ProgressScreen() {
                   value: item.value,
                   label: item.label,
                 }))}
-                width={CALORIE_CHART_WIDTH}
+                width={chartWidth}
                 height={72}
                 maxValue={1800}
                 noOfSections={3}
@@ -87,7 +88,7 @@ export default function ProgressScreen() {
                 xAxisLabelsHeight={22}
                 initialSpacing={CALORIE_INITIAL_SPACING}
                 endSpacing={CALORIE_END_SPACING}
-                spacing={CALORIE_SPACING}
+                spacing={calorieSpacing}
                 adjustToWidth
                 rulesColor="#E6ECE8"
                 rulesThickness={1}
@@ -117,14 +118,14 @@ export default function ProgressScreen() {
                     onPress={() => setSelectedCalorieIndex(selectedCalorieIndex === index ? null : index)}
                     style={[
                       styles.calorieTouchPoint,
-                      { left: CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + index * CALORIE_SPACING, top: 4 + (1 - item.value / 1800) * 64 },
+                      { left: CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + index * calorieSpacing, top: 4 + (1 - item.value / 1800) * 64 },
                     ]}
                   />
                 ))}
               </View>
               {selectedCalorieIndex !== null && weeklyCalories[selectedCalorieIndex] && (() => {
                 const item = weeklyCalories[selectedCalorieIndex];
-                const x = CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + selectedCalorieIndex * CALORIE_SPACING;
+                const x = CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + selectedCalorieIndex * calorieSpacing;
                 const y = 4 + (1 - item.value / 1800) * 64;
                 return (
                   <View
@@ -198,7 +199,7 @@ export default function ProgressScreen() {
                   value: item.value,
                   label: item.date,
                 }))}
-                width={CALORIE_CHART_WIDTH}
+                width={chartWidth}
                 height={72}
                 maxValue={weightChartMax - weightChartMin}
                 yAxisOffset={weightChartMin}
@@ -212,7 +213,7 @@ export default function ProgressScreen() {
                 xAxisLabelsHeight={22}
                 initialSpacing={CALORIE_INITIAL_SPACING}
                 endSpacing={CALORIE_END_SPACING}
-                spacing={WEIGHT_CHART_SPACING}
+                spacing={weightChartSpacing}
                 adjustToWidth
                 rulesColor="#E6ECE8"
                 rulesThickness={1}
@@ -243,7 +244,7 @@ export default function ProgressScreen() {
                     style={[
                       styles.calorieTouchPoint,
                       {
-                        left: CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + index * WEIGHT_CHART_SPACING,
+                        left: CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + index * weightChartSpacing,
                         top: 4 + (1 - (item.value - weightChartMin) / (weightChartMax - weightChartMin)) * 64,
                       },
                     ]}
@@ -252,7 +253,7 @@ export default function ProgressScreen() {
               </View>
               {selectedWeightIndex !== null && weightEntries[selectedWeightIndex] && (() => {
                 const item = weightEntries[selectedWeightIndex];
-                const x = CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + selectedWeightIndex * WEIGHT_CHART_SPACING;
+                const x = CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + selectedWeightIndex * weightChartSpacing;
                 const y = 4 + (1 - (item.value - weightChartMin) / (weightChartMax - weightChartMin)) * 64;
                 return (
                   <View
@@ -357,11 +358,11 @@ export default function ProgressScreen() {
 const styles=StyleSheet.create({
  wash:{...StyleSheet.absoluteFillObject,backgroundColor:"rgba(247,250,244,0.58)"},
  scroll:{width:"100%",alignItems:"center"},
- content:{width:"100%",maxWidth:430,paddingHorizontal:14},
- header:{width:"100%",height:42,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},
+ content:{width:"100%",maxWidth: LAYOUT.maxContentWidth,paddingHorizontal: LAYOUT.horizontalPadding},
+ header:{width:"100%",height:42,flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:5},
  notification:{width:36,height:36,borderRadius:18,alignItems:"center",justifyContent:"center",backgroundColor:"rgba(255,255,255,.84)",borderWidth:1,borderColor:"rgba(15,54,49,.07)"},
  dot:{position:"absolute",top:7,right:8,width:6,height:6,borderRadius:3,backgroundColor:"#E7493C"},
- hero:{marginTop:10,marginBottom:12},title:{fontFamily:"PlusJakartaSans_700Bold",fontSize:28,lineHeight:33,color:COLORS.ink},accent:{color:COLORS.darkGreen},subtitle:{marginTop:2,maxWidth:340,fontFamily:"PlusJakartaSans_400Regular",fontSize:9.5,lineHeight:13,color:COLORS.muted},
+ hero:{marginTop:10,marginBottom:12},title:{fontFamily:"PlusJakartaSans_700Bold",fontSize: TYPOGRAPHY.display.fontSize,lineHeight:33,color:COLORS.ink},accent:{color:COLORS.darkGreen},subtitle:{marginTop:2,maxWidth:340,fontFamily:"PlusJakartaSans_400Regular",fontSize: TYPOGRAPHY.bodySmall.fontSize,lineHeight:13,color:COLORS.muted},
  sectionTop:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},headingLine:{flexDirection:"row",alignItems:"center",gap:6},sectionCardTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9.5,color:COLORS.ink},moreText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:COLORS.darkGreen},newWeightButton:{height:24,paddingHorizontal:8,borderRadius:8,backgroundColor:COLORS.darkGreen,flexDirection:"row",alignItems:"center",gap:3},newWeightButtonText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},
  calorieCard:{width:"100%",minHeight:166,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},mainValue:{marginTop:8,fontFamily:"PlusJakartaSans_700Bold",fontSize:20,color:COLORS.ink},mainCaption:{marginTop:1,fontFamily:"PlusJakartaSans_400Regular",fontSize:7.5,color:COLORS.muted},
  calorieChart:{height:96,marginTop:7,position:"relative"},webChart:{width:"100%",height:96},webChartLabels:{height:24,marginTop:-2,marginRight:28,flexDirection:"row",justifyContent:"space-between"},webChartTick:{width:24,alignItems:"center"},caloriePlot:{height:70,marginRight:28,position:"relative",overflow:"visible"},calorieGridLine:{position:"absolute",left:0,right:0,height:1,backgroundColor:"#E6ECE8"},calorieAreaBar:{position:"absolute",width:"16.66%",backgroundColor:"rgba(45,140,69,0.08)"},calorieLineSegment:{position:"absolute",height:2,width:"16.6667%",backgroundColor:COLORS.darkGreen,transformOrigin:"center center",marginTop:-1},caloriePointWrap:{position:"absolute",width:8,height:8,marginLeft:-4,marginTop:-4,alignItems:"center",justifyContent:"center",zIndex:3},caloriePoint:{width:7,height:7,borderRadius:4,backgroundColor:COLORS.darkGreen},calorieTooltip:{position:"absolute",bottom:10,left:-14,minWidth:39,paddingHorizontal:6,paddingVertical:4,borderRadius:6,backgroundColor:COLORS.ink,alignItems:"center"},calorieTooltipText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},calorieAxisLabel:{position:"absolute",right:-25,transform:[{translateY:-3}],fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},calorieXAxis:{height:24,marginRight:28,marginTop:1,flexDirection:"row",justifyContent:"space-between"},calorieXTick:{width:24,alignItems:"center"},calorieDay:{fontFamily:"PlusJakartaSans_500Medium",fontSize:6.5,color:"#657570",lineHeight:8},calorieDayActive:{fontFamily:"PlusJakartaSans_700Bold",color:COLORS.ink},calorieDate:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#8A9693",lineHeight:7},calorieDateActive:{fontFamily:"PlusJakartaSans_600SemiBold",color:COLORS.ink},

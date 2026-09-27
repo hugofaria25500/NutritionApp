@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type TimeFilter = "all" | "15" | "30";
 type DifficultyFilter = "all" | "easy" | "medium";
@@ -152,11 +153,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(5,27,23,0.28)",
   },
   sheet: {
-    paddingHorizontal: 21,
-    paddingTop: 9,
-    paddingBottom: 30,
-    borderTopLeftRadius: 27,
-    borderTopRightRadius: 27,
+    paddingHorizontal: LAYOUT.horizontalPadding,
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.xxl,
+    borderTopLeftRadius: RADIUS.xl,
+    borderTopRightRadius: RADIUS.xl,
     backgroundColor: "#F9FBF7",
   },
   handle: {
@@ -174,13 +175,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 20,
+    fontSize: TYPOGRAPHY.h2.fontSize,
     color: "#082D31",
   },
   subtitle: {
     marginTop: 3,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 10,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#7C8584",
   },
   closeButton: {
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
     marginBottom: 9,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 11,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#244C47",
   },
   optionsRow: {
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 8.5,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#55706A",
   },
   activeOptionText: {
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
   },
   resetText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 10,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#48655F",
   },
   applyButton: {

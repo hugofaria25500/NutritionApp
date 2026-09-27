@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
+import { RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import type { PlanMeal } from "@/features/plan/data/planData";
 
 type PlanMealCardProps = {
@@ -62,8 +63,8 @@ export default function PlanMealCard({
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    minHeight: 72,
-    borderRadius: 12,
+    minHeight: 88,
+    borderRadius: RADIUS.md,
     overflow: "hidden",
     backgroundColor: "rgba(255,255,255,0.93)",
     borderWidth: 1,
@@ -72,25 +73,25 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   image: {
-    width: 70,
-    height: 72,
+    width: 88,
+    height: 88,
   },
   content: {
     flex: 1,
-    paddingLeft: 10,
+    paddingLeft: SPACING.md,
     paddingRight: 34,
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
   },
   type: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 8.5,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#82908D",
   },
   title: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 10,
-    lineHeight: 13,
+    fontSize: TYPOGRAPHY.label.fontSize,
+    lineHeight: TYPOGRAPHY.label.lineHeight,
     color: "#163C3A",
   },
   metaRow: {
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   },
   meta: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 7.5,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#75827F",
   },
   moreButton: {

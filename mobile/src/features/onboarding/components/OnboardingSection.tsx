@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import { StyleSheet, Text, View } from "react-native";
 
 type OnboardingSectionProps = {
@@ -38,23 +39,23 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 9,
+    marginBottom: SPACING.sm,
   },
   headerText: {
-    marginLeft: 8,
+    marginLeft: SPACING.sm,
     flex: 1,
   },
   title: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 15,
-    lineHeight: 20,
+    fontSize: TYPOGRAPHY.h3.fontSize,
+    lineHeight: TYPOGRAPHY.h3.lineHeight,
     color: "#123B34",
   },
   subtitle: {
-    marginTop: 1,
+    marginTop: 2,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
-    lineHeight: 15,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
     color: "#858B87",
   },
 });

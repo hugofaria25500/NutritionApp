@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -129,7 +130,7 @@ export default function ExploreScreen() {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
       resizeMode="cover"
     >
       <View style={styles.backgroundWash} />
@@ -376,8 +377,8 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    maxWidth: 430,
-    paddingHorizontal: 21,
+    maxWidth: LAYOUT.maxContentWidth,
+    paddingHorizontal: LAYOUT.horizontalPadding,
     alignItems: "center",
   },
   hero: {
@@ -403,16 +404,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 28,
-    lineHeight: 33,
+    fontSize: TYPOGRAPHY.display.fontSize,
+    lineHeight: TYPOGRAPHY.display.lineHeight,
     letterSpacing: -0.8,
     color: "#082D31",
   },
   subtitle: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 11.5,
-    lineHeight: 16,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
     color: "#7C8584",
   },
   ingredientHeaderRow: {
@@ -422,7 +423,7 @@ const styles = StyleSheet.create({
   },
   ingredientCount: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 9,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#6C7D78",
   },
   ingredientGrid: {
@@ -436,7 +437,7 @@ const styles = StyleSheet.create({
   ingredientCard: {
     width: "100%",
     overflow: "hidden",
-    borderRadius: 13,
+    borderRadius: RADIUS.md,
     backgroundColor: "rgba(255,255,255,0.94)",
     borderWidth: 1,
     borderColor: "rgba(20,59,51,0.06)",
@@ -452,7 +453,7 @@ const styles = StyleSheet.create({
   ingredientTitle: {
     flex: 1,
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7.5,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#234B46",
   },
   loadMoreButton: {
@@ -479,7 +480,7 @@ const styles = StyleSheet.create({
   ingredientEmptyTitle: {
     marginTop: 10,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 11,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     color: "#244C47",
   },
   ingredientEmptyText: {
@@ -521,7 +522,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     maxWidth: 280,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 8.5,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     lineHeight: 13,
     color: "#7E8986",
     textAlign: "center",
@@ -549,7 +550,7 @@ const styles = StyleSheet.create({
   favoriteEmptyText: {
     flex: 1,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 8,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     lineHeight: 12,
     color: "#7E8986",
   },

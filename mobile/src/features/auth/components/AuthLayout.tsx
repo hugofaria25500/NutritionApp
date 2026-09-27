@@ -2,10 +2,12 @@ import type { ReactNode } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Href, useRouter } from "expo-router";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { COLORS, LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
+import { useAppResponsive } from "@/components/ui/useAppResponsive";
 
 type AuthLayoutProps = {
   backRoute: Href;
@@ -14,15 +16,17 @@ type AuthLayoutProps = {
 
 export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { width } = useAppResponsive();
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_three_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
     >
       <SafeAreaView style={styles.safeArea}>
         <Pressable
           onPress={() => router.replace(backRoute)}
-          style={styles.backButton}
+          style={[styles.backButton, { top: insets.top + SPACING.sm }]}
           hitSlop={10}
         >
           <Ionicons name="chevron-back" size={14} color="#FFFFFF" />
@@ -41,7 +45,10 @@ export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
           >
             <View style={styles.content}>
               <View style={styles.branding}>
-                <AppLogo />
+                <AppLogo
+                  width={width < 380 ? 190 : 210}
+                  height={width < 380 ? 104 : 112}
+                />
               </View>
 
               {children}
@@ -72,34 +79,33 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingVertical: 24,
-    paddingHorizontal: 48,
+    paddingVertical: SPACING.xxl,
+    paddingHorizontal: LAYOUT.horizontalPadding,
     alignItems: "center",
     justifyContent: "center",
   },
   backButton: {
     position: "absolute",
-    top: 35,
-    left: 20,
+    left: LAYOUT.horizontalPadding,
     zIndex: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#168653",
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 14,
+    backgroundColor: COLORS.greenStrong,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: RADIUS.md,
   },
   backLabel: {
     marginLeft: 3,
-    color: "#FFFFFF",
-    fontSize: 12,
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     fontWeight: "600",
   },
   branding: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 40,
+    marginBottom: SPACING.xxxl,
   },
   footer: {
     alignItems: "center",
@@ -107,15 +113,15 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 10,
-    color: "#999999",
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.mutedLight,
     textAlign: "center",
   },
   footerLinks: {
     marginTop: 4,
     fontFamily: "PlusJakartaSans_500Medium",
     fontSize: 10,
-    color: "#087C5B",
+    color: COLORS.green,
     textAlign: "center",
   },
 });

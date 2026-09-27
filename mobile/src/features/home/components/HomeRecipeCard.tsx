@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { RADIUS, TYPOGRAPHY } from "@/components/ui/theme";
 
 type HomeRecipeCardProps = {
   image: string;
@@ -51,7 +52,7 @@ export default function HomeRecipeCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 10,
+    borderRadius: RADIUS.md,
     overflow: "hidden",
     backgroundColor: "#B8C3BA",
   },
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   largeCard: {
     width: 150,
     height: 172,
-    borderRadius: 14,
+    borderRadius: RADIUS.lg,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
@@ -101,25 +102,25 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
     color: "#FFFFFF",
-    fontSize: 10.5,
-    lineHeight: 12,
+    fontSize: TYPOGRAPHY.label.fontSize,
+    lineHeight: TYPOGRAPHY.label.lineHeight,
   },
   largeTitle: {
-    fontSize: 11.5,
-    lineHeight: 14,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
   },
   subtitle: {
     marginTop: 1,
     fontFamily: "PlusJakartaSans_400Regular",
     color: "rgba(255,255,255,0.9)",
-    fontSize: 7.2,
-    lineHeight: 9,
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    lineHeight: TYPOGRAPHY.caption.lineHeight,
   },
   largeSubtitle: {
     marginTop: 3,
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 8,
-    lineHeight: 10,
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    lineHeight: TYPOGRAPHY.caption.lineHeight,
   },
   pressed: {
     opacity: 0.78,

@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type HomeActionCardProps = {
   title: string;
@@ -39,11 +40,11 @@ export default function HomeActionCard({
 
 const styles = StyleSheet.create({
   card: {
-    minHeight: 55,
+    minHeight: 64,
     width: "100%",
-    borderRadius: 15,
-    paddingHorizontal: 11,
-    paddingVertical: 8,
+    borderRadius: RADIUS.lg,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     backgroundColor: "rgba(255,255,255,0.84)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.62)",
@@ -56,13 +57,13 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   icon: {
-    width: 39,
-    height: 39,
-    borderRadius: 12,
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.md,
     backgroundColor: "rgba(248,250,247,0.9)",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 11,
+    marginRight: SPACING.md,
   },
   iconGreen: {
     backgroundColor: "#EAF4E8",
@@ -73,15 +74,15 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "PlusJakartaSans_600SemiBold",
     color: "#082D31",
-    fontSize: 11.5,
-    lineHeight: 15,
+    fontSize: TYPOGRAPHY.bodyMedium.fontSize,
+    lineHeight: TYPOGRAPHY.bodyMedium.lineHeight,
   },
   subtitle: {
     marginTop: 1,
     fontFamily: "PlusJakartaSans_400Regular",
     color: "#7C8584",
-    fontSize: 9.7,
-    lineHeight: 13,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
   },
   pressed: {
     opacity: 0.78,

@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Href, usePathname, useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { COLORS, LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type NavigationItem = {
   label: string;
@@ -34,8 +35,8 @@ export default function HomeBottomNavigation({
           >
             <Ionicons
               name={item.icon}
-              size={22}
-              color={active ? "#087C5B" : "#7B8585"}
+              size={24}
+              color={active ? COLORS.green : "#7B8585"}
             />
             <Text style={[styles.label, active && styles.activeLabel]}>
               {item.label}
@@ -54,10 +55,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "94%",
     maxWidth: 420,
-    minHeight: 68,
-    borderRadius: 23,
-    paddingHorizontal: 5,
-    paddingVertical: 7,
+    minHeight: LAYOUT.bottomNavigationHeight,
+    borderRadius: RADIUS.xl,
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: SPACING.sm,
     backgroundColor: "rgba(255,255,255,0.95)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.75)",
@@ -76,12 +77,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
-    gap: 3,
+    gap: SPACING.xs,
   },
   label: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 7.2,
-    lineHeight: 10,
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    lineHeight: TYPOGRAPHY.caption.lineHeight,
     color: "#7B8585",
   },
   activeLabel: {
@@ -93,6 +94,6 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: "#087C5B",
+    backgroundColor: COLORS.green,
   },
 });

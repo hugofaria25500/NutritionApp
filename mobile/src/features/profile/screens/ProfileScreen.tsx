@@ -1,5 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -25,6 +27,7 @@ const COLORS = {
 };
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useAppFonts();
 
@@ -36,7 +39,7 @@ export default function ProfileScreen() {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
       resizeMode="cover"
     >
       <View style={styles.backgroundWash} />
@@ -107,10 +110,10 @@ export default function ProfileScreen() {
           />
 
           <View style={styles.preferenceGrid}>
-            {profilePreferences.map((item) => (
+            {profilePreferences.map((item, index) => (
               <Pressable
                 key={item.id}
-                style={styles.preferenceCard}
+                style={[styles.preferenceCard, index % 3 !== 2 && styles.preferenceCardSpacing]}
                 onPress={() => showMessage(item.label, "Esta preferência poderá ser editada nesta secção.")}
               >
                 <View style={[styles.preferenceIcon, { backgroundColor: item.backgroundColor }]}>
@@ -183,6 +186,14 @@ export default function ProfileScreen() {
               />
             ))}
           </View>
+
+          <Pressable
+            style={styles.signOutButton}
+            onPress={() => router.replace("/(onboarding)/init")}
+          >
+            <Ionicons name="log-out-outline" size={17} color="#B64A43" />
+            <Text style={styles.signOutText}>Terminar sessão</Text>
+          </Pressable>
         </View>
       </ScrollView>
 
@@ -267,8 +278,8 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    maxWidth: 430,
-    paddingHorizontal: 15,
+    maxWidth: LAYOUT.maxContentWidth,
+    paddingHorizontal: LAYOUT.horizontalPadding,
   },
   topBar: {
     width: "100%",
@@ -276,6 +287,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 5,
   },
   notificationButton: {
     width: 35,
@@ -330,7 +342,7 @@ const styles = StyleSheet.create({
     bottom: 2,
     width: 22,
     height: 22,
-    borderRadius: 11,
+    borderRadius: RADIUS.md,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
@@ -350,8 +362,8 @@ const styles = StyleSheet.create({
   profileName: {
     flex: 1,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 22,
-    lineHeight: 22,
+    fontSize: 20,
+    lineHeight: 24,
     color: COLORS.ink,
   },
   editProfileButton: {
@@ -367,14 +379,14 @@ const styles = StyleSheet.create({
   },
   editProfileText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 11,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: COLORS.ink,
   },
   profileHelper: {
     marginTop: 4,
     maxWidth: 260,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     lineHeight: 10.5,
     color: COLORS.muted,
   },
@@ -398,12 +410,12 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 13,
+    fontSize: TYPOGRAPHY.bodyMedium.fontSize,
     color: COLORS.ink,
   },
   statLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 9,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: COLORS.muted,
   },
   statDivider: {
@@ -420,7 +432,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 15,
+    fontSize: TYPOGRAPHY.h3.fontSize,
     color: COLORS.ink,
   },
   sectionAction: {
@@ -437,18 +449,20 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    columnGap: 7,
-    rowGap: 7,
+    rowGap: SPACING.sm,
   },
   preferenceCard: {
-    width: "calc(33.333% - 5px)",
-    minHeight: 76,
+    width: "32%",
+    minHeight: 84,
     paddingHorizontal: 6,
     paddingVertical: 7,
     borderRadius: 11,
     backgroundColor: "rgba(255,255,255,0.82)",
     alignItems: "center",
     justifyContent: "center",
+  },
+  preferenceCardSpacing: {
+    marginRight: "2%",
   },
   preferenceIcon: {
     width: 26,
@@ -461,7 +475,7 @@ const styles = StyleSheet.create({
   preferenceLabel: {
     fontFamily: "PlusJakartaSans_600SemiBold",
     fontSize: 9,
-    lineHeight: 7.2,
+    lineHeight: TYPOGRAPHY.label.lineHeight,
     color: "#465A55",
     textAlign: "center",
   },
@@ -471,8 +485,8 @@ const styles = StyleSheet.create({
   },
   goalCard: {
     width: "100%",
-    minHeight: 58,
-    borderRadius: 12,
+    minHeight: 64,
+    borderRadius: RADIUS.md,
     paddingHorizontal: 9,
     paddingVertical: 8,
     backgroundColor: "rgba(238,247,239,0.92)",
@@ -502,6 +516,24 @@ const styles = StyleSheet.create({
     fontFamily: "PlusJakartaSans_400Regular",
     fontSize: 9,
     color: COLORS.muted,
+  },
+  signOutButton: {
+    width: "100%",
+    minHeight: 48,
+    marginTop: 10,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.83)",
+    borderWidth: 1,
+    borderColor: "rgba(182,74,67,0.12)",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 7,
+  },
+  signOutText: {
+    fontFamily: "PlusJakartaSans_600SemiBold",
+    fontSize: 12,
+    color: "#B64A43",
   },
   menuCard: {
     width: "100%",

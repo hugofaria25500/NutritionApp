@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { COLORS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type HomeSectionHeaderProps = {
   title: string;
@@ -29,15 +30,15 @@ export default function HomeSectionHeader({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginBottom: 7,
+    marginBottom: SPACING.sm,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
-    color: "#082D31",
-    fontSize: 15,
+    color: COLORS.ink,
+    fontSize: TYPOGRAPHY.h3.fontSize,
     letterSpacing: -0.35,
   },
   action: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    color: "#087C5B",
-    fontSize: 9.5,
+    color: COLORS.green,
+    fontSize: TYPOGRAPHY.label.fontSize,
   },
 });

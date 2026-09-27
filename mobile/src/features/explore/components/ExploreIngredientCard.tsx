@@ -1,5 +1,6 @@
 import { Image, Pressable, StyleSheet, Text } from "react-native";
 
+import { TYPOGRAPHY } from "@/components/ui/theme";
 import type { ExploreIngredient } from "@/features/explore/data/exploreData";
 
 type ExploreIngredientCardProps = {
@@ -21,7 +22,7 @@ export default function ExploreIngredientCard({
 
 const styles = StyleSheet.create({
   card: {
-    width: 72,
+    width: 92,
     paddingBottom: 7,
     borderRadius: 10,
     overflow: "hidden",
@@ -29,12 +30,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(20,59,51,0.05)",
   },
-  image: { width: "100%", height: 62 },
+  image: { width: "100%", height: 82 },
   title: {
     marginTop: 5,
     paddingHorizontal: 6,
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7.5,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#234B46",
   },
 });

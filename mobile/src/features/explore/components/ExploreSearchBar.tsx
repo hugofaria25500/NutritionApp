@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { RADIUS, TYPOGRAPHY } from "@/components/ui/theme";
 
 type ExploreSearchBarProps = {
   value: string;
@@ -47,8 +48,8 @@ const styles = StyleSheet.create({
   },
   search: {
     flex: 1,
-    height: 43,
-    borderRadius: 22,
+    height: 48,
+    borderRadius: RADIUS.xl,
     paddingHorizontal: 13,
     flexDirection: "row",
     alignItems: "center",
@@ -61,11 +62,11 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     paddingVertical: 0,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 10.5,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     color: "#174B47",
   },
   filterButton: {
-    width: 43,
+    width: 48,
     height: 43,
     borderRadius: 22,
     alignItems: "center",

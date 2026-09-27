@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { LAYOUT, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
@@ -36,7 +37,7 @@ export default function HomeScreen() {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
       resizeMode="cover"
     >
       <View style={styles.backgroundWash} />
@@ -131,20 +132,20 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    maxWidth: 430,
-    paddingHorizontal: 21,
+    maxWidth: LAYOUT.maxContentWidth,
+    paddingHorizontal: LAYOUT.horizontalPadding,
     alignItems: "center",
   },
   hero: {
     width: "100%",
     alignItems: "center",
-    marginBottom: 19,
+    marginBottom: SPACING.lg,
   },
   heroTitle: {
     width: "100%",
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 25,
-    lineHeight: 30,
+    fontSize: TYPOGRAPHY.h1.fontSize,
+    lineHeight: TYPOGRAPHY.h1.lineHeight,
     color: COLORS.ink,
     textAlign: "left",
     letterSpacing: -0.7,
@@ -154,15 +155,15 @@ const styles = StyleSheet.create({
   },
   heroHelper: {
     width: "100%",
-    marginTop: 6,
+    marginTop: SPACING.xs,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 11.5,
-    lineHeight: 16,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
     color: COLORS.muted,
     textAlign: "left",
   },
   actionsList: {
     width: "100%",
-    gap: 8,
+    gap: SPACING.sm,
   },
 });

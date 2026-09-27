@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 type OnboardingIntroProps = {
   title: ReactNode;
@@ -31,22 +32,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 5,
+    marginBottom: SPACING.xs,
   },
   text: {
     flex: 1,
   },
   title: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 27,
-    lineHeight: 27,
+    fontSize: TYPOGRAPHY.h1.fontSize,
+    lineHeight: TYPOGRAPHY.h1.lineHeight,
     color: "#087C5B",
   },
   subtitle: {
-    marginTop: 6,
+    marginTop: SPACING.xs,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
-    lineHeight: 15,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+    lineHeight: TYPOGRAPHY.bodySmall.lineHeight,
     color: "#888888",
   },
 });

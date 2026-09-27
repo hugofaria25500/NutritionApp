@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { RADIUS } from "@/components/ui/theme";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import AppLogo from "@/components/ui/AppLogo";
@@ -30,12 +31,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 26,
+    marginBottom: 5,
   },
   notificationButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "rgba(255,255,255,0.82)",
     alignItems: "center",
     justifyContent: "center",

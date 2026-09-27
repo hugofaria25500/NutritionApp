@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/theme";
 
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
@@ -85,7 +86,7 @@ export default function PlanScreen() {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
       resizeMode="cover"
     >
       <View style={styles.backgroundWash} />
@@ -269,15 +270,16 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    maxWidth: 430,
-    paddingHorizontal: 15,
+    maxWidth: LAYOUT.maxContentWidth,
+    paddingHorizontal: LAYOUT.horizontalPadding,
   },
   header: {
     width: "100%",
-    height: 42,
+    height: 44,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 5,
   },
   headerActions: {
     flexDirection: "row",
@@ -285,9 +287,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   iconButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(255,255,255,0.84)",
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 9,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: "#286A4B",
   },
   hero: {
@@ -325,8 +327,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 29,
-    lineHeight: 35,
+    fontSize: TYPOGRAPHY.display.fontSize,
+    lineHeight: TYPOGRAPHY.display.lineHeight,
     letterSpacing: -0.7,
     color: COLORS.ink,
   },
@@ -334,7 +336,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     maxWidth: 320,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12.5,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     lineHeight: 13,
     color: COLORS.muted,
   },
@@ -367,13 +369,13 @@ const styles = StyleSheet.create({
   },
   dayName: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 10,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#7A8582",
   },
   dayDate: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 12,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     color: "#314C48",
   },
   selectedDayText: {
@@ -440,7 +442,7 @@ const styles = StyleSheet.create({
   },
   calorieGoal: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 9.5,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: COLORS.muted,
   },
   adjustButton: {
@@ -454,7 +456,7 @@ const styles = StyleSheet.create({
   },
   adjustText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: COLORS.ink,
   },
   macroRow: {
@@ -519,7 +521,7 @@ const styles = StyleSheet.create({
   },
   planButtonText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 8,
+    fontSize: TYPOGRAPHY.caption.fontSize,
     color: COLORS.darkGreen,
   },
   mealsList: {
