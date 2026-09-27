@@ -24,8 +24,21 @@ const CALORIE_Y_AXIS_WIDTH = 24;
 const CALORIE_INITIAL_SPACING = 12;
 const CALORIE_END_SPACING = 8;
 const CALORIE_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weeklyCalories.length - 1);
-const WEIGHT_CHART_MIN = 60;
-const WEIGHT_CHART_MAX = 75;
+const weightChartValues = weightEntries.map((entry) => entry.value);
+const weightChartValueMin = Math.min(...weightChartValues);
+const weightChartValueMax = Math.max(...weightChartValues);
+const weightChartRange = Math.max(weightChartValueMax - weightChartValueMin, 1);
+const weightChartPadding = Math.max(weightChartRange * 0.15, 0.5);
+const weightChartRawMin = weightChartValueMin - weightChartPadding;
+const weightChartRawMax = weightChartValueMax + weightChartPadding;
+const weightChartRawStep = (weightChartRawMax - weightChartRawMin) / 5;
+const weightChartMagnitude = 10 ** Math.floor(Math.log10(weightChartRawStep));
+const weightChartNormalizedStep = weightChartRawStep / weightChartMagnitude;
+const weightChartNiceFactor = weightChartNormalizedStep <= 1 ? 1 : weightChartNormalizedStep <= 2 ? 2 : weightChartNormalizedStep <= 5 ? 5 : 10;
+const weightChartStep = weightChartNiceFactor * weightChartMagnitude;
+const weightChartMin = Math.floor(weightChartRawMin / weightChartStep) * weightChartStep;
+const weightChartMax = Math.ceil(weightChartRawMax / weightChartStep) * weightChartStep;
+const weightChartSections = Math.round((weightChartMax - weightChartMin) / weightChartStep);
 const WEIGHT_CHART_SPACING = (CALORIE_CHART_WIDTH - CALORIE_Y_AXIS_WIDTH - CALORIE_INITIAL_SPACING - CALORIE_END_SPACING) / (weightEntries.length - 1);
 
 export default function ProgressScreen() {
@@ -198,12 +211,12 @@ export default function ProgressScreen() {
                 }))}
                 width={CALORIE_CHART_WIDTH}
                 height={72}
-                maxValue={WEIGHT_CHART_MAX}
+                maxValue={weightChartMax}
                 noOfSections={3}
-                stepValue={5}
+                stepValue={weightChartStep}
                 yAxisSide="right"
                 yAxisLabelWidth={24}
-                yAxisLabelTexts={["60", "65", "70", "75"]}
+                yAxisLabelTexts={Array.from({ length: weightChartSections + 1 }, (_, index) => String(Math.round(weightChartMin + index * weightChartStep)))}
                 yAxisTextStyle={styles.giftedYAxisText}
                 xAxisLabelTextStyle={styles.giftedXAxisText}
                 xAxisLabelsHeight={22}
@@ -241,7 +254,7 @@ export default function ProgressScreen() {
                       styles.calorieTouchPoint,
                       {
                         left: CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + index * WEIGHT_CHART_SPACING,
-                        top: 4 + (1 - (item.value - WEIGHT_CHART_MIN) / (WEIGHT_CHART_MAX - WEIGHT_CHART_MIN)) * 64,
+                        top: 4 + (1 - (item.value - weightChartMin) / (weightChartMax - weightChartMin)) * 64,
                       },
                     ]}
                   />
