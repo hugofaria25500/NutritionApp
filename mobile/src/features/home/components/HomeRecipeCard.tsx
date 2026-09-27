@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { RADIUS, TYPOGRAPHY } from "@/components/ui/theme";
 
@@ -29,7 +30,12 @@ export default function HomeRecipeCard({
       onPress={onPress}
     >
       <Image source={{ uri: image }} style={styles.image} />
-      <View style={[styles.overlay, large && styles.largeOverlay]} />
+      <LinearGradient
+        colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.82)"]}
+        locations={[0.25, 1]}
+        style={[styles.overlay, large && styles.largeOverlay]}
+        pointerEvents="none"
+      />
 
       <View style={styles.favoriteBadge}>
         <Ionicons name="heart-outline" size={16} color="#FFFFFF" />
@@ -79,6 +85,7 @@ const styles = StyleSheet.create({
   },
   favoriteBadge: {
     position: "absolute",
+    zIndex: 2,
     top: 6,
     right: 6,
     width: 22,
@@ -90,6 +97,7 @@ const styles = StyleSheet.create({
   },
   copy: {
     position: "absolute",
+    zIndex: 2,
     left: 8,
     right: 6,
     bottom: 7,
