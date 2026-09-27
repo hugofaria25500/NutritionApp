@@ -24,7 +24,7 @@ export default function InitScreen() {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_variation_three_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
     >
       <SafeAreaView style={styles.safeArea}>
         <ScrollView
