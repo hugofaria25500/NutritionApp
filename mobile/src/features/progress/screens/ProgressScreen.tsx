@@ -12,12 +12,6 @@ import HomeBottomNavigation from "@/features/home/components/HomeBottomNavigatio
 import { navigationItems } from "@/features/home/data/homeData";
 import { calorieSummary, insights, macronutrients, progressCopy, weeklyCalories, weightEntries, weightGoal, weightSummary } from "@/features/progress/data/progressData";
 
-const weightValues = weightEntries.map((entry) => entry.value);
-const weightChartMin = Math.floor((Math.min(...weightValues) - 5) / 5) * 5;
-const weightChartMax = Math.ceil((Math.max(...weightValues) + 5) / 5) * 5;
-const weightChartSections = 4;
-const weightChartStep = (weightChartMax - weightChartMin) / weightChartSections;
-
 const COLORS = { ink:"#082D31", muted:"#7C8584", green:"#2D8C45", darkGreen:"#087C5B" };
 const CALORIE_CHART_WIDTH = 300;
 const CALORIE_Y_AXIS_WIDTH = 24;
