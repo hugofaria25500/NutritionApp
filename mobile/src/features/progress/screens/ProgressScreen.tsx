@@ -253,7 +253,7 @@ export default function ProgressScreen() {
               {selectedWeightIndex !== null && weightEntries[selectedWeightIndex] && (() => {
                 const item = weightEntries[selectedWeightIndex];
                 const x = CALORIE_Y_AXIS_WIDTH + CALORIE_INITIAL_SPACING + selectedWeightIndex * WEIGHT_CHART_SPACING;
-                const y = 4 + (1 - (item.value - WEIGHT_CHART_MIN) / (WEIGHT_CHART_MAX - WEIGHT_CHART_MIN)) * 64;
+                const y = 4 + (1 - (item.value - weightChartMin) / (weightChartMax - weightChartMin)) * 64;
                 return (
                   <View
                     pointerEvents="none"
