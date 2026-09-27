@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-gifted-charts";
-import { useState } from "react";
+import React, { useState } from "react";
 import Svg, { Circle, Line, Polyline, Text as SvgText } from "react-native-svg";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
