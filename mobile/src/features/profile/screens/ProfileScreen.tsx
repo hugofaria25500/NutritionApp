@@ -437,8 +437,8 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 7,
+    justifyContent: "space-between",
+    rowGap: 7,
   },
   preferenceCard: {
     width: "32%",
