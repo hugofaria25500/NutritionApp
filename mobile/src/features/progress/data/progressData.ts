@@ -43,13 +43,13 @@ export const calorieSummary = {
 };
 
 export const weeklyCalories: ProgressPoint[] = [
-  { label: "Seg", date: 22, value: 900 },
-  { label: "Ter", date: 23, value: 1050 },
-  { label: "Qua", date: 24, value: 1350 },
-  { label: "Qui", date: 25, value: 1450 },
-  { label: "Sex", date: 26, value: 800 },
-  { label: "Sáb", date: 27, value: 700 },
-  { label: "Dom", date: 28, value: 650 },
+  { label: "21 Set", date: 21, value: 900 },
+  { label: "22 Set", date: 22, value: 1050 },
+  { label: "23 Set", date: 23, value: 1350 },
+  { label: "24 Set", date: 24, value: 1450 },
+  { label: "25 Set", date: 25, value: 800 },
+  { label: "26 Set", date: 26, value: 700 },
+  { label: "27 Set", date: 27, value: 650 },
 ];
 
 export const macronutrients: MacroData[] = [
