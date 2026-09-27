@@ -87,6 +87,15 @@ export const weightGoal = {
   remainingWeeks: 3,
 };
 
+export const consistencySummary = {
+  days: 6,
+  totalDays: 7,
+  percentage: 86,
+  label: "dias no objetivo",
+  periodLabel: "Esta semana",
+  footer: "Boa consistência!",
+};
+
 export const insights: Insight[] = [
   { id: "protein", title: "Tens comido mais proteína!", detail: "A tua média de proteína aumentou 18% esta semana.", icon: "bulb-outline" },
   { id: "meals", title: "As tuas refeições estão mais equilibradas", detail: "Boa distribuição de macronutrientes.", icon: "bar-chart-outline" },
