@@ -7,6 +7,7 @@ import { COLORS, LAYOUT, RADIUS, SPACING, TYPOGRAPHY } from "@/components/ui/the
 
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
+import { useAppResponsive } from "@/components/ui/useAppResponsive";
 
 type AuthLayoutProps = {
   backRoute: Href;
@@ -16,6 +17,7 @@ type AuthLayoutProps = {
 export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { width } = useAppResponsive();
 
   return (
     <AppBackground
@@ -43,7 +45,10 @@ export default function AuthLayout({ backRoute, children }: AuthLayoutProps) {
           >
             <View style={styles.content}>
               <View style={styles.branding}>
-                <AppLogo />
+                <AppLogo
+                  width={width < 380 ? 190 : 210}
+                  height={width < 380 ? 104 : 112}
+                />
               </View>
 
               {children}
