@@ -141,12 +141,30 @@ export default function ProgressScreen() {
               <Text style={styles.halfValue}>{weightSummary.current.toFixed(1).replace(".", ",")} {weightSummary.unit}</Text>
               <Text style={styles.change}>{weightSummary.change.toFixed(1).replace(".", ",")} {weightSummary.unit} {weightSummary.changeLabel}</Text>
               <View style={styles.miniWeightChart}>
-                <View style={styles.miniChartLine}/>
-                {weightEntries.slice(-6).map((point,i)=>(
-                  <View key={point.day} style={[styles.miniWeightPoint,{left:`${(i/5)*100}%`,bottom:8 + ((point.value - 68) / 3) * 32}]}>
-                    <View style={styles.weightPoint}/>
-                  </View>
-                ))}
+                <LineChart
+                  data={weightEntries.slice(-6).map((point) => ({ value: point.value }))}
+                  width={145}
+                  height={58}
+                  maxValue={72}
+                  stepValue={2}
+                  noOfSections={2}
+                  hideYAxisText
+                  hideAxesAndRules
+                  rulesColor="#E5ECE7"
+                  rulesThickness={1}
+                  color={COLORS.darkGreen}
+                  thickness={1.5}
+                  dataPointsColor={COLORS.darkGreen}
+                  dataPointsRadius={3.5}
+                  dataPointsHeight={7}
+                  dataPointsWidth={7}
+                  customDataPoint={() => <View style={styles.giftedDataPoint} />}
+                  curved={false}
+                  initialSpacing={2}
+                  endSpacing={2}
+                  spacing={25}
+                  disableScroll
+                />
                 <View style={styles.weightBubble}><Text style={styles.weightBubbleText}>{weightSummary.current.toFixed(1).replace(".", ",")}</Text></View>
               </View>
               <View style={styles.axisRow}><Text style={styles.axisText}>1 Set</Text><Text style={styles.axisText}>8 Set</Text><Text style={styles.axisText}>15 Set</Text><Text style={styles.axisText}>22 Set</Text></View>
