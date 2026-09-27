@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   profileName: {
     flex: 1,
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 18,
+    fontSize: 22,
     lineHeight: 22,
     color: COLORS.ink,
   },
@@ -368,14 +368,14 @@ const styles = StyleSheet.create({
   },
   editProfileText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 6.8,
+    fontSize: 11,
     color: COLORS.ink,
   },
   profileHelper: {
     marginTop: 4,
     maxWidth: 260,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 7.7,
+    fontSize: 12,
     lineHeight: 10.5,
     color: COLORS.muted,
   },
@@ -399,12 +399,12 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 8.2,
+    fontSize: 13,
     color: COLORS.ink,
   },
   statLabel: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 5.8,
+    fontSize: 9,
     color: COLORS.muted,
   },
   statDivider: {
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontFamily: "PlusJakartaSans_700Bold",
-    fontSize: 10,
+    fontSize: 15,
     color: COLORS.ink,
   },
   sectionAction: {
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
   },
   sectionActionText: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 6.7,
+    fontSize: 11,
     color: COLORS.green,
   },
   preferenceGrid: {
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
   },
   preferenceLabel: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 5.8,
+    fontSize: 9,
     lineHeight: 7.2,
     color: "#465A55",
     textAlign: "center",
@@ -494,13 +494,13 @@ const styles = StyleSheet.create({
   },
   goalTitle: {
     fontFamily: "PlusJakartaSans_600SemiBold",
-    fontSize: 7.4,
+    fontSize: 12,
     color: COLORS.ink,
   },
   goalSubtitle: {
     marginTop: 2,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 5.9,
+    fontSize: 9,
     color: COLORS.muted,
   },
   menuCard: {
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
   menuLabel: {
     flex: 1,
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 7.3,
+    fontSize: 12,
     color: "#445752",
   },
   divider: {
