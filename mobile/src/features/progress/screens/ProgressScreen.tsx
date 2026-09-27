@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LineChart } from "react-native-gifted-charts";
 import { useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -49,94 +50,57 @@ export default function ProgressScreen() {
             <Text style={styles.mainValue}>{calorieSummary.current.toLocaleString("pt-PT")} {calorieSummary.unit}</Text>
             <Text style={styles.mainCaption}>Média diária esta semana</Text>
             <View style={styles.calorieChart}>
-              <View style={styles.caloriePlot}>
-                {[33.33, 66.67].map((position) => (
-                  <View key={position} style={[styles.calorieGridLine, { top: `${position}%` }]} />
-                ))}
-
-                {weeklyCalories.map((item, index) => {
-                  const x = (index / (weeklyCalories.length - 1)) * 100;
-                  const y = 100 - (item.value / 1800) * 100;
-                  return (
-                    <View
-                      key={`area-${item.label}`}
-                      style={[
-                        styles.calorieAreaBar,
-                        {
-                          left: `${x}%`,
-                          top: `${y}%`,
-                          height: `${100 - y}%`,
-                        },
-                      ]}
-                    />
-                  );
-                })}
-
-                {weeklyCalories.slice(0, -1).map((item, index) => {
-                  const next = weeklyCalories[index + 1];
-                  const y = 100 - (item.value / 1800) * 100;
-                  const nextY = 100 - (next.value / 1800) * 100;
-                  const midY = (y + nextY) / 2;
-                  const angle = Math.atan2(nextY - y, 100 / (weeklyCalories.length - 1)) * (180 / Math.PI);
-
-                  return (
-                    <View
-                      key={`segment-${item.label}`}
-                      style={[
-                        styles.calorieLineSegment,
-                        {
-                          left: `${(index / (weeklyCalories.length - 1)) * 100 + 8.3333}%`,
-                          top: `${midY}%`,
-                          transform: [{ rotate: `${angle}deg` }],
-                        },
-                      ]}
-                    />
-                  );
-                })}
-
-                {weeklyCalories.map((item, index) => {
-                  const x = (index / (weeklyCalories.length - 1)) * 100;
-                  const y = 100 - (item.value / 1800) * 100;
-
-                  return (
-                    <View
-                      key={item.label}
-                      style={[
-                        styles.caloriePointWrap,
-                        { left: `${x}%`, top: `${y}%` },
-                      ]}
-                    >
-                      <View style={styles.caloriePoint} />
-                      {index === 3 && (
-                        <View style={styles.calorieTooltip}>
-                          <Text style={styles.calorieTooltipText}>{item.value}</Text>
+              <LineChart
+                data={weeklyCalories.map((item, index) => ({
+                  value: item.value,
+                  label: `${item.label}\\n${item.date}`,
+                  dataPointLabelComponent: index === 3
+                    ? () => (
+                        <View style={styles.giftedTooltip}>
+                          <Text style={styles.giftedTooltipText}>{item.value}</Text>
                         </View>
-                      )}
-                    </View>
-                  );
-                })}
-
-                {[1800, 1200, 600, 0].map((value) => (
-                  <Text
-                    key={value}
-                    style={[
-                      styles.calorieAxisLabel,
-                      { top: `${100 - (value / 1800) * 100}%` },
-                    ]}
-                  >
-                    {value}
-                  </Text>
-                ))}
-              </View>
-
-              <View style={styles.calorieXAxis}>
-                {weeklyCalories.map((item, index) => (
-                  <View key={item.label} style={styles.calorieXTick}>
-                    <Text style={[styles.calorieDay, index === 3 && styles.calorieDayActive]}>{item.label}</Text>
-                    <Text style={[styles.calorieDate, index === 3 && styles.calorieDateActive]}>{item.date}</Text>
-                  </View>
-                ))}
-              </View>
+                      )
+                    : undefined,
+                }))}
+                width={300}
+                height={72}
+                maxValue={1800}
+                noOfSections={3}
+                stepValue={600}
+                yAxisSide="right"
+                yAxisLabelWidth={24}
+                yAxisLabelTexts={["0", "600", "1200", "1800"]}
+                yAxisTextStyle={styles.giftedYAxisText}
+                xAxisLabelTextStyle={styles.giftedXAxisText}
+                xAxisLabelsHeight={22}
+                initialSpacing={2}
+                endSpacing={2}
+                spacing={45}
+                adjustToWidth
+                rulesColor="#E6ECE8"
+                rulesThickness={1}
+                hideRules={false}
+                hideAxesAndRules={false}
+                xAxisColor="#E1E9E4"
+                xAxisThickness={1}
+                color={COLORS.darkGreen}
+                thickness={1.5}
+                dataPointsColor={COLORS.darkGreen}
+                dataPointsRadius={3.5}
+                areaChart
+                startFillColor={COLORS.darkGreen}
+                endFillColor={COLORS.darkGreen}
+                startOpacity={0.12}
+                endOpacity={0.01}
+                curved={false}
+                focusEnabled
+                focusedDataPointIndex={3}
+                focusedDataPointRadius={4}
+                focusedDataPointColor={COLORS.darkGreen}
+                showDataPointLabelOnFocus
+                overflowTop={18}
+                disableScroll
+              />
             </View>
           </View>
 
@@ -165,7 +129,7 @@ export default function ProgressScreen() {
                     <Text style={styles.macroPercent}>{metric.percentage}%</Text>
                     <Text style={styles.macroAmount}>{metric.current} / {metric.target} {metric.unit}</Text>
                   </View>
-                  <View style={styles.macroMiniTrack}><View style={[styles.macroMiniFill,{width:`${metric.progress}%`,backgroundColor:metric.color}]}/></View>
+                  <View style={styles.macroMiniTrack}><View style={[styles.macroMiniFill,{width:`${Math.min((metric.current / metric.target) * 100, 100)}%`,backgroundColor:metric.color}]}/></View>
                 </View>
               ))}
             </View>
@@ -251,7 +215,7 @@ const styles=StyleSheet.create({
  sectionTop:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},headingLine:{flexDirection:"row",alignItems:"center",gap:6},sectionCardTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9.5,color:COLORS.ink},moreText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:COLORS.darkGreen},
  calorieCard:{width:"100%",minHeight:166,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},mainValue:{marginTop:8,fontFamily:"PlusJakartaSans_700Bold",fontSize:20,color:COLORS.ink},mainCaption:{marginTop:1,fontFamily:"PlusJakartaSans_400Regular",fontSize:7.5,color:COLORS.muted},
  calorieChart:{height:96,marginTop:7,position:"relative"},caloriePlot:{height:70,marginRight:28,position:"relative",overflow:"visible"},calorieGridLine:{position:"absolute",left:0,right:0,height:1,backgroundColor:"#E6ECE8"},calorieAreaBar:{position:"absolute",width:"16.66%",backgroundColor:"rgba(45,140,69,0.08)"},calorieLineSegment:{position:"absolute",height:2,width:"16.6667%",backgroundColor:COLORS.darkGreen,transformOrigin:"center center",marginTop:-1},caloriePointWrap:{position:"absolute",width:8,height:8,marginLeft:-4,marginTop:-4,alignItems:"center",justifyContent:"center",zIndex:3},caloriePoint:{width:7,height:7,borderRadius:4,backgroundColor:COLORS.darkGreen},calorieTooltip:{position:"absolute",bottom:10,left:-14,minWidth:39,paddingHorizontal:6,paddingVertical:4,borderRadius:6,backgroundColor:COLORS.ink,alignItems:"center"},calorieTooltipText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},calorieAxisLabel:{position:"absolute",right:-25,transform:[{translateY:-3}],fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},calorieXAxis:{height:24,marginRight:28,marginTop:1,flexDirection:"row",justifyContent:"space-between"},calorieXTick:{width:24,alignItems:"center"},calorieDay:{fontFamily:"PlusJakartaSans_500Medium",fontSize:6.5,color:"#657570",lineHeight:8},calorieDayActive:{fontFamily:"PlusJakartaSans_700Bold",color:COLORS.ink},calorieDate:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#8A9693",lineHeight:7},calorieDateActive:{fontFamily:"PlusJakartaSans_600SemiBold",color:COLORS.ink},
-macroCard:{width:"100%",minHeight:151,marginTop:8,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},macroToday:{fontFamily:"PlusJakartaSans_500Medium",fontSize:7,color:COLORS.muted},macroTotalBar:{height:9,borderRadius:5,overflow:"hidden",flexDirection:"row",marginTop:11,backgroundColor:"#E7ECE8"},macroSegment:{height:"100%"},macroCards:{flexDirection:"row",gap:7,marginTop:11},macroItem:{flex:1,minWidth:0},macroIcon:{width:26,height:26,borderRadius:13,alignItems:"center",justifyContent:"center",marginBottom:5},macroInfo:{minHeight:32},macroName:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#526762"},macroPercent:{fontFamily:"PlusJakartaSans_700Bold",fontSize:12,color:COLORS.ink,marginTop:1},macroAmount:{fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,color:COLORS.muted,marginTop:1},macroMiniTrack:{height:5,borderRadius:3,backgroundColor:"#E7ECE8",overflow:"hidden",marginTop:5},macroMiniFill:{height:"100%",borderRadius:3},
+macroCard:{width:"100%",minHeight:151,marginTop:8,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},macroToday:{fontFamily:"PlusJakartaSans_500Medium",fontSize:7,color:COLORS.muted},macroTotalBar:{height:9,borderRadius:5,overflow:"hidden",flexDirection:"row",marginTop:11,backgroundColor:"#E7ECE8"},macroSegment:{height:"100%"},macroCards:{flexDirection:"row",gap:7,marginTop:11},macroItem:{flex:1,minWidth:0},macroIcon:{width:26,height:26,borderRadius:13,alignItems:"center",justifyContent:"center",marginBottom:5},macroInfo:{minHeight:32},macroName:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#526762"},macroPercent:{fontFamily:"PlusJakartaSans_700Bold",fontSize:12,color:COLORS.ink,marginTop:1},macroAmount:{fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,color:COLORS.muted,marginTop:1},macroMiniTrack:{height:5,borderRadius:3,backgroundColor:"#E7ECE8",overflow:"hidden",marginTop:5},giftedTooltip:{minWidth:39,paddingHorizontal:6,paddingVertical:4,borderRadius:6,backgroundColor:COLORS.ink,alignItems:"center",justifyContent:"center"},giftedTooltipText:{fontFamily:"PlusJakartaSans_700Bold",fontSize:6.5,color:"#FFFFFF"},giftedYAxisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7C8584"},giftedXAxisText:{fontFamily:"PlusJakartaSans_500Medium",fontSize:5.5,color:"#657570"},macroMiniFill:{height:"100%",borderRadius:3},
 twoColumnGrid:{width:"100%",flexDirection:"row",gap:8,marginTop:8},halfCard:{flex:1,minHeight:178,padding:11,borderRadius:15,backgroundColor:"rgba(255,255,255,.84)"},halfValue:{marginTop:9,fontFamily:"PlusJakartaSans_700Bold",fontSize:18,color:COLORS.ink},goalBig:{marginTop:10,fontFamily:"PlusJakartaSans_700Bold",fontSize:12,color:COLORS.ink},goalProgress:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:8,color:COLORS.muted},goalTrack:{height:6,borderRadius:3,backgroundColor:"#DCE8DE",overflow:"hidden",marginTop:7},fill:{height:"100%",backgroundColor:COLORS.darkGreen,borderRadius:3},goalPercent:{alignSelf:"flex-end",marginTop:2,fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7,color:"#657570"},goalStats:{marginTop:9,flexDirection:"row",justifyContent:"space-between"},goalStatValue:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:8,color:COLORS.ink,marginTop:2},goalFooter:{marginTop:9,padding:7,borderRadius:9,backgroundColor:"#EDF5EC",flexDirection:"row",alignItems:"center",gap:7},goalFooterTitle:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7,color:COLORS.ink},axisRow:{marginTop:4,flexDirection:"row",justifyContent:"space-between"},axisText:{fontFamily:"PlusJakartaSans_400Regular",fontSize:5.5,color:"#7D8B87"},
 change:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:7.5,color:"#2D8C45"},miniWeightChart:{height:72,marginTop:7,position:"relative",borderBottomWidth:1,borderBottomColor:"#E2EAE5"},miniChartLine:{position:"absolute",left:0,right:0,bottom:27,height:1,backgroundColor:"#E5ECE7"},miniWeightPoint:{position:"absolute",width:7,height:7,borderRadius:4,backgroundColor:COLORS.darkGreen,transform:[{translateX:-3.5}]},weightBubble:{position:"absolute",right:0,bottom:35,paddingHorizontal:5,paddingVertical:3,borderRadius:5,backgroundColor:COLORS.ink},weightBubbleText:{fontFamily:"PlusJakartaSans_600SemiBold",fontSize:6,color:"#FFF"},
 insightHeader:{marginTop:12,marginBottom:6},sectionTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:10,color:COLORS.ink},featuredInsight:{width:"100%",minHeight:76,padding:10,borderRadius:13,backgroundColor:"rgba(255,255,255,.84)",flexDirection:"row",alignItems:"center",gap:9},featuredInsightIcon:{width:34,height:34,borderRadius:17,backgroundColor:"#FFF3D8",alignItems:"center",justifyContent:"center"},featuredInsightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:9,color:COLORS.ink},featuredInsightDetail:{marginTop:3,fontFamily:"PlusJakartaSans_400Regular",fontSize:7,color:COLORS.muted,lineHeight:9},insightText:{flex:1},insights:{flexDirection:"column",gap:6,paddingTop:6,paddingBottom:4},insight:{width:"100%",minHeight:55,paddingHorizontal:10,paddingVertical:8,borderRadius:11,backgroundColor:"rgba(255,255,255,.72)",flexDirection:"row",alignItems:"center",gap:9},insightIcon:{width:28,height:28,borderRadius:14,backgroundColor:"#EDF5EC",alignItems:"center",justifyContent:"center"},insightTitle:{fontFamily:"PlusJakartaSans_700Bold",fontSize:8,color:COLORS.ink},insightDetail:{marginTop:2,fontFamily:"PlusJakartaSans_400Regular",fontSize:6.5,lineHeight:8,color:COLORS.muted}
