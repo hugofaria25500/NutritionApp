@@ -260,7 +260,7 @@ export default function ProgressScreen() {
                     style={[
                       styles.selectedCalorieBubble,
                       {
-                        left: Math.max(0, Math.min(x - 24, CALORIE_CHART_WIDTH - 48)),
+                        left: Math.max(0, x - 24),
                         top: Math.max(0, y - 29),
                       },
                     ]}
