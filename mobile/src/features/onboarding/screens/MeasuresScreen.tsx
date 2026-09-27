@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import { COLORS } from "@/components/ui/theme";
 import { useAppFonts } from "@/components/ui/useAppFonts";
 import OnboardingActions from "@/features/onboarding/components/OnboardingActions";
 import OnboardingIntro from "@/features/onboarding/components/OnboardingIntro";
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ECEDE9",
-    backgroundColor: "rgba(255, 255, 255, 0.72)",
+    backgroundColor: COLORS.surfaceStrong,
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
