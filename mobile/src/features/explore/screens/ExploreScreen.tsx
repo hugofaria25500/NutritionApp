@@ -130,7 +130,7 @@ export default function ExploreScreen() {
 
   return (
     <AppBackground
-      source={require("@/assets/images/backgrounds/background_food_variation_one_white.png")}
+      source={require("@/assets/images/backgrounds/background_variation_two_white.png")}
       resizeMode="cover"
     >
       <View style={styles.backgroundWash} />
