@@ -44,16 +44,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PlusJakartaSans_500Medium",
-    fontSize: 21,
+    fontSize: TYPOGRAPHY.h2.fontSize,
     color: "#087C5B",
     textAlign: "center",
   },
   subtitle: {
     width: "70%",
-    marginTop: 6,
-    marginBottom: 20,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.xl,
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 12,
+    fontSize: TYPOGRAPHY.bodySmall.fontSize,
     lineHeight: 18,
     color: "#999999",
     textAlign: "center",
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   muted: {
     fontFamily: "PlusJakartaSans_400Regular",
-    fontSize: 11,
+    fontSize: TYPOGRAPHY.label.fontSize,
     color: "#999999",
   },
   link: {
