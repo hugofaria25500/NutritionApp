@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
@@ -18,8 +18,7 @@ const benefits = [
 export default function InitScreen() {
   const router = useRouter();
   const [fontsLoaded] = useAppFonts();
-  const { width, height, size } = useAppResponsive();
-  const insets = useSafeAreaInsets();
+  const { width } = useAppResponsive();
 
   if (!fontsLoaded) return null;
 
@@ -27,67 +26,84 @@ export default function InitScreen() {
     <AppBackground
       source={require("@/assets/images/backgrounds/background_variation_three_white.png")}
     >
-      <View
-        style={[
-          styles.content,
-          {
-            height: Math.max(height - insets.top - insets.bottom, 0),
-            paddingTop: Math.max(SPACING.lg, insets.top),
-            paddingBottom: Math.max(SPACING.lg, insets.bottom),
-          },
-        ]}
-      >
-        <View style={styles.branding}>
-          <AppLogo
-            width={size(width < 380 ? 190 : 210)}
-            height={size(width < 380 ? 104 : 112)}
-          />
-          <Text style={styles.tagline}>Eat better, with what you have.</Text>
-        </View>
-
-        <View style={styles.benefits}>
-          {benefits.map((benefit) => (
-            <View key={benefit.label} style={styles.benefit}>
-              <View style={styles.iconContainer}>
-                <Ionicons name={benefit.icon} size={24} color={COLORS.green} />
-              </View>
-              <Text style={styles.benefitText}>{benefit.label}</Text>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
+          <View style={styles.content}>
+            <View style={styles.branding}>
+              <AppLogo
+                width={width < 380 ? 190 : 210}
+                height={width < 380 ? 104 : 112}
+              />
+              <Text style={styles.tagline}>
+                Eat better, with what you have.
+              </Text>
             </View>
-          ))}
-        </View>
 
-        <View style={styles.actions}>
-          <Pressable
-            style={styles.primaryButton}
-            onPress={() => router.replace("/register")}
-          >
-            <Text style={styles.primaryButtonText}>Começar</Text>
-          </Pressable>
+            <View style={styles.benefits}>
+              {benefits.map((benefit) => (
+                <View key={benefit.label} style={styles.benefit}>
+                  <View style={styles.iconContainer}>
+                    <Ionicons
+                      name={benefit.icon}
+                      size={24}
+                      color={COLORS.green}
+                    />
+                  </View>
+                  <Text style={styles.benefitText}>{benefit.label}</Text>
+                </View>
+              ))}
+            </View>
 
-          <Pressable
-            style={styles.secondaryButton}
-            onPress={() => router.replace("/login")}
-          >
-            <Text style={styles.secondaryButtonText}>Já tenho conta</Text>
-          </Pressable>
+            <View style={styles.actions}>
+              <Pressable
+                style={styles.primaryButton}
+                onPress={() => router.replace("/register")}
+              >
+                <Text style={styles.primaryButtonText}>Começar</Text>
+              </Pressable>
 
-          <Text style={styles.footerText}>
-            Uma vida mais saudável, começa aqui.
-          </Text>
-        </View>
-      </View>
+              <Pressable
+                style={styles.secondaryButton}
+                onPress={() => router.replace("/login")}
+              >
+                <Text style={styles.secondaryButtonText}>Já tenho conta</Text>
+              </Pressable>
+
+              <Text style={styles.footerText}>
+                Uma vida mais saudável, começa aqui.
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </AppBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
   content: {
+    flex: 1,
     width: "100%",
     maxWidth: LAYOUT.maxContentWidth,
     alignSelf: "center",
+    paddingVertical: SPACING.xl,
+    paddingHorizontal: LAYOUT.horizontalPadding,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: LAYOUT.horizontalPadding,
   },
   branding: {
     width: "100%",
