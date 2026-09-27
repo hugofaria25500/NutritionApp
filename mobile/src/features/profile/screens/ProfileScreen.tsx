@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
     gap: 7,
   },
   preferenceCard: {
-    width: "23.8%",
+    width: "32%",
     minHeight: 76,
     paddingHorizontal: 6,
     paddingVertical: 7,
