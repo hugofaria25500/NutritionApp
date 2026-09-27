@@ -108,10 +108,10 @@ export default function ProfileScreen() {
           />
 
           <View style={styles.preferenceGrid}>
-            {profilePreferences.map((item) => (
+            {profilePreferences.map((item, index) => (
               <Pressable
                 key={item.id}
-                style={styles.preferenceCard}
+                style={[styles.preferenceCard, index % 3 !== 2 && styles.preferenceCardSpacing]}
                 onPress={() => showMessage(item.label, "Esta preferência poderá ser editada nesta secção.")}
               >
                 <View style={[styles.preferenceIcon, { backgroundColor: item.backgroundColor }]}>
@@ -438,7 +438,6 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    columnGap: SPACING.sm,
     rowGap: SPACING.sm,
   },
   preferenceCard: {
@@ -450,6 +449,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.82)",
     alignItems: "center",
     justifyContent: "center",
+  },
+  preferenceCardSpacing: {
+    marginRight: "2%",
   },
   preferenceIcon: {
     width: 26,
