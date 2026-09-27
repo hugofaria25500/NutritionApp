@@ -82,7 +82,7 @@ export default function HomeScreen() {
             onActionPress={goToExplore}
           />
 
-          <HomeCarousel snapInterval={97}>
+          <HomeCarousel snapInterval={103}>
             {popularSuggestions.map((suggestion) => (
               <HomeRecipeCard
                 key={suggestion.title}
