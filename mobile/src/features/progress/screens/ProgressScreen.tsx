@@ -280,7 +280,6 @@ export default function ProgressScreen() {
                   <Ionicons name="locate-outline" size={14} color={COLORS.darkGreen}/>
                   <Text style={styles.sectionCardTitle}>Objetivo</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={13} color="#60736E"/>
               </View>
               <Text style={styles.goalBig}>{weightGoal.label}</Text>
               <Text style={styles.goalProgress}><Text style={styles.change}>{weightGoal.achieved.toFixed(1).replace(".", ",")} kg</Text> de {weightGoal.total} kg</Text>
