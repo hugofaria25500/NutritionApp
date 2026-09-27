@@ -249,7 +249,7 @@ export default function ProgressScreen() {
               <Text style={styles.featuredInsightTitle}>Tens comido mais proteína!</Text>
               <Text style={styles.featuredInsightDetail}>A tua média de proteína aumentou 18% esta semana e estás mais próximo do teu objetivo diário.</Text>
             </View>
-            <Ionicons name="chevron-forward" size={15} color="#60736E"/>
+
           </View>
           <View style={styles.insights}>
             {insights.slice(1).map(item=>(
