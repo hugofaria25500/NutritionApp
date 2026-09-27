@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import AppBackground from "@/components/ui/AppBackground";
 import AppLogo from "@/components/ui/AppLogo";
@@ -25,8 +26,10 @@ export default function InitScreen() {
     <AppBackground
       source={require("@/assets/images/backgrounds/background_food_variation_three_white.png")}
     >
-      <View style={styles.content}>
-        <View style={styles.branding}>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false} bounces={false}>
+          <View style={styles.content}>
+            <View style={styles.branding}>
           <AppLogo width={size(width < 380 ? 190 : 210)} height={size(width < 380 ? 104 : 112)} />
           <Text style={styles.tagline}>Eat better, with what you have.</Text>
         </View>
@@ -60,18 +63,33 @@ export default function InitScreen() {
           <Text style={styles.footerText}>
             Uma vida mais saudável, começa aqui.
           </Text>
-        </View>
-      </View>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </AppBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
+  safeArea: {
     flex: 1,
     width: "100%",
+  },
+  scrollView: {
+    flex: 1,
+    width: "100%",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    width: "100%",
+  },
+  content: {
+    flexGrow: 1,
+    width: "100%",
     maxWidth: LAYOUT.maxContentWidth,
-    paddingVertical: SPACING.xl,
+    minHeight: "100%",
+    paddingVertical: SPACING.lg,
     paddingHorizontal: LAYOUT.horizontalPadding,
     alignSelf: "center",
     alignItems: "center",
