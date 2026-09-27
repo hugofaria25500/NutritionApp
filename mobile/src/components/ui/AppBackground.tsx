@@ -14,8 +14,13 @@ export default function AppBackground({
 }: AppBackgroundProps) {
   return (
     <View style={styles.container}>
-      <Image source={source} resizeMode={resizeMode} style={styles.background} />
-      {children}
+      <Image
+        source={source}
+        resizeMode={resizeMode}
+        style={styles.background}
+      />
+
+      <View style={styles.foreground}>{children}</View>
     </View>
   );
 }
@@ -23,6 +28,7 @@ export default function AppBackground({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
     overflow: "hidden",
     backgroundColor: "#F8FAF5",
   },
@@ -30,5 +36,14 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     width: "100%",
     height: "100%",
+    zIndex: 0,
+  },
+  foreground: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
   },
 });
